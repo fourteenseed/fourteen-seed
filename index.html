@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fourteen Seed — under construction</title>
+  <meta name="description" content="Fourteen Seed — brand, product & growth. New site launching soon." />
+  <meta name="theme-color" content="#0b0d10" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Fourteen Seed" />
+  <meta property="og:description" content="New site launching soon." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://fourteenseed.example" />
+  <meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'%3E%3Crect width='100%25' height='100%25' fill='%230b0d10'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='monospace' font-size='64'%3EFOURTEEN%3E%3ESEED%3C/text%3E%3C/svg%3E" />
+
+  <!-- Favicon (round minimal mark) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='45%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%23222'/%3E%3Cstop offset='100%25' stop-color='%230b0d10'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='url(%23g)' stroke='%23555'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='monospace' font-size='16' fill='white'%3EFS%3C/text%3E%3C/svg%3E" />
+
+  <style>
+    :root{
+      --bg: #0b0d10;         /* deep slate */
+      --ink: #ffffff;        /* pure white text */
+      --dim: #a7b0b8;        /* muted text */
+      --accent: #ff4fa3;     /* pink accent */
+      --card: #11151a;       /* card surface */
+      --ring: #27313a;       /* outlines */
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--ink);
+      background: radial-gradient(1200px 800px at 80% -10%, #16202a 0%, var(--bg) 55%),
+                  linear-gradient(180deg, #0b0d10 0%, #0a0e12 100%);
+      display: grid;
+      place-items: center;
+      letter-spacing: 0.2px;
+    }
+
+    .wrap{
+      width: min(100%, 980px);
+      padding: 24px;
+    }
+
+    .card{
+      background: color-mix(in oklab, var(--card) 90%, black 10%);
+      border: 1px solid var(--ring);
+      border-radius: 20px;
+      padding: clamp(24px, 5vw, 44px);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      isolation: isolate;
+    }
+
+    /* Subtle moving grid noise */
+    .card::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: repeating-linear-gradient(90deg, #0f141a 0 2px, transparent 2px 4px),
+                  repeating-linear-gradient(0deg, #0f141a 0 2px, transparent 2px 4px);
+      opacity:.08; mix-blend-mode: soft-light;
+      transform: translate3d(0,0,0);
+      animation: drift 24s linear infinite;
+      pointer-events:none;
+      border-radius: 22px;
+    }
+    @keyframes drift{ to { transform: translate3d(-8px,-8px,0);} }
+
+    header{
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:14px;
+    }
+    .mark{
+      width: 44px; height:44px; border-radius:999px;
+      background: radial-gradient(120% 120% at 30% 20%, #1b2530 0%, #0e141a 60%);
+      border:1px solid var(--ring);
+      display:grid; place-items:center; color:var(--ink);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 11px; letter-spacing:1.5px;
+    }
+    .wordmark{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(18px, 3.2vw, 28px);
+      font-weight: 600;
+      text-transform: lowercase;
+      display:flex; align-items:center; gap:.4ch;
+      white-space: nowrap;
+    }
+    .chevrons{ color: var(--accent); filter: drop-shadow(0 0 10px rgba(255,79,163,.25)); }
+
+    .pill{ border:1px solid var(--ring); color:var(--dim); padding:8px 12px; border-radius:999px; font-size: 12px; }
+
+    .hero{
+      margin-top: clamp(24px, 5vw, 44px);
+    }
+    .kicker{ color: var(--dim); font-size: 14px; text-transform: uppercase; letter-spacing:2px; }
+    h1{
+      margin: 10px 0 6px;
+      font-size: clamp(28px, 7vw, 52px);
+      line-height: 1.05;
+      letter-spacing: .2px;
+    }
+    .lead{ color:#e7ecf2; font-size: clamp(16px, 2.4vw, 19px); max-width: 60ch; }
+
+    .cta-row{ display:flex; flex-wrap:wrap; gap:12px; margin-top: 22px; }
+    .btn{
+      display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:12px;
+      background: linear-gradient(180deg, #1b232c, #121820);
+      border:1px solid var(--ring); color:var(--ink); text-decoration:none; font-weight:600;
+      box-shadow: 0 4px 12px rgba(0,0,0,.2);
+      transition: transform .15s ease, box-shadow .15s ease, border-color .2s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); box-shadow: 0 8px 18px rgba(0,0,0,.25); border-color:#2f3b47; }
+    .btn .dot{ width:8px; height:8px; border-radius:999px; background: var(--accent); }
+
+    .ghost{ background: transparent; }
+
+    .status{
+      margin-top: clamp(20px, 3vw, 28px);
+      display:flex; align-items:center; gap:10px; color:var(--dim); font-size:14px;
+      border-top:1px dashed var(--ring); padding-top:16px;
+    }
+    .pulse{ width:8px; height:8px; border-radius:999px; background:var(--accent); box-shadow: 0 0 0 0 rgba(255,79,163,.6); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%{ box-shadow:0 0 0 0 rgba(255,79,163,.5);} 70%{ box-shadow:0 0 0 10px rgba(255,79,163,0);} 100%{ box-shadow:0 0 0 0 rgba(255,79,163,0);} }
+
+    .social{ display:flex; gap:10px; margin-left:auto; }
+    .icon{
+      width:36px; height:36px; display:grid; place-items:center; border:1px solid var(--ring); border-radius:10px; color:var(--ink); text-decoration:none; opacity:.9;
+    }
+    .icon:hover{ opacity:1; border-color:#2f3b47; }
+    .icon svg{ width:18px; height:18px; }
+
+    footer{
+      margin-top: 22px; display:flex; align-items:center; justify-content:space-between; color:var(--dim); font-size:12px;
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .card::before, .pulse{ animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card" aria-label="Under construction">
+      <header>
+        <div class="brand">
+          <div class="mark" aria-hidden="true">FS</div>
+          <div class="wordmark" aria-label="Fourteen Seed">
+            <span>fourteen</span><span class="chevrons">&gt;&gt;</span><span>seed</span>
+          </div>
+        </div>
+        <span class="pill">site update in progress</span>
+      </header>
+
+      <div class="hero">
+        <div class="kicker">brand • product • growth</div>
+        <h1>New home for <span style="border-bottom: 4px solid var(--accent)">Fourteen Seed</span> arriving soon</h1>
+        <p class="lead">A minimal placeholder while I build the full experience. If you’re looking to talk about advisory, product strategy or AI-enabled MVPs, drop me a line.</p>
+        <div class="cta-row">
+          <a class="btn" href="mailto:hello@fourteenseed.com" aria-label="Email">
+            <span class="dot" aria-hidden="true"></span>
+            <span>hello@fourteenseed.com</span>
+          </a>
+          <a class="btn ghost" href="#" aria-label="Substack (coming soon)">
+            <!-- Replace # with your Substack URL -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M3 4h18v2H3V4zm0 4h18v2H3V8zm0 4h10v6l-5-3-5 3v-6z"/></svg>
+            <span>subscribe for launch</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="status">
+        <span class="pulse" aria-hidden="true"></span>
+        <span>last updated: <time id="stamp">—</time></span>
+        <nav class="social" aria-label="Social links">
+          <a class="icon" href="#" aria-label="LinkedIn">
+            <!-- Replace with your LinkedIn profile URL -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8h5v16H0V8zm7.5 0h4.8v2.2h.07c.67-1.2 2.3-2.47 4.73-2.47 5.06 0 6 3.33 6 7.66V24h-5v-7.6c0-1.8-.03-4.1-2.5-4.1-2.5 0-2.88 1.95-2.88 3.96V24h-5V8z"/></svg>
+          </a>
+          <a class="icon" href="#" aria-label="Instagram">
+            <!-- Replace with your Instagram URL -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 2 .3 2.5.6.6.3 1 .6 1.5 1.1.5.5.8.9 1.1 1.5.2.5.5 1.3.6 2.5.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 2-.6 2.5-.3.6-.6 1-1.1 1.5-.5.5-.9.8-1.5 1.1-.5.2-1.3.5-2.5.6-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-2-.3-2.5-.6-.6-.3-1-.6-1.5-1.1-.5-.5-.8-.9-1.1-1.5-.2-.5-.5-1.3-.6-2.5C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-2 .6-2.5.3-.6.6-1 1.1-1.5.5-.5.9-.8 1.5-1.1.5-.2 1.3-.5 2.5-.6C8.4 2.2 8.8 2.2 12 2.2m0-2.2C8.7 0 8.3 0 7 0 5.6.1 4.6.3 3.8.6 3 .9 2.3 1.3 1.6 2 1 2.6.6 3.3.3 4.1.1 4.9 0 5.9 0 7.3 0 8.6 0 9 0 12s0 3.4.1 4.7c.1 1.4.3 2.4.6 3.2.3.8.7 1.5 1.3 2.1.6.6 1.3 1 2.1 1.3.8.3 1.8.5 3.2.6 1.3.1 1.7.1 4.9.1s3.6 0 4.9-.1c1.4-.1 2.4-.3 3.2-.6.8-.3 1.5-.7 2.1-1.3.6-.6 1-1.3 1.3-2.1.3-.8.5-1.8.6-3.2.1-1.3.1-1.7.1-4.9s0-3.6-.1-4.9c-.1-1.4-.3-2.4-.6-3.2-.3-.8-.7-1.5-1.3-2.1-.6-.6-1.3-1-2.1-1.3-.8-.3-1.8-.5-3.2-.6C15.6.1 15.2 0 12 0z"/><path d="M12 5.8A6.2 6.2 0 1 0 12 18.2 6.2 6.
+
+
