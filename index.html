@@ -35,6 +35,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   body {
     font-family: var(--sans);
     color: var(--ink);
@@ -59,7 +60,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     border-bottom: 1px solid var(--ring);
   }
   .nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; }
-  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: inherit; cursor: pointer; }
   .mark {
     width: 48px; height: 48px; border-radius: 999px;
     background: radial-gradient(120% 120% at 30% 20%, #1b2530 0%, #0e141a 60%);
@@ -459,7 +460,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .foot-legal .sep { padding: 0 8px; color: var(--ring); }
 </style>
 </head>
-<body>
+<body id="top">
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KCL62SXQ"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -467,10 +468,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <header>
   <div class="wrap nav">
-    <div class="brand">
+    <a class="brand" href="#top" aria-label="Fourteen Seed, back to top">
       <div class="mark">F<span class="chev">&gt;&gt;</span>S</div>
       <div class="wordmark">fourteen<span class="chev">&gt;&gt;</span>seed</div>
-    </div>
+    </a>
     <nav>
       <ul>
         <li class="hide-sm"><a href="#projects">projects</a></li>
