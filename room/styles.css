@@ -1,0 +1,773 @@
+/* =========================================================
+   fourteen >> seed · CCAF cohort learning hub
+   Shared stylesheet · May 2026
+   ========================================================= */
+
+:root {
+  --bg:      #0b0d10;
+  --card:    #11151a;
+  --text:    #ffffff;
+  --muted:   #a7b0b8;
+  --accent:  #ff4fa3;
+  --border:  #27313a;
+  --radius:  20px;
+  --radius-sm: 12px;
+
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas,
+               "Liberation Mono", monospace;
+  --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+               Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans",
+               sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main { flex: 1; }
+
+/* ---------------------------------------------------------
+   Header / nav
+   --------------------------------------------------------- */
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.wordmark {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.wordmark .chev {
+  color: var(--accent);
+  filter: drop-shadow(0 0 8px rgba(255, 79, 163, 0.35));
+}
+
+nav {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+nav a {
+  font-size: 0.875rem;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 0.15s;
+}
+
+nav a:hover  { color: var(--text); }
+nav a.active { color: var(--accent); }
+
+/* ---------------------------------------------------------
+   Main layout
+   --------------------------------------------------------- */
+
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 2rem 5rem;
+  width: 100%;
+}
+
+/* ---------------------------------------------------------
+   Type
+   --------------------------------------------------------- */
+
+.kicker {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: clamp(1.3rem, 3vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 0.9rem;
+}
+
+h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.35;
+  margin-bottom: 0.5rem;
+}
+
+h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+p {
+  margin-bottom: 1rem;
+  max-width: 680px;
+}
+
+p.lead {
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  max-width: 640px;
+}
+
+p.muted, .muted { color: var(--muted); }
+
+p.wide { max-width: none; }
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover { text-decoration: underline; }
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  background: var(--card);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+/* ---------------------------------------------------------
+   Section spacing
+   --------------------------------------------------------- */
+
+.section {
+  margin-top: 4rem;
+}
+
+/* ---------------------------------------------------------
+   Two-column split (index page)
+   --------------------------------------------------------- */
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin: 2.5rem 0 2rem;
+}
+
+.split-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+}
+
+.split-card .label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.split-card p { max-width: none; margin-bottom: 0; }
+
+/* ---------------------------------------------------------
+   Generic card
+   --------------------------------------------------------- */
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+}
+
+/* ---------------------------------------------------------
+   Learning pathway (ccaf page)
+   --------------------------------------------------------- */
+
+.pathway {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 1.5rem 0;
+  position: relative;
+}
+
+.pathway::before {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 40px;
+  bottom: 40px;
+  width: 2px;
+  background: var(--border);
+}
+
+.pathway-step {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  padding: 0 0 2rem;
+  position: relative;
+}
+
+.pathway-step:last-child { padding-bottom: 0; }
+
+.step-num {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 2px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.step-body {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.75rem;
+  flex: 1;
+  margin-top: 0;
+}
+
+.step-body h3 { margin-bottom: 0.5rem; }
+
+.step-body p {
+  max-width: none;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.step-body a { font-size: 0.875rem; }
+
+.course-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1rem;
+}
+
+.course-list a,
+.course-list span {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.course-list a:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ---------------------------------------------------------
+   Badge placeholder (ccaf page)
+   --------------------------------------------------------- */
+
+.badge-area {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 1.5rem 0;
+}
+
+.badge-placeholder {
+  width: 120px;
+  height: 120px;
+  border-radius: var(--radius);
+  background: var(--card);
+  border: 2px dashed var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.75rem;
+}
+
+.badge-placeholder .badge-mark {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent);
+  filter: drop-shadow(0 0 8px rgba(255, 79, 163, 0.4));
+  letter-spacing: 0.04em;
+}
+
+.badge-placeholder .badge-sub {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  color: var(--muted);
+  text-align: center;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.badge-caption {
+  font-size: 0.8rem;
+  color: var(--muted);
+  max-width: 200px;
+}
+
+/* ---------------------------------------------------------
+   Domain cards (ccaf page)
+   --------------------------------------------------------- */
+
+.domains {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.1rem;
+  margin: 1.5rem 0;
+}
+
+.domain-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.domain-num {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.domain-card p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  max-width: none;
+  flex: 1;
+  margin-bottom: 1rem;
+}
+
+.domain-weight {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+/* ---------------------------------------------------------
+   Exam format table (ccaf page)
+   --------------------------------------------------------- */
+
+.exam-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.exam-table td {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.exam-table tr:last-child td { border-bottom: none; }
+
+.exam-table .label-col {
+  color: var(--muted);
+  width: 35%;
+  font-size: 0.8rem;
+  padding-right: 1.5rem;
+}
+
+/* ---------------------------------------------------------
+   Timeline (ccaf page)
+   --------------------------------------------------------- */
+
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.week {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 1.25rem 1.5rem;
+}
+
+.week-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+
+.week h4 { margin-bottom: 0.35rem; }
+
+.week p {
+  font-size: 0.8rem;
+  color: var(--muted);
+  max-width: none;
+  margin: 0;
+}
+
+/* ---------------------------------------------------------
+   Cohort grid (cohort page)
+   --------------------------------------------------------- */
+
+.cohort-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin: 2rem 0 1rem;
+}
+
+.member-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.member-photo {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center;
+  border: 2px solid var(--border);
+  margin-bottom: 1.25rem;
+  flex-shrink: 0;
+}
+
+.member-initials {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: var(--border);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+  flex-shrink: 0;
+}
+
+.member-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  max-width: none;
+}
+
+.member-bio {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+  max-width: none;
+  flex: 1;
+}
+
+/* ---------------------------------------------------------
+   Profile page prose
+   --------------------------------------------------------- */
+
+.profile-prose h2 { margin-top: 2.5rem; }
+.profile-prose h3 { margin-top: 1.5rem; }
+
+.profile-prose ul,
+.profile-prose ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.profile-prose li {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 680px;
+}
+
+.profile-prose strong { color: var(--text); font-weight: 600; }
+
+.profile-prose hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+.profile-prose em { color: var(--muted); font-style: italic; }
+
+.profile-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin: 1.5rem 0 2.5rem;
+}
+
+.profile-meta-item {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.profile-meta-item span {
+  color: var(--accent);
+  display: block;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.2rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 2.5rem;
+  transition: color 0.15s;
+}
+
+.back-link:hover { color: var(--text); text-decoration: none; }
+
+/* Read more link on cohort cards */
+.profile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  margin-top: 1rem;
+  width: 100%;
+  justify-content: center;
+  border-top: 1px solid var(--border);
+  padding-top: 0.75rem;
+  transition: opacity 0.15s;
+}
+
+.profile-link:hover { opacity: 0.7; text-decoration: none; }
+
+/* ---------------------------------------------------------
+   Member social links
+   --------------------------------------------------------- */
+
+.member-links {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+  justify-content: center;
+}
+
+.member-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.member-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.member-link svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+/* ---------------------------------------------------------
+   Member profile expansion (details/summary)
+   --------------------------------------------------------- */
+
+.member-detail {
+  width: 100%;
+  margin-top: 1rem;
+  border-top: 1px solid var(--border);
+  padding-top: 0.75rem;
+}
+
+.member-detail summary {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  list-style: none;
+  text-align: left;
+  user-select: none;
+  transition: opacity 0.15s;
+}
+
+.member-detail summary::-webkit-details-marker { display: none; }
+.member-detail summary::after { content: ' ↓'; }
+.member-detail[open] summary::after { content: ' ↑'; }
+.member-detail summary:hover { opacity: 0.75; }
+
+.member-detail-body { margin-top: 0.75rem; text-align: left; }
+
+.detail-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 0.2rem;
+  max-width: none;
+}
+
+.detail-text {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+  max-width: none;
+}
+
+.detail-text:last-child { margin-bottom: 0; }
+
+/* ---------------------------------------------------------
+   Progress bar
+   --------------------------------------------------------- */
+
+.progress-wrap { width: 100%; margin-top: auto; }
+
+.progress-track {
+  background: var(--border);
+  border-radius: 999px;
+  height: 7px;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+  width: 0%;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-align: left;
+}
+
+/* ---------------------------------------------------------
+   Footer
+   --------------------------------------------------------- */
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 1.75rem 2rem;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+footer .chev { color: var(--accent); }
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .cohort-grid { grid-template-columns: repeat(2, 1fr); }
+  .split       { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  header   { flex-direction: column; align-items: flex-start; }
+  nav      { gap: 1.25rem; }
+  main     { padding: 2.5rem 1.25rem 4rem; }
+  .cohort-grid  { grid-template-columns: 1fr; }
+  .domains      { grid-template-columns: 1fr; }
+  .timeline     { grid-template-columns: 1fr; }
+}

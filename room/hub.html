@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fourteen >> seed · CCAF cohort hub</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="The fourteen-seed-cohort learning pathway hub: the why, the qualification, the people, and the FAQ." />
+  <style>
+    /* =====================================================
+       fourteen >> seed · CCAF cohort hub · self-contained
+       ===================================================== */
+
+    :root {
+      --bg:      #0b0d10;
+      --card:    #11151a;
+      --text:    #ffffff;
+      --muted:   #a7b0b8;
+      --accent:  #ff4fa3;
+      --border:  #27313a;
+      --radius:  20px;
+      --radius-sm: 12px;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1.1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .wordmark {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .wordmark .chev {
+      color: var(--accent);
+      filter: drop-shadow(0 0 8px rgba(255,79,163,.35));
+    }
+
+    /* Tab nav */
+    nav {
+      display: flex;
+      gap: 0.25rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: none;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      padding: 0.4rem 0.9rem;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .tab-btn:hover  { color: var(--text); }
+    .tab-btn.active { color: var(--accent); border-color: var(--border); }
+
+    /* Sections */
+    .section-panel { display: none; }
+    .section-panel.visible { display: block; }
+
+    main {
+      flex: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 2rem 5rem;
+      width: 100%;
+    }
+
+    /* Typography */
+    .kicker {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; line-height: 1.15; margin-bottom: 1.5rem; }
+    h2 { font-size: clamp(1.3rem, 3vw, 1.75rem); font-weight: 700; line-height: 1.25; margin-bottom: 0.9rem; }
+    h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.35; margin-bottom: 0.5rem; }
+    h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
+
+    p { margin-bottom: 1rem; max-width: 680px; }
+    p.lead { font-size: clamp(1rem, 2vw, 1.125rem); max-width: 640px; }
+    p.wide, .wide { max-width: none; }
+    .muted { color: var(--muted); }
+    .small { font-size: 0.8rem; }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.8em;
+      background: var(--card);
+      padding: 0.1em 0.35em;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .section-gap { margin-top: 4rem; }
+
+    /* Split (index) */
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin: 2.5rem 0 2rem; }
+
+    .split-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+    }
+
+    .split-card .label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .split-card p { max-width: none; margin-bottom: 0; }
+
+    /* Resource links block */
+    .resource-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin: 1.75rem 0;
+    }
+
+    .resource-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.6rem 1rem;
+      font-size: 0.85rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: border-color 0.15s;
+    }
+
+    .resource-link:hover { border-color: var(--accent); text-decoration: none; }
+    .resource-link .icon { color: var(--accent); font-size: 0.75rem; }
+
+    /* Pathway */
+    .pathway { display: flex; flex-direction: column; gap: 0; margin: 1.5rem 0; position: relative; }
+
+    .pathway::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 40px;
+      bottom: 40px;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .pathway-step { display: flex; gap: 1.5rem; align-items: flex-start; padding: 0 0 2rem; position: relative; }
+    .pathway-step:last-child { padding-bottom: 0; }
+
+    .step-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-body {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.75rem;
+      flex: 1;
+    }
+
+    .step-body h3 { margin-bottom: 0.5rem; }
+    .step-body p { max-width: none; font-size: 0.9rem; margin-bottom: 0.75rem; }
+    .step-body p:last-child { margin-bottom: 0; }
+
+    .course-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+
+    .pill {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.2rem 0.6rem;
+      text-decoration: none;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    a.pill:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Domain cards */
+    .domains { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.1rem; margin: 1.5rem 0; }
+
+    .domain-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .domain-num { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.6rem; }
+    .domain-card p { font-size: 0.875rem; color: var(--muted); max-width: none; flex: 1; margin-bottom: 1rem; }
+    .domain-weight { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); padding-top: 0.75rem; border-top: 1px solid var(--border); margin-top: auto; }
+
+    /* Exam table */
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; }
+
+    .exam-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .exam-table td { padding: 0.8rem 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .exam-table tr:last-child td { border-bottom: none; }
+    .exam-table .lc { color: var(--muted); width: 35%; font-size: 0.8rem; padding-right: 1.5rem; }
+
+    /* Timeline */
+    .timeline { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+
+    .week {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 1.25rem 1.5rem;
+    }
+
+    .week-label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 0.4rem; }
+    .week h4 { margin-bottom: 0.35rem; }
+    .week p { font-size: 0.8rem; color: var(--muted); max-width: none; margin: 0; }
+
+    /* Cohort grid */
+    .cohort-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin: 2rem 0 1rem; }
+
+    .member-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .member-photo {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: top center;
+      border: 2px solid var(--border);
+      margin-bottom: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .member-initials {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: var(--border);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .member-role { font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.3rem; }
+    .member-name { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.35rem; max-width: none; }
+    .member-bio { font-size: 0.82rem; color: var(--muted); margin-bottom: 1.25rem; max-width: none; flex: 1; }
+
+    /* Progress */
+    .progress-wrap { width: 100%; margin-top: auto; }
+    .progress-track { background: var(--border); border-radius: 999px; height: 7px; width: 100%; margin-bottom: 0.45rem; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 999px; background: var(--accent); width: 0%; transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
+    .progress-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); text-align: left; }
+
+    /* Member social links */
+    .member-links { display: flex; gap: 0.5rem; margin-top: 0.9rem; justify-content: center; }
+    .member-link { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--bg); border: 1px solid var(--border); color: var(--muted); text-decoration: none; transition: border-color 0.15s, color 0.15s; flex-shrink: 0; }
+    .member-link:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+    .member-link svg { width: 14px; height: 14px; fill: currentColor; }
+
+    /* Profile read-more link */
+    .profile-link { display: inline-flex; align-items: center; gap: 0.3rem; font-family: var(--font-mono); font-size: 0.68rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; margin-top: 1rem; width: 100%; justify-content: center; border-top: 1px solid var(--border); padding-top: 0.75rem; transition: opacity 0.15s; }
+    .profile-link:hover { opacity: 0.7; text-decoration: none; }
+
+    /* FAQ */
+    .faq-list { display: flex; flex-direction: column; gap: 1rem; margin: 1.5rem 0; }
+
+    .faq-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .faq-q {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 1.25rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      text-align: left;
+    }
+
+    .faq-q:hover { color: var(--accent); }
+
+    .faq-arrow {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent);
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+
+    .faq-item.open .faq-arrow { transform: rotate(90deg); }
+
+    .faq-a {
+      display: none;
+      padding: 0 1.75rem 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .faq-a p { max-width: none; font-size: 0.9rem; color: var(--muted); margin: 1rem 0 0; }
+    .faq-item.open .faq-a { display: block; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    footer .chev { color: var(--accent); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .cohort-grid { grid-template-columns: repeat(2, 1fr); }
+      .split       { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      header   { flex-direction: column; align-items: flex-start; }
+      nav      { gap: 0.15rem; }
+      main     { padding: 2.5rem 1.25rem 4rem; }
+      .cohort-grid { grid-template-columns: 1fr; }
+      .domains     { grid-template-columns: 1fr; }
+      .timeline    { grid-template-columns: 1fr; }
+      .pathway::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+<script>(function(){if(localStorage.getItem('ccaf_auth_v1')!=='1'){window.location.replace('/room/');}})();</script>
+
+  <header>
+    <span class="wordmark">fourteen <span class="chev">&gt;&gt;</span> seed</span>
+    <nav>
+      <button class="tab-btn active" data-tab="why">the why</button>
+      <button class="tab-btn" data-tab="ccaf">the qualification</button>
+      <button class="tab-btn" data-tab="cohort">the cohort</button>
+      <button class="tab-btn" data-tab="faq">FAQ</button>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ==================== THE WHY ==================== -->
+    <div class="section-panel visible" id="panel-why">
+
+      <span class="kicker">fourteen <span style="color:var(--accent)">&gt;&gt;</span> seed cohort · May 2026</span>
+      <h1>We're all learning</h1>
+
+      <p class="lead">
+        I put this cohort together because I think the fastest way through the
+        Anthropic certification is alongside people who are already doing the
+        work, not just reading about it. This hub is our shared reference: the
+        roadmap, the qualification detail, and the people in the room.
+      </p>
+
+      <p>
+        May is foundation month. The free Anthropic Academy courses are where
+        we start, and I'd like everyone to work through them before June. Not
+        because they're difficult, but because arriving at the exam modules with
+        that grounding makes a real difference. The first certification module
+        is a noticeable step up, and the gap shows if you've skipped the basics.
+      </p>
+
+      <p>
+        If you've already done Claude 101 and AI Fluency, pick up anything you
+        glossed over. If you haven't started, start now. We move into exam prep
+        as a group in June, and I want us starting from the same place.
+      </p>
+
+      <div class="split">
+        <div class="split-card">
+          <span class="label">May</span>
+          <h3>Free courses, learning together</h3>
+          <p>
+            Work through the free Anthropic Academy courses at your own pace.
+            Claude 101 and AI Fluency are the starting point. The cohort
+            WhatsApp group is where we share what's clicking, ask questions,
+            and keep each other moving.
+          </p>
+        </div>
+        <div class="split-card">
+          <span class="label">June and July</span>
+          <h3>CCAF modules, exam prep</h3>
+          <p>
+            We move into the four CPN modules and exam domains as a group:
+            structured weekly focus, peer sessions, and a shared target to sit
+            the exam before the end of July.
+          </p>
+        </div>
+      </div>
+
+      <h2>Key resources</h2>
+      <p>Everything you need to get started and stay on track.</p>
+
+      <div class="resource-links">
+        <a class="resource-link" href="https://www.anthropic.com/learn" target="_blank" rel="noopener">
+          <span class="icon">&rarr;</span> Anthropic Academy (free courses)
+        </a>
+        <a class="resource-link" href="https://anthropic.skilljar.com/page/claude-partner-network-learning-path" target="_blank" rel="noopener">
+          <span class="icon">&rarr;</span> CPN learning path
+        </a>
+        <a class="resource-link" href="https://docs.google.com/document/d/1ACWXTTiFlZ0oMtYeJwqySs84jxkzaqo0q66J1f8sfwE/edit" target="_blank" rel="noopener">
+          <span class="icon">&rarr;</span> Anthropic CPN pathway document
+        </a>
+      </div>
+
+      <p>
+        Ready to see who's in the room?
+        <button class="tab-btn" data-tab="cohort" style="display:inline;padding:0;border:none;font-size:1rem;font-family:inherit;color:var(--accent);cursor:pointer;background:none;">Meet the cohort &rarr;</button>
+      </p>
+
+    </div>
+
+    <!-- ================ THE QUALIFICATION ================ -->
+    <div class="section-panel" id="panel-ccaf">
+
+      <p class="muted small" style="margin-bottom:2rem; max-width:none;">
+        Exam domain detail current as of 19 May 2026. Verify the latest syllabus at
+        <a href="https://www.anthropic.com" target="_blank" rel="noopener">anthropic.com</a> before sitting.
+      </p>
+
+      <span class="kicker">gaining the qualification</span>
+      <h1>Claude Certified Architect Foundations</h1>
+
+      <p class="lead">
+        CCAF (also CCA-F) is Anthropic's first architecture-level technical
+        certification. It validates that you can make sound design decisions
+        when building production applications with Claude: orchestration, tool
+        integration, context management, structured output, and reliability
+        under real conditions.
+      </p>
+
+      <p>
+        For us, CCAF matters because it gives the work a shared standard. The
+        exam is rigorous enough that passing it is a meaningful signal to
+        clients, collaborators, and employers. It maps well to what we're all
+        building: agentic workflows, multi-step reasoning, and the practical
+        question of how to make Claude reliably useful.
+      </p>
+
+      <!-- Pathway -->
+      <div class="section-gap">
+        <h2>The learning pathway</h2>
+        <p>Three steps. The first is open to anyone. Steps two and three require CPN membership via Fourteen Seed.</p>
+
+        <div class="pathway">
+
+          <div class="pathway-step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <h3>Free Anthropic Academy courses</h3>
+              <p>
+                Open to anyone with an email address. Thirteen core courses covering Claude 101,
+                AI Fluency, the Claude API, Agent Skills, Model Context Protocol, Claude Code,
+                and more. No cost, certificate on completion of each.
+                <br />
+                <a href="https://www.anthropic.com/learn" target="_blank" rel="noopener">Start at anthropic.com/learn &rarr;</a>
+              </p>
+              <div class="course-pills">
+                <a class="pill" href="https://anthropic.skilljar.com/claude-101" target="_blank" rel="noopener">Claude 101</a>
+                <a class="pill" href="https://anthropic.skilljar.com/ai-fluency-framework-foundations" target="_blank" rel="noopener">AI Fluency</a>
+                <a class="pill" href="https://anthropic.skilljar.com/introduction-to-agent-skills" target="_blank" rel="noopener">Introduction to Agent Skills</a>
+                <a class="pill" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api" target="_blank" rel="noopener">Building with the Claude API</a>
+                <a class="pill" href="https://anthropic.skilljar.com/claude-code-in-action" target="_blank" rel="noopener">Claude Code in Action</a>
+                <a class="pill" href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank" rel="noopener">Intro to MCP</a>
+                <a class="pill" href="https://anthropic.skilljar.com/model-context-protocol-advanced-topics" target="_blank" rel="noopener">MCP: Advanced Topics</a>
+                <a class="pill" href="https://anthropic.skilljar.com/claude-code-101" target="_blank" rel="noopener">Claude Code 101</a>
+                <a class="pill" href="https://anthropic.skilljar.com/introduction-to-claude-cowork" target="_blank" rel="noopener">Introduction to Claude Cowork</a>
+                <a class="pill" href="https://anthropic.skilljar.com/introduction-to-subagents" target="_blank" rel="noopener">Introduction to Subagents</a>
+                <a class="pill" href="https://anthropic.skilljar.com/ai-capabilities-and-limitations" target="_blank" rel="noopener">AI Capabilities and Limitations</a>
+                <a class="pill" href="https://anthropic.skilljar.com/claude-in-amazon-bedrock" target="_blank" rel="noopener">Claude with Amazon Bedrock</a>
+                <a class="pill" href="https://anthropic.skilljar.com/claude-with-google-vertex" target="_blank" rel="noopener">Claude with Google Cloud Vertex AI</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="pathway-step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <h3>Four CPN learning modules</h3>
+              <p>
+                Exclusive to Claude Partner Network members. These four modules are required
+                preparation before the cohort can unlock the exam. Wendy needs to confirm that
+                ten members have completed them before submitting. See the full pathway document
+                for the module list and submission process.
+              </p>
+              <p>
+                <a href="https://anthropic.skilljar.com/page/claude-partner-network-learning-path" target="_blank" rel="noopener">CPN learning path &rarr;</a>
+                &nbsp;&nbsp;
+                <a href="https://docs.google.com/document/d/1ACWXTTiFlZ0oMtYeJwqySs84jxkzaqo0q66J1f8sfwE/edit" target="_blank" rel="noopener">Pathway document &rarr;</a>
+              </p>
+            </div>
+          </div>
+
+          <div class="pathway-step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <h3>CCAF exam</h3>
+              <p>
+                120 minutes, 60 questions, closed-book. Five weighted domains.
+                Passing score 720 out of 1,000. Cost: $99. Target: all cohort
+                members through before end of July 2026.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Five domains -->
+      <div class="section-gap">
+        <h2>The five exam domains</h2>
+        <p>The exam draws from five weighted domains. The sequence below follows weighting, largest first.</p>
+
+        <div class="domains">
+          <div class="domain-card">
+            <div class="domain-num">01 &nbsp;·&nbsp; largest domain</div>
+            <h3>Agentic architecture and orchestration</h3>
+            <p>Designing multi-agent systems that work: Agent SDK, hub-and-spoke topologies, lifecycle hooks, and structuring orchestration so complex tasks complete reliably even when steps fail or branch.</p>
+            <div class="domain-weight">27% of exam</div>
+          </div>
+          <div class="domain-card">
+            <div class="domain-num">02</div>
+            <h3>Prompt engineering and structured output</h3>
+            <p>Context engineering, JSON schemas, extraction patterns, few-shot techniques. Getting Claude to produce exactly what your system needs, in the format it requires, consistently.</p>
+            <div class="domain-weight">20% of exam</div>
+          </div>
+          <div class="domain-card">
+            <div class="domain-num">03</div>
+            <h3>Claude Code configuration and workflows</h3>
+            <p>CLAUDE.md, agent skills, plan mode, slash commands, CI/CD integration. Configuring Claude Code for real development environments and wiring it into production workflows.</p>
+            <div class="domain-weight">20% of exam</div>
+          </div>
+          <div class="domain-card">
+            <div class="domain-num">04</div>
+            <h3>Tool design and MCP integration</h3>
+            <p>Building MCP servers, defining tool boundaries, working with resources and prompts, and deciding when and how to expose capabilities to Claude.</p>
+            <div class="domain-weight">18% of exam</div>
+          </div>
+          <div class="domain-card">
+            <div class="domain-num">05</div>
+            <h3>Context management and reliability</h3>
+            <p>Long-context strategies, multi-agent handoffs, error propagation, and escalation paths. Building systems that degrade gracefully and recover without losing work.</p>
+            <div class="domain-weight">15% of exam</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exam format -->
+      <div class="section-gap">
+        <h2>Exam format</h2>
+        <p>Delivered online through Anthropic Academy via Skilljar. Closed-book, timed, no AI assistance.</p>
+        <div class="card" style="max-width:520px;">
+          <table class="exam-table">
+            <tbody>
+              <tr><td class="lc">Duration</td><td>120 minutes</td></tr>
+              <tr><td class="lc">Questions</td><td>60 multiple-choice. One correct answer, three distractors.</td></tr>
+              <tr><td class="lc">Format</td><td>Closed-book. No AI assistance permitted.</td></tr>
+              <tr><td class="lc">Passing score</td><td>720 on a scaled score of 100 to 1,000</td></tr>
+              <tr><td class="lc">Where to sit</td><td>Anthropic Academy via Skilljar</td></tr>
+              <tr><td class="lc">Cost</td><td>$99 (approx. £80). Free for the first 5,000 CPN employees.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="section-gap">
+        <h2>Prep timeline: June and July</h2>
+        <p>Suggested week-by-week focus. Follows exam weighting, heaviest domain first. Adjust for your own gaps.</p>
+        <div class="timeline">
+          <div class="week"><div class="week-label">June · week 1</div><h4>Agentic architecture</h4><p>Agent SDK, orchestration patterns, lifecycle hooks</p></div>
+          <div class="week"><div class="week-label">June · week 2</div><h4>Agentic architecture (continued)</h4><p>Hub-and-spoke design, practice scenarios, peer review</p></div>
+          <div class="week"><div class="week-label">June · week 3</div><h4>Prompt engineering and structured output</h4><p>Context engineering, JSON schemas, few-shot patterns</p></div>
+          <div class="week"><div class="week-label">June · week 4</div><h4>Claude Code configuration</h4><p>CLAUDE.md, skills, plan mode, slash commands, CI/CD</p></div>
+          <div class="week"><div class="week-label">July · week 1</div><h4>Tool design and MCP</h4><p>MCP servers, tool boundary decisions, resources and prompts</p></div>
+          <div class="week"><div class="week-label">July · week 2</div><h4>Context management and reliability</h4><p>Long-context strategies, handoffs, error propagation</p></div>
+          <div class="week"><div class="week-label">July · week 3</div><h4>Full-domain revision</h4><p>Practice tests, weak-spot drilling, peer mock questions</p></div>
+          <div class="week"><div class="week-label">July · week 4</div><h4>Exam week</h4><p>Target: everyone through before end of July.</p></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================== THE COHORT ================== -->
+    <div class="section-panel" id="panel-cohort">
+
+      <span class="kicker">fourteen <span style="color:var(--accent)">&gt;&gt;</span> seed cohort</span>
+      <h1>The people</h1>
+
+      <p class="lead">
+        Twelve people working toward CCAF together, with more joining. Everyone
+        here is building with AI in the real world, most of us in or adjacent
+        to the visitor economy. We started in May 2026.
+      </p>
+
+      <div class="cohort-grid">
+
+        <article class="member-card">
+          <img src="Wendy Harris Profile.png" alt="Wendy Harris" class="member-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="member-initials" style="display:none">WH</div>
+          <p class="member-role">Cohort founder</p>
+          <p class="member-name">Wendy Harris</p>
+          <p class="member-bio">Founder of Fourteen Seed, an AI studio in Cornwall building AI-native products for the visitor economy.</p>
+          <a class="profile-link" href="wendy-harris-profile.html">Read more →</a>
+          <div class="member-links">
+            <a class="member-link" href="https://www.linkedin.com/in/wendy-harris-72952628/" target="_blank" rel="noopener" title="LinkedIn">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+            <a class="member-link" href="https://fourteenseed.com" target="_blank" rel="noopener" title="Website">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm6.93 6h-2.95a15.65 15.65 0 0 0-1.38-3.56A8.014 8.014 0 0 1 18.93 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14a8.085 8.085 0 0 1 0-4h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56A7.987 7.987 0 0 1 5.08 16zm2.95-8H5.08a7.987 7.987 0 0 1 4.33-3.56A15.65 15.65 0 0 0 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2s.07-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.014 8.014 0 0 1-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38a8.085 8.085 0 0 1 0 4h-3.38z"/></svg>
+            </a>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" data-done="2" data-total="13"></div></div>
+            <p class="progress-label"><span class="js-done">2</span> of <span class="js-total">13</span> free courses complete</p>
+          </div>
+        </article>
+
+        <article class="member-card">
+          <div class="member-initials">AG</div>
+          <p class="member-role">Builder</p>
+          <p class="member-name">Arpit Gupta</p>
+          <p class="member-bio">Builder and developer; creator of aixischeck.com, a markdown review tool built entirely with Claude Code.</p>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" data-done="1" data-total="13"></div></div>
+            <p class="progress-label"><span class="js-done">1</span> of <span class="js-total">13</span> free courses complete</p>
+          </div>
+        </article>
+
+        <article class="member-card">
+          <div class="member-initials">DM</div>
+          <p class="member-role">Strategy</p>
+          <p class="member-name">David Malone</p>
+          <p class="member-bio">Director at BoardX, exploring how AI changes business strategy and governance.</p>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" data-done="0" data-total="13"></div></div>
+            <p class="progress-label"><span class="js-done">0</span> of <span class="js-total">13</span> free courses complete</p>
+          </div>
+        </article>
+
+        <article class="member-card">
+          <img src="francesca wood profile.png" alt="Francesca Wood" class="member-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="member-initials" style="display:none">FW</div>
+          <p class="member-role">Hospitality AI</p>
+          <p class="member-name">Francesca Wood</p>
+          <p class="member-bio">Founder of FAI Consultancy, helping hospitality and experience-led businesses use AI to cut admin and close revenue leaks.</p>
+          <a class="profile-link" href="francesca-wood-profile.html">Read more →</a>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" data-done="0" data-total="13"></div></div>
+            <p class="progress-label"><span class="js-done">0</span> of <span class="js-total">13</span> free courses complete</p>
+          </div>
+        </article>
+
+        <article class="member-card">
+          <div class="member-initials">JH</div>
+          <p class="member-role">Hospitality &amp; product</p>
+          <p class="member-name">James Harris</p>
+          <p class="member-bio">25 years in professional kitchens; building Gobbler.ai, a meal tracker and money-saving app for the hospitality industry.</p>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" data-done="1" data-total="13"></div></div>
+            <p class="progress-label"><span class="js-done">1</span> of <span class="js-total">13</span> free courses complete</p>
+          </div>
+        </article>
+
+        <article class="member-card">
+          <div class="member-initials">JW</div>
+          <p class="member-role">Design</p>
+          <p class="member-name">Johnnie Wells</p>
+          <p class="member-bio">Creative at Meor Design, exploring how AI changes creative and design workflows.</p>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" data-done="0" data-total="13"></div></div>
+            <p class="progress-label"><span class="js-done">0</span> of <span class="js-total">13</span> free courses complete</p>
+          </div>
+        </article>
+
+        <article class="member-card">
+          <img src="laura campbell profile.jpg" alt="Laura Campbell" class="member-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="member-initials" style="display:none">LC</div>
+          <p class="member-role">Operations</p>
+          <p class="member-name">Laura Campbell</p>
+          <p class="member-bio">Running lauracampbell.biz, helping tourism and hospitality businesses fix operations with 40 years of domain depth.</p>
+          <a class="profile-link" href="laura-campbell-profile.html">Read more →</a>
+          <div class="member-links">
+            <a class="member-link" href="https://lauracampbell.biz" target="_blank" rel="noopener" title="Website">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm6.93 6h-2.95a15.65 15.65 0 0 0-1.38-3.56A8.014 8.014 0 0 1 18.93 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14a8.085 8.085 0 0 1 0-4h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56A7.987 7.987 0 0 1 5.08 16zm2.95-8H5.08a7.987 7.987 0 0 1 4.33-3.56A15.65 15.65 0 0 0 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2s.07-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.014 8.014 0 0 1-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38a8.085 8.085 0 0 1 0 4h-3.38z"/></svg>
+            </a>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" data-done="1" data-total="13"></div></div>
+            <p class="progress-label"><span class="js-done">1</span> of <span class="js-total">13</span> free courses complete</p>
+          </div>
+        </article>
+
+        <article class="member-card">
+          <div class="member-initials">LS</div>
+          <p class="member-role">AI implementation</p>
+          <p class="member-name">Leanne Summers</p>
+          <p class="member-bio">AI practitioner and consultant currently based in Vietnam; part of the Nate B. Jones AI exec community.</p>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" data-done="2" data-total="13"></div></div>
+            <p class="progress-label"><span class="js-done">2</span> of <span class="js-total">13</span> free courses complete</p>
+          </div>
+        </article>
+
+        <article class="member-card">
+          <div class="member-initials">MC</div>
+          <p class="member-role">Tech &amp; business</p>
+          <p class="member-name">Mark Campbell-Head</p>
+          <p class="member-bio">Working at the intersection of technology and business, applying AI across client projects.</p>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" data-done="1" data-total="13"></div></div>
+            <p class="progress-label"><span class="js-done">1</span> of <span class="js-total">13</span> free courses complete</p>
+          </div>
+        </article>
+
+        <article class="member-card">
+          <div class="member-initials">RC</div>
+          <p class="member-role">AI practitioner</p>
+          <p class="member-name">Ryan Crabbe</p>
+          <p class="member-bio">Applying AI to client work; interested in agentic workflows, context management, and knowledge handoff techniques.</p>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" data-done="0" data-total="13"></div></div>
+            <p class="progress-label"><span class="js-done">0</span> of <span class="js-total">13</span> free courses complete</p>
+          </div>
+        </article>
+
+        <article class="member-card">
+          <div class="member-initials">SW</div>
+          <p class="member-role">Video &amp; AI</p>
+          <p class="member-name">Spencer Woods</p>
+          <p class="member-bio">Full-time at bigbox.media in Truro, focused on AI-driven video generation and creative production.</p>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" data-done="0" data-total="13"></div></div>
+            <p class="progress-label"><span class="js-done">0</span> of <span class="js-total">13</span> free courses complete</p>
+          </div>
+        </article>
+
+        <article class="member-card">
+          <div class="member-initials">SC</div>
+          <p class="member-role">AI governance</p>
+          <p class="member-name">Saida Chakri</p>
+          <p class="member-bio">Building FlintShift, an AI governance consultancy for regulated financial services in Switzerland and the EU, with 20+ years in banking GRC.</p>
+          <a class="profile-link" href="saida-chakri-profile.html">Read more →</a>
+          <div class="member-links">
+            <a class="member-link" href="https://www.linkedin.com/in/chakrisaida" target="_blank" rel="noopener" title="LinkedIn">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" data-done="0" data-total="13"></div></div>
+            <p class="progress-label"><span class="js-done">0</span> of <span class="js-total">13</span> free courses complete</p>
+          </div>
+        </article>
+
+      </div>
+
+      <p class="muted small">
+        Progress reflects certificates confirmed in the cohort WhatsApp as of 18 May 2026 and may be an undercount.
+        Photos show for Wendy, Francesca, and Laura when the hub is opened from the cohort folder; all others use initials.
+      </p>
+
+    </div>
+
+    <!-- ====================== FAQ ====================== -->
+    <div class="section-panel" id="panel-faq">
+
+      <span class="kicker">frequently asked questions</span>
+      <h1>FAQ</h1>
+
+      <p class="lead">
+        Questions that have come up as the cohort has grown. More will be added
+        as they come in. If yours isn't here, ask in the WhatsApp group.
+      </p>
+
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            Is CCAF right for me?
+            <span class="faq-arrow">&rsaquo;</span>
+          </button>
+          <div class="faq-a">
+            <p>
+              Only you can answer that, and that's not a deflection. CCAF is a technical
+              certification that tests how you design and build production systems with Claude.
+              Whether that's the right next step depends on what you're building and what
+              kind of signal matters to your clients or your own work.
+            </p>
+            <p>
+              What I'd say is this: the 13 free Anthropic Academy courses are available to
+              everyone and they're a genuinely useful way to find out. Work through them and
+              you'll have a clear sense of where you're capable and where you'd need to stretch.
+              If at the end of them the certification modules feel like a natural next step,
+              they probably are. If they feel out of reach, you'll know what to work on first.
+              Start there.
+            </p>
+          </div>
+        </div>
+
+        <!-- More questions to be added here as they come in.
+             Copy the <div class="faq-item"> block above, update the question
+             and answer text, and it will inherit the accordion behaviour. -->
+
+      </div>
+
+      <p class="muted" style="margin-top: 1.5rem; max-width: none; font-size: 0.875rem;">
+        Got a question that should be here? Send it to
+        <a href="mailto:wendy@fourteenseed.com">wendy@fourteenseed.com</a>
+        or drop it in the WhatsApp group.
+      </p>
+
+    </div>
+
+  </main>
+
+  <footer>
+    <span>
+      fourteen <span class="chev">&gt;&gt;</span> seed
+      &nbsp;&middot;&nbsp;
+      Cornwall <span class="chev">&gt;&gt;</span> internet
+      &nbsp;&middot;&nbsp;
+      <a href="mailto:wendy@fourteenseed.com" style="color:var(--muted);">wendy@fourteenseed.com</a>
+    </span>
+  </footer>
+
+  <script>
+    // ----- Tab switching -----
+    var tabs   = document.querySelectorAll('.tab-btn[data-tab]');
+    var panels = document.querySelectorAll('.section-panel');
+
+    function showTab(id) {
+      panels.forEach(function(p) { p.classList.remove('visible'); });
+      tabs.forEach(function(t)   { t.classList.remove('active');  });
+      var panel = document.getElementById('panel-' + id);
+      if (panel) panel.classList.add('visible');
+      tabs.forEach(function(t) {
+        if (t.getAttribute('data-tab') === id) t.classList.add('active');
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    tabs.forEach(function(t) {
+      t.addEventListener('click', function() {
+        showTab(this.getAttribute('data-tab'));
+      });
+    });
+
+    // ----- Progress bars -----
+    document.querySelectorAll('.progress-fill').forEach(function(bar) {
+      var done  = parseInt(bar.getAttribute('data-done'),  10) || 0;
+      var total = parseInt(bar.getAttribute('data-total'), 10) || 1;
+      var pct   = Math.min(100, Math.round((done / total) * 100));
+      var wrap  = bar.closest('.progress-wrap');
+      if (wrap) {
+        var d = wrap.querySelector('.js-done');
+        var t = wrap.querySelector('.js-total');
+        if (d) d.textContent = done;
+        if (t) t.textContent = total;
+      }
+      requestAnimationFrame(function() {
+        setTimeout(function() { bar.style.width = pct + '%'; }, 150);
+      });
+    });
+
+    // ----- FAQ accordion -----
+    document.querySelectorAll('.faq-q').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var item = this.closest('.faq-item');
+        var isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
+        if (!isOpen) item.classList.add('open');
+        btn.setAttribute('aria-expanded', !isOpen);
+      });
+    });
+  </script>
+
+</body>
+</html>

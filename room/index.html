@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The AI room · fourteen >> seed</title>
+<meta name="robots" content="noindex, nofollow" />
+<meta name="description" content="A small group of builders working through the Anthropic stack together. By invitation only." />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0d10;
+    --ink: #ffffff;
+    --dim: #c5cdd5;
+    --dim-soft: #8a929a;
+    --accent: #ff4fa3;
+    --card: #11151a;
+    --ring: #2f3a44;
+    --lead: #eef2f6;
+    --display: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --mono: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 800px at 80% -10%, #16202a 0%, #0b0d10 55%),
+      linear-gradient(180deg, #0b0d10 0%, #0a0e12 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* header */
+  header {
+    position: sticky; top: 0; z-index: 20;
+    backdrop-filter: blur(10px);
+    background: rgba(11,13,16,.72);
+    border-bottom: 1px solid var(--ring);
+    padding: 16px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: inherit; }
+  .mark {
+    width: 40px; height: 40px; border-radius: 999px;
+    background: radial-gradient(120% 120% at 30% 20%, #1b2530 0%, #0e141a 60%);
+    border: 1px solid var(--accent);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--display); font-size: 9px; letter-spacing: 0.5px;
+    color: #fff; white-space: nowrap;
+    box-shadow: 0 0 0 1px rgba(255,79,163,.15), 0 0 18px rgba(255,79,163,.25), inset 0 0 12px rgba(255,79,163,.06);
+  }
+  .mark .chev { color: var(--accent); }
+  .wordmark {
+    font-family: var(--display); font-size: 15px;
+    text-transform: lowercase; letter-spacing: 0.5px;
+  }
+  .wordmark .chev { color: var(--accent); padding: 0 5px; filter: drop-shadow(0 0 10px rgba(255,79,163,.4)); }
+  .back-nav {
+    font-family: var(--mono); font-size: 12px; color: var(--dim);
+    transition: color .2s;
+  }
+  .back-nav:hover { color: #fff; }
+
+  /* main */
+  main {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+    padding: 4rem 24px;
+  }
+  .gate-wrap {
+    max-width: 480px; width: 100%;
+  }
+
+  .kicker {
+    font-family: var(--display); font-size: 11px;
+    letter-spacing: 2px; color: var(--dim);
+    text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 16px;
+    border: 1px solid var(--ring); border-radius: 999px;
+    background: rgba(17,21,26,.7);
+    margin-bottom: 2rem;
+  }
+  .dot {
+    width: 6px; height: 6px; border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 0 0 rgba(255,79,163,.6);
+    animation: pulse 2.2s infinite;
+  }
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(255,79,163,.6); }
+    70%  { box-shadow: 0 0 0 8px rgba(255,79,163,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,79,163,0); }
+  }
+
+  h1 {
+    font-family: var(--sans); font-size: clamp(2rem, 5vw, 2.75rem);
+    font-weight: 600; line-height: 1.1; letter-spacing: -0.5px;
+    margin: 0 0 1.25rem;
+  }
+  h1 .chev { color: var(--accent); padding: 0 3px; filter: drop-shadow(0 0 14px rgba(255,79,163,.4)); }
+
+  .lead {
+    font-size: clamp(15px, 2vw, 17px); color: var(--lead);
+    line-height: 1.65; margin: 0 0 0.75rem;
+  }
+  .sub {
+    font-family: var(--mono); font-size: 12px; color: var(--dim-soft);
+    line-height: 1.6; margin: 0 0 2.5rem;
+  }
+
+  /* form */
+  .gate-form {
+    background: var(--card); border: 1px solid var(--ring);
+    border-radius: 20px; padding: 2rem;
+  }
+  .form-label {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--dim);
+    display: block; margin-bottom: 0.6rem;
+  }
+  .form-input {
+    width: 100%; background: var(--bg);
+    border: 1px solid var(--ring); border-radius: 12px;
+    padding: 0.85rem 1rem; color: #fff; font-size: 1rem;
+    font-family: var(--sans); outline: none;
+    transition: border-color .2s;
+    margin-bottom: 0.85rem;
+  }
+  .form-input:focus { border-color: var(--accent); }
+  .form-btn {
+    width: 100%; background: var(--accent);
+    color: #0b0d10; border: none; border-radius: 12px;
+    padding: 0.9rem 1rem;
+    font-family: var(--display); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: background .2s, transform .15s;
+  }
+  .form-btn:hover { background: #ff6bb2; transform: translateY(-1px); }
+  .form-error {
+    font-family: var(--mono); font-size: 12px;
+    color: var(--accent); margin: 0.5rem 0 0;
+    display: none;
+  }
+
+  /* footer */
+  footer {
+    padding: 24px; text-align: center;
+    font-family: var(--mono); font-size: 11px; color: var(--dim-soft);
+    border-top: 1px solid var(--ring);
+  }
+  footer .chev { color: var(--accent); }
+</style>
+</head>
+<body>
+<script>
+(function(){
+  if(localStorage.getItem('ccaf_auth_v1')==='1'){
+    window.location.replace('/room/hub.html');
+  }
+})();
+</script>
+
+<header>
+  <a class="brand" href="/">
+    <div class="mark">F<span class="chev">&gt;&gt;</span>S</div>
+    <div class="wordmark">fourteen<span class="chev">&gt;&gt;</span>seed</div>
+  </a>
+  <a class="back-nav" href="/">← back to the studio</a>
+</header>
+
+<main>
+  <div class="gate-wrap">
+    <span class="kicker"><span class="dot"></span>by invitation</span>
+    <h1>The AI <span class="chev">&gt;&gt;</span> room.</h1>
+    <p class="lead">A private room. Builders, consultants, and voices in AI, collaborating as they lean in.</p>
+    <p class="sub">Something is happening here. If you've been given the word, come in.</p>
+
+    <div class="gate-form">
+      <label class="form-label" for="pwd">Cohort password</label>
+      <form id="gate-form">
+        <input id="pwd" class="form-input" type="password" placeholder="Enter the word" autocomplete="current-password" />
+        <button class="form-btn" type="submit">Enter the room &gt;&gt;</button>
+        <p id="gate-error" class="form-error">Wrong word. Try again.</p>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer>
+  fourteen <span class="chev">&gt;&gt;</span> seed &nbsp;&middot;&nbsp; Cornwall <span class="chev">&gt;&gt;</span> internet
+</footer>
+
+<script>
+(function(){
+  var PASSWORD = 'gingerbeer26*'; // ← set your cohort password here
+  var KEY = 'ccaf_auth_v1';
+  document.getElementById('gate-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var val = document.getElementById('pwd').value;
+    if(val === PASSWORD){
+      localStorage.setItem(KEY, '1');
+      window.location.replace('/room/hub.html');
+    } else {
+      document.getElementById('gate-error').style.display = 'block';
+      document.getElementById('pwd').value = '';
+      document.getElementById('pwd').focus();
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
