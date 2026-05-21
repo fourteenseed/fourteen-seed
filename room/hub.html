@@ -89,6 +89,19 @@
     .tab-btn:hover  { color: var(--text); }
     .tab-btn.active { color: var(--accent); border-color: var(--border); }
 
+    .tab-link {
+      display: inline-block;
+      text-decoration: none;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      padding: 0.4rem 0.9rem;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--muted);
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .tab-link:hover { color: var(--text); }
+
     /* Sections */
     .section-panel { display: none; }
     .section-panel.visible { display: block; }
@@ -435,6 +448,7 @@
       <button class="tab-btn" data-tab="ccaf">the qualification</button>
       <button class="tab-btn" data-tab="cohort">the cohort</button>
       <button class="tab-btn" data-tab="faq">FAQ</button>
+      <a href="glossary.html" class="tab-link">the glossary</a>
     </nav>
   </header>
 
