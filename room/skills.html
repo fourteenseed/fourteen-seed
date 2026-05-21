@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The resources · fourteen >> seed AI room</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Resources / Skills library ────────────────────────── */
+
+    .skills-intro {
+      margin-bottom: 3rem;
+    }
+
+    .skills-intro p {
+      max-width: 52rem;
+    }
+
+    /* Skill card */
+    .skill-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .skill-card-header {
+      padding: 1.75rem 2rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .skill-card-meta {
+      flex: 1;
+    }
+
+    .skill-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+
+    .skill-origin {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .skill-origin span {
+      color: var(--accent);
+      margin-right: 0.4em;
+    }
+
+    .skill-card-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .btn-skill {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.45rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-skill:hover { color: var(--text); border-color: var(--muted); }
+    .btn-skill.primary { color: var(--accent); border-color: var(--accent); }
+    .btn-skill.primary:hover { background: var(--accent); color: #000; }
+
+    .skill-card-body {
+      padding: 1.75rem 2rem;
+    }
+
+    .skill-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      max-width: none;
+    }
+
+    .skill-rounds-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .skill-rounds {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.65rem;
+    }
+
+    .skill-round {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 0.9rem;
+    }
+
+    .skill-round-num {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+    }
+
+    .skill-round-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+      line-height: 1.3;
+    }
+
+    .skill-round-q {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.45;
+      font-style: italic;
+    }
+
+    .skill-trigger-wrap {
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .skill-trigger-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .skill-triggers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .skill-trigger-chip {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1.25rem;
+      font-size: 0.83rem;
+      color: var(--text);
+      opacity: 0;
+      transform: translateY(0.5rem);
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+      z-index: 200;
+    }
+
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* Share section */
+    .share-section {
+      margin-top: 3.5rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .share-section h2 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .share-section .share-lead {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 2rem;
+      max-width: 52rem;
+    }
+
+    .share-form {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 2rem;
+      max-width: 56rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-group:last-of-type { margin-bottom: 0; }
+
+    .form-label {
+      font-family: var(--font-mono);
+      font-size: 0.67rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    .form-label em {
+      font-style: normal;
+      color: var(--accent);
+      margin-left: 0.3em;
+    }
+
+    .form-input,
+    .form-textarea {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 0.9rem;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      color: var(--text);
+      width: 100%;
+      transition: border-color 0.15s;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .form-textarea {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      line-height: 1.6;
+      resize: vertical;
+    }
+
+    .form-hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+      opacity: 0.7;
+    }
+
+    .form-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .form-footer-note {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .btn-submit {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 0.6rem 1.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-submit:hover { opacity: 0.88; }
+
+    /* Responsive */
+    @media (max-width: 800px) {
+      .skill-rounds { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .skill-rounds { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .skill-card-header { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+<script>(function(){if(localStorage.getItem('ccaf_auth_v1')!=='1'){window.location.replace('/room/');}})();</script>
+
+  <header>
+    <a href="https://fourteenseed.com" class="wordmark">fourteen <span class="chev">&gt;&gt;</span> seed</a>
+    <nav>
+      <a href="why.html">the why</a>
+      <a href="ccaf.html">the qualification</a>
+      <a href="cohort.html">the cohort</a>
+      <a href="glossary.html">the gather</a>
+      <a href="skills.html" class="active">the resources</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <div class="skills-intro">
+      <span class="kicker">The AI room</span>
+      <h1>The resources</h1>
+      <p class="lead">Skills are reusable frameworks that tell Claude exactly how to approach a specific task. Drop one into Claude or Cowork and it changes how the model thinks about your work.</p>
+      <p class="muted" style="font-size:0.85rem;">Got a skill worth sharing? Use the form below and it'll appear here for the whole cohort.</p>
+    </div>
+
+    <!-- ── Five Critique Rounds ──────────────────────────────── -->
+    <div class="skill-card" id="skill-five-critique">
+
+      <div class="skill-card-header">
+        <div class="skill-card-meta">
+          <p class="skill-name">Five critique rounds</p>
+          <p class="skill-origin"><span>Origin</span>Brian Proffitt &middot; shared in Nate's AI Exec Circle</p>
+        </div>
+        <div class="skill-card-actions">
+          <button class="btn-skill" onclick="copySkill('five-critique')">Copy .md</button>
+          <button class="btn-skill primary" onclick="downloadSkill('five-critique-rounds.md', SKILLS['five-critique'])">Download skill</button>
+        </div>
+      </div>
+
+      <div class="skill-card-body">
+
+        <p class="skill-desc">A structured five-round critique framework for improving any piece of work, from a newsletter draft to a strategy document. Each round applies a different lens so you move through the work systematically, rather than letting Claude jump to surface-level edits before the structure is solid. Works on skills, documents, pitches, plans, product copy, or anything else you want to stress-test before it goes out.</p>
+
+        <p class="skill-rounds-label">The five rounds</p>
+
+        <div class="skill-rounds">
+          <div class="skill-round">
+            <p class="skill-round-num">01</p>
+            <p class="skill-round-title">Structure and flow</p>
+            <p class="skill-round-q">Does this hold together as a whole?</p>
+          </div>
+          <div class="skill-round">
+            <p class="skill-round-num">02</p>
+            <p class="skill-round-title">Depth and specificity</p>
+            <p class="skill-round-q">Is this concrete enough to be useful?</p>
+          </div>
+          <div class="skill-round">
+            <p class="skill-round-num">03</p>
+            <p class="skill-round-title">Edge cases and failure modes</p>
+            <p class="skill-round-q">What could go wrong?</p>
+          </div>
+          <div class="skill-round">
+            <p class="skill-round-num">04</p>
+            <p class="skill-round-title">Cross-references and consistency</p>
+            <p class="skill-round-q">Does this agree with itself?</p>
+          </div>
+          <div class="skill-round">
+            <p class="skill-round-num">05</p>
+            <p class="skill-round-title">Polish and readability</p>
+            <p class="skill-round-q">Is this a pleasure to read?</p>
+          </div>
+        </div>
+
+        <div class="skill-trigger-wrap">
+          <p class="skill-trigger-label">How to trigger it in Claude or Cowork</p>
+          <div class="skill-triggers">
+            <span class="skill-trigger-chip">critique this</span>
+            <span class="skill-trigger-chip">five rounds</span>
+            <span class="skill-trigger-chip">run the critique</span>
+            <span class="skill-trigger-chip">poke holes in this</span>
+            <span class="skill-trigger-chip">what's missing</span>
+            <span class="skill-trigger-chip">help me sharpen this</span>
+            <span class="skill-trigger-chip">Proffitt framework</span>
+            <span class="skill-trigger-chip">stress-test this</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- /skill card -->
+
+    <!-- ── Share a skill ──────────────────────────────────────── -->
+    <div class="share-section">
+
+      <h2>Share a skill</h2>
+      <p class="share-lead">If you've built or found a skill worth adding to the library, share it here. Fill in the details below and it'll open a draft email to Wendy. She'll review it and add it to the page for everyone.</p>
+
+      <div class="share-form">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="skill-title">Skill name <em>*</em></label>
+            <input class="form-input" type="text" id="skill-title" placeholder="e.g. Weekly planning assistant" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="skill-source">Where it came from</label>
+            <input class="form-input" type="text" id="skill-source" placeholder="e.g. Built it myself / Nate's group / LinkedIn" />
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label class="form-label" for="skill-summary">What it does <em>*</em></label>
+          <input class="form-input" type="text" id="skill-summary" placeholder="One sentence: what does this skill help Claude do?" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="skill-content">Paste the skill content <em>*</em></label>
+          <textarea class="form-textarea" id="skill-content" rows="12" placeholder="Paste the full skill here. If it's a .md file, paste the raw text. If it's a prompt, paste that instead."></textarea>
+          <p class="form-hint">Not sure about formatting? Paste whatever you have and Wendy will tidy it up before it goes live.</p>
+        </div>
+
+        <div class="form-footer">
+          <p class="form-footer-note">This will open a draft email in your email client, pre-filled with your submission.</p>
+          <button class="btn-submit" onclick="submitSkill()">Submit by email</button>
+        </div>
+
+      </div>
+
+    </div>
+    <!-- /share section -->
+
+  </main>
+
+  <footer>
+    <span>fourteen <span class="chev">&gt;&gt;</span> seed
+    &nbsp;&middot;&nbsp;
+    Cornwall <span class="chev">&gt;&gt;</span> internet</span>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+
+    // ── Skill content store ──────────────────────────────────────
+    var SKILLS = {
+      'five-critique': `---
+name: five-critique-rounds
+description: Five-round structured critique framework adapted from Brian Proffitt's methodology. Activate when asked to "critique this", "five rounds", "run the critique", "Proffitt framework", "poke holes in this", "what's missing", "help me sharpen this", or any variation of asking to systematically improve or stress-test something. Works on any content type including skills, documents, strategies, pitches, frameworks, newsletter drafts, emails, or plans.
+---
+
+# Five Critique Rounds
+
+A structured refinement framework adapted from Brian Proffitt's methodology. Five progressive rounds, each with a distinct lens, designed to take any piece of work from rough to razor-sharp.
+
+## When to use this skill
+
+Activate when the user wants to systematically critique and improve something. Trigger phrases include "critique this", "five rounds", "run the critique", "Proffitt framework", "poke holes in this", "what's missing", "help me sharpen this", "stress-test this", or any request to refine, tighten, or improve a piece of work.
+
+This skill works on anything: strategy documents, pitch decks, newsletter drafts, emails, frameworks, plans, product copy, board papers, or any other content being developed.
+
+---
+
+## The Five Rounds
+
+### Round 1: Structure and Flow
+**Lens:** Does this hold together as a whole?
+
+Look for:
+- Missing sections or components the reader would expect
+- Logical flow problems (does each section follow naturally from the last?)
+- Structural gaps where the argument or narrative breaks down
+- Sections that feel out of order or orphaned
+- Whether the opening sets up what follows
+- Whether the ending lands or just trails off
+
+**Output format:** List each structural issue with a brief explanation of why it matters and a suggested fix.
+
+---
+
+### Round 2: Depth and Specificity
+**Lens:** Is this concrete enough to be useful?
+
+Look for:
+- Vague language that sounds good but says nothing ("leverage synergies", "drive value")
+- Claims without evidence or examples
+- Sections that stay at 30,000 feet when the reader needs ground-level detail
+- Missing examples, numbers, or scenarios that would make abstract points tangible
+- Jargon used without earning it (i.e. not defined or contextualised)
+- Anywhere the reader would think "but what does that actually mean?"
+
+**Output format:** Quote the vague passage, explain the gap, and suggest a more specific replacement or an example that would anchor it.
+
+---
+
+### Round 3: Edge Cases and Failure Modes
+**Lens:** What could go wrong?
+
+Look for:
+- Scenarios the content does not account for
+- Assumptions that might not hold (market conditions, user behaviour, timing)
+- Failure modes: what happens when X does not work as described?
+- Risks that are acknowledged but not addressed
+- Risks that are not acknowledged at all
+- "Happy path" thinking where only the ideal scenario is considered
+- Dependencies or prerequisites that are unstated
+
+**Output format:** Describe each edge case or failure mode, explain the risk, and suggest how to address it.
+
+---
+
+### Round 4: Cross-references and Consistency
+**Lens:** Does this agree with itself?
+
+Look for:
+- Contradictions between sections
+- Terminology drift (same concept called different things in different places)
+- Tone or voice inconsistencies
+- Numbers or claims that do not add up across sections
+- Promises made early that are not delivered later
+- Formatting inconsistencies (heading levels, list styles, capitalisation patterns)
+
+**Output format:** Identify each inconsistency with references to both locations, explain the conflict, and recommend which version to keep or how to reconcile.
+
+---
+
+### Round 5: Polish and Readability
+**Lens:** Is this a pleasure to read?
+
+Look for:
+- Sentences that are too long or convoluted
+- Paragraphs that try to do too much
+- Repetition (same point made twice in different words)
+- Weak openings to sections (burying the lead)
+- Passive voice where active would be stronger
+- Filler words and hedging language that dilute confidence
+- Final tightening: can any sentence be cut without losing meaning?
+
+**Output format:** Suggest specific line-level edits. Where possible, show before/after rewrites.
+
+---
+
+## How to Run the Critique
+
+### At the start of every critique session, ask:
+
+> "Do you want me to run all five rounds in one pass, or pause after each round so you can revise before we move on?"
+
+Then follow the preference for that session.
+
+### Flow Option A: All Five Rounds in One Pass
+- Work through all five rounds sequentially
+- Present findings from each round clearly separated under round headings
+- After all five rounds, summarise the top 3-5 most impactful changes
+- Wait for the user to revise, then offer to run a second pass if needed
+
+### Flow Option B: Pause After Each Round
+- Run Round 1 and present findings
+- Wait for the user to revise or confirm they are ready to proceed
+- Move to Round 2 only when they signal to continue
+- Repeat through all five rounds
+- After Round 5, summarise any remaining cross-cutting issues
+
+### Additional guidance
+
+- **Be direct.** This framework exists to find problems. Do not soften findings to the point of uselessness.
+- **Be specific.** "This section is vague" is not helpful. Quote the passage and name the problem.
+- **Prioritise.** Within each round, lead with the most impactful issues.
+- **Respect the lens.** Each round has a specific focus. Stay in the round.
+- **Scale to the content.** A 200-word email does not need the same depth as a 20-page strategy doc.
+
+---
+
+## Quick-reference summary
+
+| Round | Lens | Core question |
+|-------|------|---------------|
+| 1 | Structure and Flow | Does this hold together? |
+| 2 | Depth and Specificity | Is this concrete enough? |
+| 3 | Edge Cases and Failure Modes | What could go wrong? |
+| 4 | Cross-references and Consistency | Does this agree with itself? |
+| 5 | Polish and Readability | Is this a pleasure to read? |
+`
+    };
+
+    // ── Download skill as .md file ───────────────────────────────
+    function downloadSkill(filename, content) {
+      var blob = new Blob([content], { type: 'text/plain' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+      showToast('Downloading ' + filename);
+    }
+
+    // ── Copy skill to clipboard ──────────────────────────────────
+    function copySkill(id) {
+      var content = SKILLS[id];
+      if (!content) return;
+      navigator.clipboard.writeText(content).then(function() {
+        showToast('Copied to clipboard');
+      }).catch(function() {
+        showToast('Could not copy — try the Download button instead');
+      });
+    }
+
+    // ── Submit skill via email ───────────────────────────────────
+    function submitSkill() {
+      var title   = document.getElementById('skill-title').value.trim();
+      var source  = document.getElementById('skill-source').value.trim();
+      var summary = document.getElementById('skill-summary').value.trim();
+      var content = document.getElementById('skill-content').value.trim();
+
+      if (!title || !summary || !content) {
+        showToast('Please fill in the required fields before submitting');
+        return;
+      }
+
+      var subject = 'Skill submission: ' + title;
+      var body = [
+        'Skill name: ' + title,
+        'Where it came from: ' + (source || 'not specified'),
+        'What it does: ' + summary,
+        '',
+        '--- Skill content ---',
+        '',
+        content
+      ].join('\n');
+
+      window.location.href = 'mailto:wendy@fourteenseed.com'
+        + '?subject=' + encodeURIComponent(subject)
+        + '&body=' + encodeURIComponent(body);
+    }
+
+    // ── Toast helper ─────────────────────────────────────────────
+    function showToast(msg) {
+      var t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(function() { t.classList.remove('show'); }, 2800);
+    }
+
+  </script>
+
+</body>
+</html>
