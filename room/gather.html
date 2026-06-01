@@ -220,8 +220,137 @@
     <p class="lead">A record of every session: the words we unpacked and the conversation that surfaced them. Added after each gathering, so nothing gets lost.</p>
     <p class="muted" style="font-size:0.85rem;">Got a word that made you glaze over? Drop it in the WhatsApp group and it'll appear in the next entry.</p>
 
+    <!-- ── 28 May 2026 ──────────────────────────────────────── -->
+    <div class="session-block open" id="session-2026-05-28">
+
+      <button class="session-toggle" aria-expanded="true" aria-controls="content-2026-05-28">
+        <span class="session-date">28 May 2026 &nbsp;☽</span>
+        <span class="session-label">Gathering 3 &middot; evening session &middot; eleven terms &middot; eight present</span>
+        <span class="session-arrow">↓</span>
+      </button>
+
+      <div class="session-content" id="content-2026-05-28">
+
+        <div class="session-tabs">
+          <button class="session-tab active" data-panel="glossary-0528">Glossary</button>
+          <button class="session-tab" data-panel="summary-0528">Meeting summary</button>
+        </div>
+
+        <!-- GLOSSARY TAB -->
+        <div class="session-panel active" id="glossary-0528">
+
+          <p class="glossary-note">Each session we capture words that surfaced in the room and deserved a plain-English explanation. The context below each term shows who raised it and why, so the word stays connected to the moment it came up. New terms only: once something is here, it will not appear again.</p>
+
+          <div class="glossary-grid">
+
+            <div class="glossary-entry">
+              <p class="glossary-term">MCP (Model Context Protocol)</p>
+              <p class="glossary-def">The standard that lets an AI model connect to external tools, data sources, and services in real time, rather than having you copy and paste content into a chat window. Came up as one of the harder Anthropic Academy courses — Scott noted it assumes code literacy that earlier courses don't. The API and MCP courses are where the cohort noticeably splits into people who build and people who direct, and the exam is expected to test vocabulary and syntax rather than the ability to write code from scratch.</p>
+            </div>
+
+            <div class="glossary-entry">
+              <p class="glossary-term">Deterministic layer</p>
+              <p class="glossary-def">A fixed-rules front-end placed in front of an AI agent for steps that are predictable and repetitive. The rules run without touching the AI at all; only when a case falls outside them does it hand off to the probabilistic model. Marc Pozzuoli described building this for his email-sorting agent: the deterministic layer handles the majority of cases instantly at zero token cost, and the AI handles the edge cases. He updates the rules every few weeks as new patterns emerge. The principle — deterministic first, probabilistic only when needed — is expected to become a standard production pattern.</p>
+            </div>
+
+            <div class="glossary-entry">
+              <p class="glossary-term">World model</p>
+              <p class="glossary-def">A live file that tracks your current work context — projects, decisions, commitments, priorities — updated automatically from local files, GitHub, email, and task tools. Scott Jennings runs one on his Mac Studio via a scheduled loop; his CLAUDE.md tells every session to read it first, so he never has to re-brief. The result: Claude already knows who he is and what he is working on before he types a word. A structured, file-based answer to the "starting from scratch every session" problem.</p>
+            </div>
+
+            <div class="glossary-entry">
+              <p class="glossary-term">FPGA</p>
+              <p class="glossary-def">Field-Programmable Gate Array: a chip whose logic circuits can be reprogrammed after manufacture. Ian Jones raised it as a direction for truly token-free AI skills — once a workflow is learned well enough, you compile it into deterministic hardware logic that produces the same output every time with zero model involvement. His broader point: monetisation pressure pushes AI providers towards consuming more tokens, so the interesting efficiency work is in finding ways to run reliable, repeated tasks without touching the model at all.</p>
+            </div>
+
+            <div class="glossary-entry">
+              <p class="glossary-term">Thread forking</p>
+              <p class="glossary-def">Splitting a conversation at a specific point into two or more separate branches to explore different directions in parallel, then selectively merging the useful threads back. Ian Jones is building an agentic model that does exactly this — you say "fork now" and get multiple independent windows running simultaneously. The problem it solves is context contamination: when one line of reasoning bleeds into another and degrades the quality of both. Not the same as ChatGPT's "option A / option B" feature, which is just a single fork on the app layer.</p>
+            </div>
+
+            <div class="glossary-entry">
+              <p class="glossary-term">Forward deployed engineer</p>
+              <p class="glossary-def">A technical role where someone embeds inside a client's business to build and implement AI directly, rather than delivering advice from outside. Anthropic is hiring for this at $300k–$400k. The wider significance: experienced leaders are leaving senior positions at major companies to take individual contributor roles at AI labs — the Workday CTO leaving for a senior developer position at Anthropic was the specific example raised. Wendy noted she is effectively doing this already on a freelance basis, and sees it as one of the biggest near-term opportunities for the cohort.</p>
+            </div>
+
+            <div class="glossary-entry">
+              <p class="glossary-term">Plaud</p>
+              <p class="glossary-def">A small clip-on recording device that transcribes speech without needing a phone or screen visible. It also picks up phone calls via vibration conduction — press the button when a call starts and it captures both sides. Wendy is using it to record in-person meetings and conferences where producing a phone would change the room dynamic. Scott noted he has never seen his drop below 50% battery. Key consideration: it captures everything on screen and everything said, so it needs switching off during sensitive or government-contracted work.</p>
+            </div>
+
+            <div class="glossary-entry">
+              <p class="glossary-term">Little Bird</p>
+              <p class="glossary-def">A behavioural AI observer that monitors screen activity and reports on working patterns — what you front-load, what you defer, how many tabs you have open, when you go idle. Wendy has been running it for a couple of weeks and noted it picked up that she works mostly by voice dictation rather than typing, that she front-loads her day before the US wakes up, and that she had 21 tabs open at one point. She has a code for a couple of months free if anyone wants to try it. Caution: she is likely switching it off during a local authority contract, since it observes everything on screen.</p>
+            </div>
+
+            <div class="glossary-entry">
+              <p class="glossary-term">Buffer</p>
+              <p class="glossary-def">A scheduling tool that lets you queue posts to LinkedIn and other social platforms in advance. You cannot post directly to LinkedIn via API, but you can post to Buffer and Buffer handles the scheduling. Marc Pozzuoli uses it as the final step in his automated LinkedIn pipeline: Claude writes, critiques, rewrites, and humanises the post from meeting transcripts, then pushes it to Buffer, which publishes it at the right time. The only human step is a final read before it goes live.</p>
+            </div>
+
+            <div class="glossary-entry">
+              <p class="glossary-term">Hermes agent</p>
+              <p class="glossary-def">An agent runtime that gives Claude a notably large context window — around 40,000 tokens of prompt and tool space. Scott Jennings uses it for scheduled background jobs on his Mac Studio, running the Qwen local model for routine tasks and only calling out to Sonnet 4.6 when heavier synthesis is needed. It came up in the context of the minimum viable model principle: use the smallest capable model for the job, and Hermes gives you room to load tools and context without hitting limits.</p>
+            </div>
+
+            <div class="glossary-entry">
+              <p class="glossary-term">Vibe coding</p>
+              <p class="glossary-def">Building software by directing an AI agent through intent and feedback rather than writing code yourself. You describe what you want, review what comes back, redirect, and iterate — the agent does the actual writing. Wendy used it to describe a rescue project she picked up: an accountant at a local firm had vibe-coded a functional app, linked it to external data, and then told no one, left no documentation, and disappeared from the process. The app worked; the governance around it did not. Vibe coding lowers the barrier to building, but also to building things no one else can maintain.</p>
+            </div>
+
+          </div>
+        </div>
+        <!-- /glossary tab -->
+
+        <!-- SUMMARY TAB -->
+        <div class="session-panel" id="summary-0528">
+
+          <div class="summary-meta">
+            <div class="summary-meta-item"><span>Date</span>28 May 2026, 7–8pm BST</div>
+            <div class="summary-meta-item"><span>Format</span>Evening session</div>
+            <div class="summary-meta-item"><span>Present</span>Wendy Harris, James Harris, Scott Jennings, Marc Pozzuoli, Francesca Wood, Laura Campbell, Ian Jones OBE, Saida Chakri</div>
+          </div>
+
+          <p class="summary-section">Who joined</p>
+          <p>Eight people across four time zones. Tampa (Florida), North Carolina, Cornwall, the Isles of Scilly, Dartmouth (Devon), Zurich, and a car heading to London. The evening slot drew a different mix than the lunchtime sessions: more international, more technically varied, and Marc Pozzuoli joining for the first time. Ian Jones OBE joined from his car because he was heading to King's Cross to look at potential office space for an AI studio. Francesca Wood joined from the Isles of Scilly — on holiday, staying at the hotel she personally renovated 13 years ago, where she first implemented the Morning Post daily sheet that she is now trying to rebuild as an app.</p>
+
+          <p class="summary-section">Anthropic partner programme</p>
+          <p>Wendy shared an update from Antman (Anthony) in Nate B. Jones's exec circle, who confirmed his group had advanced to the next stage. The process: fill in the form saying you have 10 people ready to test, Anthropic responds roughly two weeks later with keys to a new workspace for the exam phase. No need to spin up dedicated mailboxes at this stage — Anthony will flag if that changes. The cohort is not there yet, but the path is clear. Wendy's next task is to identify which ten members will form the testing group once the leaderboard settles.</p>
+
+          <p class="summary-section">Course progress and the split</p>
+          <p>Scott Jennings said the API course was the first one he has looked at and decided to park for now. The MCP course, by contrast, he found genuinely useful and learned from. His assessment: the exams are likely vocabulary and syntax tests, similar in structure to the Salesforce architect certification he holds, and the coursework is written for technical resources even if the tests are not. James Harris admitted he found Claude Code in Action hard — "I ain't gonna lie, I struggled." Wendy agreed she had to slow down on it too, even as someone who works inside Claude Code daily.</p>
+          <p>Wendy proposed two informal tracks going forward: one for members focused on Claude mastery without coding (prompt engineering, Cowork, agents, skills), and a technical track for those building applications. She was clear this is an observation, not a decision imposed on anyone — each person should choose the path that fits what they are actually doing.</p>
+
+          <p class="summary-section">Technical discussions</p>
+          <ul>
+            <li><strong>Deterministic agents (Marc Pozzuoli):</strong> Marc built an email-sorting agent that started fully probabilistic, learning from how he sorted. When it started burning too many tokens, he had it analyse its own sorting history and write a deterministic front-end — fixed rules for the predictable cases, probabilistic fallback for anything the rules don't cover. He updates the deterministic layer every few weeks as patterns evolve. The result is dramatically lower token usage for routine steps.</li>
+            <li><strong>World model (Scott Jennings):</strong> Scott runs a context loop on his Mac Studio that watches his local files, GitHub, ClickUp, and email, and continuously updates a single world model file. Every Claude session reads that file first via CLAUDE.md. He uses Qwen running locally for scheduled jobs (no API cost), and Sonnet 4.6 only for synthesis or cross-document work. His point: minimum capable model for each task — Sonnet is more than enough for chat and co-work, and smarter models applied to simple tasks can actually produce worse output.</li>
+            <li><strong>Thread forking and neurophysiology-inspired AI (Ian Jones OBE):</strong> Ian is developing an agentic model that lets you fork a conversation at a chosen point into multiple parallel threads, run them independently, and selectively merge back. He is also researching whether AI responsiveness could be modelled on human neurotransmitter timescales — glutamate for subconscious processing (milliseconds), dopamine (fractions of a second), serotonin (tens of seconds) — to create a layered system that reserves slower, heavier processing for things that genuinely need it.</li>
+            <li><strong>FPGAs (Ian Jones OBE):</strong> Ian raised the idea of compiling well-understood AI workflows into FPGA logic gates: deterministic circuits that produce the same output every time with zero token consumption. His broader concern: AI providers are incentivised to maximise token usage because that is their monetisation model, which creates an inherent tension with efficiency. FPGA compilation is one answer to that, though it is currently speculative as a practical tool.</li>
+            <li><strong>LinkedIn automation (Marc Pozzuoli):</strong> Marc has fully automated his LinkedIn content. Each week it reviews his meeting transcripts, extracts concepts, obfuscates the people and companies, writes a draft post, critiques and rewrites it through several passes, runs a humanisation step (including removing em dashes), then pushes to Buffer for scheduling. The only human step is a final read before it goes live. One post reached over 20,000 views. He offered to share how it is configured. Wendy noted she wants to do the same for Glassmark.</li>
+          </ul>
+
+          <p class="summary-section">Projects</p>
+          <ul>
+            <li><strong>Francesca Wood</strong> is rebuilding the Morning Post — a daily sheet she implemented 13 years ago at the hotel she renovated on the Isles of Scilly, covering tide times, boat schedules, weather, a quote, puzzles including a crossword and Sudoku. She is building the AI version on her iPad on holiday, which is making the coding harder than it needs to be. Claude failed to generate a usable crossword; ChatGPT succeeded on the first try. A "generate on click" button is not working and she has parked it until she is back at a desktop. Arpit Gupta offered to help with Claude Code when she returns.</li>
+            <li><strong>Wendy Harris</strong> is on a rescue project: an app built by an accountant (not a developer) inside an accountancy firm, built without documentation, now needing to be brought back under proper governance. She sent Google Antigravity and Claude Code into the Git repo separately, in isolated environments that knew nothing of each other, then cross-referenced the two reports. Claude flagged DPA and governance considerations that the Google analysis did not surface. She is also doing forward deployment work with a local business owner who had been using Claude as a basic co-pilot for six months without skills, agents, or automation of any kind.</li>
+            <li><strong>Marc Pozzuoli</strong> has an opportunity to design AI courses for a large US Contractors Association — one of the largest in the country. His plan: lunch-and-learns for staff, focused four-hour sessions for executives, all remote initially with possible live cohorts later. He is approaching it outcome-first: what do they need to be able to do, then work back to how to teach it. Laura Campbell offered to be a sounding board given her teacher training credentials. Arpit Gupta suggested the executive track should cover three dimensions: personal productivity, organisational deployment, and driving team adoption. Francesca raised Eleven Labs AI avatars as an option for recorded modules.</li>
+          </ul>
+
+          <p class="summary-section">Broader observations</p>
+          <p>The group noted a brain drain pattern at AI labs: experienced leaders are taking individual contributor roles at Anthropic and OpenAI, the Workday CTO being the specific example raised. Anthropic is advertising forward deployed engineer roles at $300k–$400k. There was a brief but warm exchange about UK summers — no air conditioning in homes or most hotels, glossy faces when it hits 30 degrees, and Francesca in a stifling Scilly hotel room with two fans moving hot air around. Scott was four feet from his central air conditioning and not apologising.</p>
+
+        </div>
+        <!-- /summary tab -->
+
+      </div>
+      <!-- /session content -->
+
+    </div>
+    <!-- /session block -->
+
     <!-- ── 21 May 2026 ──────────────────────────────────────── -->
-    <div class="session-block open" id="session-2026-05-21">
+    <div class="session-block" id="session-2026-05-21">
 
       <button class="session-toggle" aria-expanded="true" aria-controls="content-2026-05-21">
         <span class="session-date">21 May 2026</span>
