@@ -13,6 +13,8 @@
   --radius:  20px;
   --radius-sm: 12px;
 
+  --accent-cpn: #22c55e;
+
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas,
                "Liberation Mono", monospace;
   --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI",
@@ -731,6 +733,10 @@ code {
   width: 0%;
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+.progress-fill.cpn { background: var(--accent-cpn); }
+
+.cpn-wrap { margin-top: 0.5rem; }
 
 .progress-label {
   font-family: var(--font-mono);
