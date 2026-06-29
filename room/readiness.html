@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exam readiness &middot; fourteen &gt;&gt; seed AI room</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Exam readiness ─────────────────────────────────────── */
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin: 2.5rem 0 0.75rem;
+    }
+
+    .domain-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0 0;
+      font-size: 0.875rem;
+    }
+
+    .domain-table th {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      padding: 0.65rem 1rem 0.55rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .domain-table td {
+      padding: 0.8rem 1rem;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.55;
+      font-size: 0.875rem;
+    }
+
+    .domain-table td:first-child { color: var(--text); font-weight: 500; white-space: nowrap; padding-right: 1.5rem; }
+    .domain-table td:nth-child(2) {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .domain-table tr:last-child td { border-bottom: none; }
+
+    .readiness-gate {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin: 1.25rem 0;
+    }
+
+    .gate-header {
+      background: var(--card);
+      padding: 0.9rem 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .gate-item {
+      padding: 0.9rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.6;
+      display: flex;
+      gap: 1rem;
+      align-items: baseline;
+    }
+
+    .gate-item:last-child { border-bottom: none; }
+
+    .gate-item::before {
+      content: '○';
+      font-family: var(--font-mono);
+      color: var(--accent);
+      flex-shrink: 0;
+      font-size: 0.8rem;
+    }
+
+    .callout {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 1.1rem 1.4rem;
+      margin: 1.25rem 0;
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .callout strong { color: var(--text); }
+
+    .phase-list {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0;
+    }
+
+    .phase-list li {
+      padding: 0.85rem 0 0.85rem 1.5rem;
+      border-left: 2px solid var(--border);
+      margin-left: 0.5rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .phase-list li:last-child { margin-bottom: 0; }
+    .phase-list li strong { color: var(--text); }
+
+    .checklist {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0;
+    }
+
+    .checklist li {
+      font-size: 0.9rem;
+      color: var(--muted);
+      padding: 0.7rem 0 0.7rem 2rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      line-height: 1.55;
+    }
+
+    .checklist li:last-child { border-bottom: none; }
+
+    .checklist li::before {
+      content: '○';
+      font-family: var(--font-mono);
+      color: var(--accent);
+      position: absolute;
+      left: 0;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--accent);
+      color: #000;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.75rem 1.4rem;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      font-weight: 700;
+      transition: opacity 0.15s;
+    }
+
+    .cta-btn:hover { opacity: 0.85; }
+
+    .cta-btn.secondary {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .cta-btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    .footnote {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      line-height: 1.65;
+    }
+  </style>
+</head>
+<body>
+<script>(function(){if(localStorage.getItem('ccaf_auth_v1')!=='1'){window.location.replace('/room/');}})();</script>
+
+  <header>
+    <a href="https://fourteenseed.com" class="wordmark">fourteen <span class="chev">&gt;&gt;</span> seed</a>
+    <nav>
+      <a href="why.html">the why</a>
+      <a href="ccaf.html">the qualification</a>
+      <a href="cohort.html">the cohort</a>
+      <a href="gather.html">the gather</a>
+      <a href="skills.html">the resources</a>
+      <a href="readiness.html" class="active">the exam</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <span class="kicker">The AI room</span>
+    <h1>Exam readiness</h1>
+    <p class="lead">The CCAF exam is no longer gated on ten people. If you have been building real things with Claude, you may be closer to sitting it than you think.</p>
+    <p>This page pulls together everything we know about preparing well: the official study route, the practice portal Antman shared from Nate&rsquo;s group, and the readiness gate you want to clear before you book. The rule of thumb: courses plus real building, then calibrate with mock exams, then book. Don&rsquo;t sit it on practice-exam scores alone.</p>
+
+    <!-- ── Practice portal ──────────────────────────────── -->
+    <p class="section-label">Practice portal</p>
+    <p>The best tool we&rsquo;ve found for exam prep is <strong>intellifyr.com/ccaf</strong> &mdash; shared by Antman via Nate B. Jones&rsquo;s exec circle. It&rsquo;s a free adaptive study system with 19 lessons, five domain drills, and a mock exam. It tracks your predicted score against 1000 and shows exactly where your blind spots are.</p>
+    <p>The daily routine is short: eight adaptive questions and one lesson, roughly 19 minutes. The mock exam is the important part &mdash; the readiness gate below uses mock scores, not lesson completion, as the signal you&rsquo;re ready to book.</p>
+    <div class="cta-row">
+      <a href="https://intellifyr.com/ccaf/" target="_blank" class="cta-btn">Open practice portal &rarr;</a>
+    </div>
+
+    <!-- ── Readiness gate ───────────────────────────────── -->
+    <p class="section-label">Readiness gate</p>
+    <p>Before booking the proctored exam, clear all three of these. Two out of three is not enough.</p>
+    <div class="readiness-gate">
+      <div class="gate-header">All three before you book</div>
+      <div class="gate-item">Two recent mock exams scored <strong>900 or above</strong> (out of 1000). Not a one-off &mdash; two in a row, with a gap between them.</div>
+      <div class="gate-item"><strong>Blind-spot score 90%+</strong> on both mocks. Questions you previously got wrong are now being answered correctly.</div>
+      <div class="gate-item"><strong>No domain below 80%</strong> on either mock. A single weak domain will cost you.</div>
+    </div>
+
+    <div class="callout">The practice exam tests recall in isolation. The real exam puts you inside production scenarios and asks for the right architectural call. Several candidates have scored full marks on the practice exam and then failed the live one, because they revised definitions instead of decisions. Courses plus real building are the preparation. The practice exam is final calibration &mdash; not a learning tool.</div>
+
+    <!-- ── Five domains ─────────────────────────────────── -->
+    <p class="section-label">The five domains</p>
+    <p>Domains 1 and 3 together account for nearly half the exam. Domain 1 is the single heaviest and the most underestimated. Weight your time accordingly.</p>
+
+    <table class="domain-table">
+      <thead>
+        <tr>
+          <th>Domain</th>
+          <th>Weight</th>
+          <th>What it covers</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>D1 &middot; Agentic architecture and orchestration</td>
+          <td>27%</td>
+          <td>Agent loops, multi-agent coordinator and subagent patterns, task decomposition, hooks, session management</td>
+        </tr>
+        <tr>
+          <td>D2 &middot; Tool design and MCP integration</td>
+          <td>18%</td>
+          <td>Tool descriptions and boundaries, structured error responses, tool distribution, MCP server config</td>
+        </tr>
+        <tr>
+          <td>D3 &middot; Claude Code configuration and workflows</td>
+          <td>20%</td>
+          <td>CLAUDE.md hierarchy, slash commands, skills, plan mode, CI/CD integration</td>
+        </tr>
+        <tr>
+          <td>D4 &middot; Prompt engineering and structured output</td>
+          <td>20%</td>
+          <td>JSON schemas via tool use, few-shot, validation-retry loops, explicit criteria</td>
+        </tr>
+        <tr>
+          <td>D5 &middot; Context management and reliability</td>
+          <td>15%</td>
+          <td>Context preservation, escalation patterns, error propagation, provenance, human review</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ── Course sequence ──────────────────────────────── -->
+    <p class="section-label">Suggested course sequence</p>
+    <p>Work in this order. Each phase builds on the one before. Times are rough guides: slower is fine if the material is sticking. Compiled from the cohort prep map, last updated 23 June 2026.</p>
+
+    <ul class="phase-list">
+      <li><strong>Phase 1 &mdash; Foundations</strong> (skip if experienced): Claude 101 and AI Fluency: Framework and Foundations. The baseline the exam quietly assumes. Roughly 3&ndash;5 hours.</li>
+      <li><strong>Phase 2 &mdash; Building with the Claude API</strong>: The flagship course and the floor everything else stands on. Covers tool use, structured output, JSON schemas, context handling. Does the heavy lifting for domain 4 and underpins domains 1 and 2. Roughly 8&ndash;12 hours.</li>
+      <li><strong>Phase 3 &mdash; Model Context Protocol</strong>: Introduction to MCP, then MCP: Advanced Topics. Build an actual MCP server, wire it up, and trigger tool errors on purpose. Domain 2 rewards people who have built, not just read. Roughly 12&ndash;16 hours.</li>
+      <li><strong>Phase 4 &mdash; Subagents and agentic architecture</strong>: Introduction to Subagents, plus the Agent SDK material on loops and orchestration. This is domain 1 &mdash; the heaviest on the exam. Do not skip the building. Roughly 10&ndash;14 hours.</li>
+      <li><strong>Phase 5 &mdash; Claude Code configuration and workflows</strong>: The Claude Code course plus CLAUDE.md, slash commands, skills, plan mode, and CI/CD material. Domain 3. Roughly 8&ndash;12 hours.</li>
+      <li><strong>Phase 6 &mdash; Context management and reliability</strong>: No single course owns domain 5. It threads through the API course, Subagents, and the escalation and error-handling material. Treat this as targeted revision across what you have already done. Roughly 4&ndash;6 hours.</li>
+      <li><strong>Phase 7 &mdash; Hands-on build, then calibrate</strong>: Build at least one real thing that exercises agents, tools, and structured output. Then, and only near the end, sit the mock exam.</li>
+    </ul>
+
+    <div class="callout"><strong>Our cohort&rsquo;s edge:</strong> we are already building real systems &mdash; Glassmark, Planory, the Morning Post rebuild, the planning application reader, and more. The hands-on grounding the exam actually rewards is something we have, not something we need to fake. Rough total: around 40 hours of structured study if you already have meaningful hands-on Claude experience, closer to 8 weeks part-time if you are building that experience as you go. The exam assumes roughly six months of real production work, so the building is not optional padding &mdash; it is the point.</div>
+
+    <!-- ── Cohort checklist ──────────────────────────────── -->
+    <p class="section-label">Cohort checklist</p>
+    <ul class="checklist">
+      <li>Confirm CPN partner-company access on the Skilljar portal &mdash; our partner status should clear you straight through</li>
+      <li>Register for the exam and confirm current mechanics and any cost (free during the early-access window)</li>
+      <li>Work phases 1 to 6 in order, with heaviest time on domains 1 and 3</li>
+      <li>Build one real project that exercises agents, tools, and structured output</li>
+      <li>Use the practice portal to drill domains and find blind spots</li>
+      <li>Sit the mock exam late, as calibration &mdash; not as preparation</li>
+      <li>Clear all three readiness gate criteria, then book the proctored exam</li>
+    </ul>
+
+    <!-- ── Links ────────────────────────────────────────── -->
+    <p class="section-label">Links</p>
+    <div class="cta-row">
+      <a href="https://anthropic.skilljar.com/claude-certified-architect-foundations-access-request" target="_blank" class="cta-btn">Request exam access &rarr;</a>
+      <a href="https://intellifyr.com/ccaf/" target="_blank" class="cta-btn secondary">Practice portal &rarr;</a>
+    </div>
+
+    <p class="footnote">Prep map compiled 23 June 2026 by Wendy Harris for the Fourteen Seed cohort. Not endorsed by Anthropic; points only at official Anthropic materials. Confirm current exam format and cost on the Skilljar portal when you register &mdash; question counts and format vary slightly across different write-ups.</p>
+
+  </main>
+
+  <footer>
+    <span>fourteen <span class="chev">&gt;&gt;</span> seed
+    &nbsp;&middot;&nbsp;
+    Cornwall <span class="chev">&gt;&gt;</span> internet</span>
+  </footer>
+
+</body>
+</html>
