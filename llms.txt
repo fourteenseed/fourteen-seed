@@ -1,0 +1,24 @@
+# Fourteen Seed
+
+> An AI studio in Cornwall, run by Wendy Harris. Building things that work in the real world: embedded, hands-on AI integration for businesses and individuals, and products for the new relationship between AI and the humans using it.
+
+Fourteen Seed is Wendy Harris's studio. She co-founded a SaaS company in 2011, exited in 2025, and spent fourteen years helping hospitality businesses go from paper to digital. She now works alongside businesses and individuals who want AI doing something useful in their day-to-day, not just in a demo. Engagements are embedded, hands-on, and time-bounded. Daily driver: Claude and the Anthropic stack; comfortable across Supabase, Netlify, Vercel, Obsidian, Google Workspace, Python, and plain HTML/CSS/JS.
+
+## What Fourteen Seed has built
+
+- [glassmark.ai](https://glassmark.ai): AI readiness audit for visitor economy websites. Scans how legible a site is to AI agents and answer engines.
+- [planory.ai](https://planory.ai): AI travel planning platform for the UK. Connects travellers to local expert knowledge and helps destinations surface in AI planning conversations.
+- [UK fuel tracker](https://ukfueltracker.fourteenseed.com): live fuel price tracker pulling real pump prices across the UK. Built in a weekend.
+- G4KAW silent key: a personal project cataloguing Wendy's late father's amateur radio archive. QSL cards, logbooks, the traces people leave across distance and static.
+
+## Writing
+
+- [Second Serve](https://www.linkedin.com/newsletters/second-serve-7397634606298193920/): Wendy's LinkedIn newsletter. Building in public, second time round — what she's learning as we navigate this new relationship between AI and the humans using it.
+
+## Working with Fourteen Seed
+
+Wendy takes on a small number of embedded engagements at a time: businesses and individuals who want AI working in their actual workflows, not just being talked about. Contact: wendy@fourteenseed.com.
+
+## Company
+
+Fourteen Seed Ltd, registered in England and Wales, no. 16940050. Based in Cornwall, working worldwide. Cornwall >> internet.

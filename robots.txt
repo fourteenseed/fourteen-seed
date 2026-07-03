@@ -1,0 +1,22 @@
+# fourteenseed.com — all readers welcome, human or agent.
+
+User-agent: *
+Allow: /
+
+# AI crawlers and agents, explicitly welcome
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://fourteenseed.com/sitemap.xml
