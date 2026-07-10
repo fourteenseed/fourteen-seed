@@ -11,7 +11,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Fourteen Seed — AI studio · Cornwall</title>
-<meta name="description" content="Fourteen Seed is Wendy Harris's AI studio in Cornwall. Embedded, hands-on AI integration for businesses and individuals. Builder of glassmark.ai, planory.ai, and more." />
+<meta name="description" content="Fourteen Seed is Wendy Harris's AI studio in Cornwall. Embedded, hands-on AI integration for businesses and individuals. Builder of glassmark.ai and Founder OS." />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="canonical" href="https://fourteenseed.com/" />
 
@@ -20,11 +20,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:url" content="https://fourteenseed.com/" />
 <meta property="og:site_name" content="Fourteen Seed" />
 <meta property="og:title" content="Fourteen Seed — AI studio · Cornwall" />
-<meta property="og:description" content="An AI studio building things that work in the real world. Embedded, hands-on AI integration for businesses and individuals. Builder of glassmark.ai and planory.ai." />
+<meta property="og:description" content="An AI studio building things that work in the real world. Embedded, hands-on AI integration for businesses and individuals. Builder of glassmark.ai and Founder OS." />
+<meta property="og:image" content="https://fourteenseed.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 <meta property="og:locale" content="en_GB" />
-<meta name="twitter:card" content="summary" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Fourteen Seed — AI studio · Cornwall" />
 <meta name="twitter:description" content="An AI studio building things that work in the real world. Embedded, hands-on AI integration for businesses and individuals." />
+<meta name="twitter:image" content="https://fourteenseed.com/og-image.png" />
 
 <!-- Structured data -->
 <script type="application/ld+json">
@@ -84,99 +88,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
 
 <style>
-  :root {
-    --bg: #0b0d10;
-    --ink: #ffffff;
-    --dim: #c5cdd5;
-    --dim-soft: #8a929a;
-    --accent: #ff4fa3;
-    --card: #11151a;
-    --ring: #2f3a44;
-    --lead: #eef2f6;
-    --display: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    --mono: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    --sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: var(--sans);
-    color: var(--ink);
-    background:
-      radial-gradient(1200px 800px at 80% -10%, #16202a 0%, #0b0d10 55%),
-      linear-gradient(180deg, #0b0d10 0%, #0a0e12 100%);
-    background-attachment: fixed;
-    min-height: 100vh;
-    letter-spacing: 0.2px;
-    -webkit-font-smoothing: antialiased;
-  }
-  a { color: inherit; text-decoration: none; }
-  ::selection { background: rgba(255,79,163,.35); color: #fff; }
-
-  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-
-  /* ── header ── */
-  header {
-    position: sticky; top: 0; z-index: 20;
-    backdrop-filter: blur(10px);
-    background: rgba(11,13,16,.72);
-    border-bottom: 1px solid var(--ring);
-  }
-  .nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; }
-  .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: inherit; cursor: pointer; }
-  .mark {
-    width: 48px; height: 48px; border-radius: 999px;
-    background: radial-gradient(120% 120% at 30% 20%, #1b2530 0%, #0e141a 60%);
-    border: 1px solid var(--accent);
-    display: inline-flex; align-items: center; justify-content: center;
-    font-family: var(--display);
-    font-size: 10px; letter-spacing: 0.5px;
-    color: #fff;
-    white-space: nowrap;
-    box-shadow:
-      0 0 0 1px rgba(255,79,163,.15),
-      0 0 18px rgba(255,79,163,.25),
-      inset 0 0 12px rgba(255,79,163,.06);
-    transition: box-shadow .3s ease, transform .3s ease;
-  }
-  .mark:hover {
-    transform: scale(1.05);
-    box-shadow:
-      0 0 0 1px rgba(255,79,163,.3),
-      0 0 28px rgba(255,79,163,.4),
-      inset 0 0 14px rgba(255,79,163,.1);
-  }
-  .mark .chev { color: var(--accent); filter: drop-shadow(0 0 10px rgba(255,79,163,.45)); }
-  .wordmark {
-    font-family: var(--display);
-    font-size: clamp(15px, 2vw, 18px);
-    text-transform: lowercase;
-    letter-spacing: 0.5px;
-  }
-  .wordmark .chev { color: var(--accent); padding: 0 6px; filter: drop-shadow(0 0 10px rgba(255,79,163,.4)); }
-
-  nav ul { list-style: none; display: flex; gap: 26px; margin: 0; padding: 0; align-items: center; }
-  nav ul a {
-    font-size: 13px;
-    font-family: var(--mono);
-    color: var(--dim);
-    transition: color .2s ease;
-  }
-  nav ul a:hover { color: #fff; }
-  nav .li-icon {
-    display: inline-grid; place-items: center;
-    width: 32px; height: 32px; border-radius: 8px;
-    border: 1px solid var(--ring);
-    transition: all .2s ease;
-  }
-  nav .li-icon:hover { border-color: var(--accent); color: var(--accent); }
-  nav .li-icon svg { width: 15px; height: 15px; fill: currentColor; }
-  .nav-room { color: var(--accent) !important; }
-  @media (max-width: 720px) { nav ul li.hide-sm { display: none; } }
-
   /* ── hero ── */
   .hero { padding: 88px 0 68px; }
   .kicker {
@@ -201,7 +115,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     letter-spacing: -1px;
     max-width: 22ch;
   }
-  h1 .chev { color: var(--accent); padding: 0 6px; filter: drop-shadow(0 0 14px rgba(255,79,163,.4)); }
+  h1 .chev { padding: 0 6px; filter: drop-shadow(0 0 14px rgba(255,79,163,.4)); }
   .lead {
     font-family: var(--sans);
     font-size: clamp(16px, 1.9vw, 18px);
@@ -216,18 +130,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     color: var(--dim);
     max-width: 60ch;
     line-height: 1.65;
-    margin: 0;
+    margin: 0 0 30px;
   }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
-  /* ── sections ── */
-  section { padding: 64px 0; border-top: 1px dashed var(--ring); }
-  .eyebrow {
-    font-family: var(--display);
-    font-size: 11px; letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--dim-soft);
-    margin: 0 0 20px;
+  /* ── how I work ── */
+  .how-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 34px;
   }
+  @media (max-width: 860px) { .how-grid { grid-template-columns: 1fr; } }
 
   /* ── stack ── */
   .stack-note {
@@ -249,63 +163,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     background: rgba(0,0,0,.25);
   }
 
-  /* ── build cards ── */
+  /* ── build groups ── */
   .builds-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
   @media (max-width: 720px) { .builds-grid { grid-template-columns: 1fr; } }
-
-  .build-card {
-    border: 1px solid var(--ring);
-    background: var(--card);
-    border-radius: 16px;
-    padding: 24px;
-    display: block;
-    color: inherit;
-    transition: border-color .2s ease, transform .2s ease;
-  }
-  a.build-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
-  }
-  .build-card-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 10px;
-  }
-  .build-name {
-    font-family: var(--sans);
-    font-size: 17px;
-    font-weight: 600;
-    color: #fff;
-    letter-spacing: -0.2px;
-  }
-  .ext-arrow {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--ring);
-    transition: color .2s ease;
-  }
-  a.build-card:hover .ext-arrow { color: var(--accent); }
-  .build-desc {
-    font-family: var(--sans);
-    font-size: 14px;
-    color: var(--dim);
-    line-height: 1.6;
-    margin: 0 0 14px;
-  }
-  .build-tag {
+  .group-label {
     font-family: var(--display);
-    font-size: 10px;
-    letter-spacing: 1.5px;
+    font-size: 11px;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--accent);
+    color: var(--dim-soft);
+    margin: 34px 0 14px;
   }
+  .group-label:first-of-type { margin-top: 0; }
 
-  /* ── bottom row: collaborating + writing ── */
   .bottom-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -313,14 +187,44 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   @media (max-width: 720px) { .bottom-row { grid-template-columns: 1fr; } }
   .bottom-col { display: flex; flex-direction: column; }
-  .bottom-label {
-    font-family: var(--display);
+  .bottom-col .group-label { margin-top: 0; }
+  .bottom-col .build-card { flex: 1; }
+
+  /* ── writing list ── */
+  .edition-list { list-style: none; margin: 0; padding: 0; }
+  .edition-list li { border-bottom: 1px dashed rgba(47,58,68,.6); }
+  .edition-list li:last-child { border-bottom: 0; }
+  .edition-list a {
+    display: block;
+    padding: 13px 4px;
+    transition: color .2s ease;
+  }
+  .edition-list a:hover .edition-title { color: var(--accent); }
+  .edition-date {
+    font-family: var(--mono);
     font-size: 11px;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--dim-soft);
-    margin-bottom: 14px;
+    display: block;
+    margin-bottom: 3px;
   }
+  .edition-title {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--lead);
+    line-height: 1.45;
+    transition: color .2s ease;
+  }
+  .all-writing {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 13px;
+    color: var(--dim);
+    margin-top: 12px;
+    min-height: 44px;
+  }
+  .all-writing:hover { color: #fff; }
 
   /* ── contact / CTA ── */
   .cta-card {
@@ -331,7 +235,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     border-radius: 20px;
     padding: 48px;
   }
-  .cta-card h2 {
+  @media (max-width: 720px) { .cta-card { padding: 32px 24px; } }
+  .cta-card h2.cta-title {
     font-family: var(--sans);
     font-size: clamp(22px, 3vw, 30px);
     font-weight: 600;
@@ -357,34 +262,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     transition: border-color .2s, background .2s;
     letter-spacing: 0.5px;
     color: #fff;
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
   .email-link:hover { border-color: var(--accent); background: rgba(255,79,163,.08); }
-  .email-link .chev { color: var(--accent); }
-
-  /* ── footer ── */
-  footer { padding: 40px 0 48px; border-top: 1px solid var(--ring); margin-top: 40px; }
-  .foot {
-    display: flex; justify-content: space-between; align-items: center;
-    gap: 20px; flex-wrap: wrap;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--dim-soft);
-    letter-spacing: 0.3px;
-  }
-  .foot .chev { color: var(--accent); padding: 0 5px; }
-  .foot a { color: var(--dim-soft); transition: color .2s; }
-  .foot a:hover { color: var(--accent); }
-  .foot-legal {
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px dashed var(--ring);
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--dim-soft);
-    letter-spacing: 0.2px;
-    text-align: center;
-  }
-  .foot-legal .sep { padding: 0 8px; color: var(--ring); }
 </style>
 </head>
 <body id="top">
@@ -393,25 +274,44 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-<header>
-  <div class="wrap nav">
-    <a class="brand" href="#top" aria-label="Fourteen Seed, back to top">
-      <div class="mark">F<span class="chev">&gt;&gt;</span>S</div>
-      <div class="wordmark">fourteen<span class="chev">&gt;&gt;</span>seed</div>
-    </a>
-    <nav>
+<header class="site-header">
+  <div class="wrap">
+    <div class="nav">
+      <a class="brand" href="#top" aria-label="Fourteen Seed, back to top">
+        <div class="mark">F<span class="chev">&gt;&gt;</span>S</div>
+        <div class="wordmark">fourteen<span class="chev">&gt;&gt;</span>seed</div>
+      </a>
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="#studio">studio</a></li>
+          <li><a href="#builds">builds</a></li>
+          <li><a href="#writing">writing</a></li>
+          <li><a href="https://founder-os.fourteenseed.com" target="_blank" rel="noopener">founder os</a></li>
+          <li><a href="/room/">the AI room</a></li>
+          <li><a href="#contact" class="nav-cta">work with me</a></li>
+          <li>
+            <a class="li-icon" href="https://www.linkedin.com/in/wendy-harris-72952628/" target="_blank" rel="noopener" aria-label="Wendy Harris on LinkedIn">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+        <svg class="icon-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg class="icon-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
       <ul>
-        <li class="hide-sm"><a href="#studio">studio</a></li>
-        <li class="hide-sm"><a href="#builds">builds</a></li>
-        <li><a href="/room/" class="nav-room">the AI room</a></li>
-        <li class="hide-sm"><a href="https://founder-os.fourteenseed.com" target="_blank" rel="noopener" class="nav-fos">founder os</a></li>
-        <li>
-          <a class="li-icon" href="https://www.linkedin.com/in/wendy-harris-72952628/" target="_blank" rel="noopener" aria-label="Wendy Harris on LinkedIn">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          </a>
-        </li>
+        <li><a href="#studio">studio <span class="chev">&gt;&gt;</span></a></li>
+        <li><a href="#builds">builds <span class="chev">&gt;&gt;</span></a></li>
+        <li><a href="#writing">writing <span class="chev">&gt;&gt;</span></a></li>
+        <li><a href="https://founder-os.fourteenseed.com" target="_blank" rel="noopener">founder os <span class="chev">&gt;&gt;</span></a></li>
+        <li><a href="/room/">the AI room <span class="chev">&gt;&gt;</span></a></li>
+        <li><a href="https://www.linkedin.com/in/wendy-harris-72952628/" target="_blank" rel="noopener">LinkedIn <span class="chev">&gt;&gt;</span></a></li>
+        <li><a href="#contact" class="menu-cta">work with me <span class="chev">&gt;&gt;</span></a></li>
       </ul>
-    </nav>
+    </div>
   </div>
 </header>
 
@@ -424,13 +324,44 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h1>An AI studio <span class="chev">&gt;&gt;</span> Building things that work in the real world.</h1>
       <p class="lead">I'm Wendy Harris. I work alongside businesses and individuals who want AI doing something useful in their day-to-day, not just in a demo. Embedded, hands-on, time-bounded.</p>
       <p class="hero-body">Co-founded a SaaS company in 2011. Exited 2025. Fourteen years helping hospitality businesses go from paper to digital. What's happening with AI is the biggest shift in how businesses reach people since the internet itself, and I'm building for it. I work with the tools you already have, or help you choose some.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#builds">see what I've built <span class="chev">&gt;&gt;</span></a>
+        <a class="btn btn-primary" href="#contact">tell me about a project <span class="chev">&gt;&gt;</span></a>
+      </div>
     </section>
   </div>
 
-  <!-- STACK -->
+  <!-- HOW I WORK -->
   <div class="wrap">
-    <section>
-      <p class="eyebrow">tools I work in</p>
+    <section id="how">
+      <h2 class="eyebrow">how I work</h2>
+      <div class="how-grid">
+
+        <div class="build-card">
+          <div class="build-card-head">
+            <h3 class="build-name">Embedded engagements</h3>
+          </div>
+          <p class="build-desc">I join a small number of businesses at a time and work inside their actual workflows and tools. Hands-on, time-bounded, with something real working by the end.</p>
+          <span class="build-tag">core engagement</span>
+        </div>
+
+        <div class="build-card">
+          <div class="build-card-head">
+            <h3 class="build-name">Workshops and talks</h3>
+          </div>
+          <p class="build-desc">Practical sessions like the Founder OS workshop at Tech South West's Digital Conference. Phones out, hands on, everyone leaves with something running.</p>
+          <span class="build-tag">groups &amp; events</span>
+        </div>
+
+        <div class="build-card">
+          <div class="build-card-head">
+            <h3 class="build-name">Building in the open</h3>
+          </div>
+          <p class="build-desc">Studio products and experiments, shipped and written up as I go in Second Serve. The advice comes from the building, not the other way round.</p>
+          <span class="build-tag">the studio</span>
+        </div>
+
+      </div>
       <p class="stack-note"><strong>Daily driver:</strong> Claude and the Anthropic stack. Comfortable across:</p>
       <div class="chips">
         <span class="chip">Claude API</span>
@@ -449,12 +380,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- BUILDS -->
   <div class="wrap">
     <section id="builds">
-      <p class="eyebrow">what I've built</p>
+      <h2 class="eyebrow">what I've built</h2>
+
+      <p class="group-label">studio products</p>
       <div class="builds-grid">
 
         <a href="https://glassmark.ai" target="_blank" rel="noopener" class="build-card">
           <div class="build-card-head">
-            <span class="build-name">glassmark.ai</span>
+            <h3 class="build-name">glassmark.ai</h3>
             <span class="ext-arrow">&gt;&gt;</span>
           </div>
           <p class="build-desc">AI readiness audit for visitor economy websites. Scans how legible a site is to AI agents and answer engines. Private testing, moving toward go-to-market.</p>
@@ -463,55 +396,53 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <a href="https://founder-os.fourteenseed.com" target="_blank" rel="noopener" class="build-card">
           <div class="build-card-head">
-            <span class="build-name">founder os</span>
+            <h3 class="build-name">founder os</h3>
             <span class="ext-arrow">&gt;&gt;</span>
           </div>
           <p class="build-desc">Your own personal operating system for working across many AI tools. One calm command centre that gives every tool the same memory, so nothing gets lost between them. Here's a starter version to get you going.</p>
           <span class="build-tag">starter kit</span>
         </a>
 
-        <a href="https://ukfueltracker.fourteenseed.com" target="_blank" rel="noopener" class="build-card">
-          <div class="build-card-head">
-            <span class="build-name">UK fuel tracker</span>
-            <span class="ext-arrow">&gt;&gt;</span>
-          </div>
-          <p class="build-desc">Live fuel price tracker. Pulls real pump prices across the UK and surfaces the cheapest nearby options. Built in a weekend.</p>
-          <span class="build-tag">consumer app</span>
-        </a>
+      </div>
 
-        <div class="build-card">
-          <div class="build-card-head">
-            <span class="build-name">G4KAW silent key</span>
-          </div>
-          <p class="build-desc">A project cataloguing my late father's amateur radio archive. QSL cards, logbooks, the traces people leave across distance and static.</p>
-          <span class="build-tag">personal archive</span>
+      <div class="bottom-row" style="margin-top: 34px;">
+        <div class="bottom-col">
+          <p class="group-label">experiments</p>
+          <a href="https://ukfueltracker.fourteenseed.com" target="_blank" rel="noopener" class="build-card">
+            <div class="build-card-head">
+              <h3 class="build-name">UK fuel tracker</h3>
+              <span class="ext-arrow">&gt;&gt;</span>
+            </div>
+            <p class="build-desc">Live fuel price tracker. Pulls real pump prices across the UK and surfaces the cheapest nearby options. Built in a weekend.</p>
+            <span class="build-tag">consumer app</span>
+          </a>
         </div>
 
+        <div class="bottom-col">
+          <p class="group-label">personal work</p>
+          <div class="build-card">
+            <div class="build-card-head">
+              <h3 class="build-name">G4KAW silent key</h3>
+            </div>
+            <p class="build-desc">A project cataloguing my late father's amateur radio archive. QSL cards, logbooks, the traces people leave across distance and static.</p>
+            <span class="build-tag">personal archive</span>
+          </div>
+        </div>
       </div>
+
     </section>
   </div>
 
-  <!-- COLLABORATING + WRITING -->
+  <!-- WRITING -->
   <div class="wrap">
-    <section>
+    <section id="writing">
+      <h2 class="eyebrow">where I'm writing</h2>
       <div class="bottom-row">
 
         <div class="bottom-col">
-          <p class="bottom-label">Where I'm collaborating</p>
-          <div class="build-card">
-            <div class="build-card-head">
-              <span class="build-name">the AI room</span>
-            </div>
-            <p class="build-desc">A small group of people genuinely leaning into AI. Working on qualifications, building real things, raising the floor on what's possible with the technology.</p>
-            <span class="build-tag">peer group</span>
-          </div>
-        </div>
-
-        <div class="bottom-col">
-          <p class="bottom-label">Where I'm writing</p>
           <a href="https://www.linkedin.com/newsletters/second-serve-7397634606298193920/" target="_blank" rel="noopener" class="build-card">
             <div class="build-card-head">
-              <span class="build-name">Second Serve</span>
+              <h3 class="build-name">Second Serve</h3>
               <span class="ext-arrow">&gt;&gt;</span>
             </div>
             <p class="build-desc">Building in public, second time round. What I'm learning, what I'm seeing, and what makes sense as we navigate this new relationship between AI and the humans using it.</p>
@@ -519,6 +450,48 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </a>
         </div>
 
+        <div class="bottom-col">
+          <p class="group-label">latest editions</p>
+          <ul class="edition-list">
+            <li>
+              <a href="https://www.linkedin.com/pulse/internet-ai-agents-wendy-harris-3tkse" target="_blank" rel="noopener">
+                <span class="edition-date">15 June 2026</span>
+                <span class="edition-title">The Internet of AI Agents</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/pulse/coffee-couple-hours-way-wendy-harris-wedef" target="_blank" rel="noopener">
+                <span class="edition-date">6 May 2026</span>
+                <span class="edition-title">A coffee, a couple of hours, and a way in</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/pulse/great-visibility-reset-wendy-harris-qlgte" target="_blank" rel="noopener">
+                <span class="edition-date">16 April 2026</span>
+                <span class="edition-title">The Great Visibility Reset</span>
+              </a>
+            </li>
+          </ul>
+          <a class="all-writing" href="/writing/">all writing <span class="chev">&gt;&gt;</span></a>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- COLLABORATING -->
+  <div class="wrap">
+    <section id="collaborating">
+      <h2 class="eyebrow">where I'm collaborating</h2>
+      <div class="builds-grid">
+        <a href="/room/" class="build-card">
+          <div class="build-card-head">
+            <h3 class="build-name">the AI room</h3>
+            <span class="ext-arrow">&gt;&gt;</span>
+          </div>
+          <p class="build-desc">A small group of people genuinely leaning into AI. Working on qualifications, building real things, raising the floor on what's possible with the technology.</p>
+          <span class="build-tag">peer group</span>
+        </a>
       </div>
     </section>
   </div>
@@ -528,7 +501,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <section id="contact">
       <div class="cta-card">
         <p class="eyebrow">get in touch</p>
-        <h2>If you have a project, tell me about it</h2>
+        <h2 class="cta-title">If you have a project, tell me about it</h2>
         <p>I take on a small number of embedded engagements at a time. Businesses and individuals who want AI working in their actual workflows, not just being talked about.</p>
         <a class="email-link" href="mailto:wendy@fourteenseed.com">wendy@fourteenseed.com <span class="chev">&gt;&gt;</span></a>
       </div>
@@ -537,10 +510,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 </main>
 
-<footer>
+<footer class="site-footer">
   <div class="wrap">
     <div class="foot">
       <span>fourteen <span class="chev">&gt;&gt;</span> seed &nbsp;&middot;&nbsp; Cornwall <span class="chev">&gt;&gt;</span> internet</span>
+      <span class="foot-links">
+        <a href="#studio">studio</a>
+        <a href="#builds">builds</a>
+        <a href="/writing/">writing</a>
+        <a href="/room/">the AI room</a>
+        <a href="mailto:wendy@fourteenseed.com">contact</a>
+      </span>
       <span>&copy; 2026 Fourteen Seed Ltd</span>
     </div>
     <div class="foot-legal">
@@ -548,6 +528,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 </footer>
+
+<script>
+  (function () {
+    var btn = document.querySelector('.menu-btn');
+    var menu = document.getElementById('mobile-menu');
+    if (!btn || !menu) return;
+    function setOpen(open) {
+      menu.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+    btn.addEventListener('click', function () {
+      setOpen(!menu.classList.contains('open'));
+    });
+    menu.addEventListener('click', function (e) {
+      if (e.target.closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && menu.classList.contains('open')) {
+        setOpen(false);
+        btn.focus();
+      }
+    });
+  })();
+</script>
 
 </body>
 </html>

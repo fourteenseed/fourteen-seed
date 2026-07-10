@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KCL62SXQ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Writing — Fourteen Seed</title>
+<meta name="description" content="Second Serve, Wendy Harris's newsletter. Building in public, second time round: what she's learning about AI and the humans using it." />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="canonical" href="https://fourteenseed.com/writing/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://fourteenseed.com/writing/" />
+<meta property="og:site_name" content="Fourteen Seed" />
+<meta property="og:title" content="Writing — Fourteen Seed" />
+<meta property="og:description" content="Second Serve, Wendy Harris's newsletter. Building in public, second time round." />
+<meta property="og:image" content="https://fourteenseed.com/og-image.png" />
+<meta property="og:locale" content="en_GB" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Writing — Fourteen Seed" />
+<meta name="twitter:description" content="Second Serve, Wendy Harris's newsletter. Building in public, second time round." />
+<meta name="twitter:image" content="https://fourteenseed.com/og-image.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+
+<style>
+  .page-hero { padding: 72px 0 24px; }
+  .page-hero .kicker {
+    font-family: var(--display);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--dim);
+    text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 9px 16px;
+    border: 1px solid var(--ring);
+    border-radius: 999px;
+    background: rgba(17,21,26,.7);
+    margin-bottom: 24px;
+  }
+  h1 {
+    font-family: var(--sans);
+    font-size: clamp(32px, 5.5vw, 52px);
+    line-height: 1.1;
+    font-weight: 600;
+    margin: 0 0 20px;
+    letter-spacing: -1px;
+    max-width: 24ch;
+  }
+  h1 .chev { padding: 0 6px; filter: drop-shadow(0 0 14px rgba(255,79,163,.4)); }
+  .lead {
+    font-family: var(--sans);
+    font-size: clamp(16px, 1.9vw, 18px);
+    color: var(--lead);
+    max-width: 60ch;
+    line-height: 1.65;
+    margin: 0 0 14px;
+  }
+  .page-note {
+    font-family: var(--sans);
+    font-size: 15px;
+    color: var(--dim);
+    max-width: 60ch;
+    line-height: 1.65;
+    margin: 0;
+  }
+  .page-note a { color: var(--lead); border-bottom: 1px solid var(--ring); transition: border-color .2s, color .2s; }
+  .page-note a:hover { color: var(--accent); border-color: var(--accent); }
+
+  .editions { display: grid; gap: 16px; max-width: 760px; }
+  .edition-card .build-desc { margin-bottom: 16px; }
+  .edition-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--dim-soft);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .subscribe-row { margin-top: 34px; }
+</style>
+</head>
+<body id="top">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KCL62SXQ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="nav">
+      <a class="brand" href="/" aria-label="Fourteen Seed, back to the studio">
+        <div class="mark">F<span class="chev">&gt;&gt;</span>S</div>
+        <div class="wordmark">fourteen<span class="chev">&gt;&gt;</span>seed</div>
+      </a>
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="/#studio">studio</a></li>
+          <li><a href="/#builds">builds</a></li>
+          <li><a href="/writing/" aria-current="page">writing</a></li>
+          <li><a href="https://founder-os.fourteenseed.com" target="_blank" rel="noopener">founder os</a></li>
+          <li><a href="/room/">the AI room</a></li>
+          <li><a href="/#contact" class="nav-cta">work with me</a></li>
+          <li>
+            <a class="li-icon" href="https://www.linkedin.com/in/wendy-harris-72952628/" target="_blank" rel="noopener" aria-label="Wendy Harris on LinkedIn">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+        <svg class="icon-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg class="icon-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <ul>
+        <li><a href="/#studio">studio <span class="chev">&gt;&gt;</span></a></li>
+        <li><a href="/#builds">builds <span class="chev">&gt;&gt;</span></a></li>
+        <li><a href="/writing/">writing <span class="chev">&gt;&gt;</span></a></li>
+        <li><a href="https://founder-os.fourteenseed.com" target="_blank" rel="noopener">founder os <span class="chev">&gt;&gt;</span></a></li>
+        <li><a href="/room/">the AI room <span class="chev">&gt;&gt;</span></a></li>
+        <li><a href="https://www.linkedin.com/in/wendy-harris-72952628/" target="_blank" rel="noopener">LinkedIn <span class="chev">&gt;&gt;</span></a></li>
+        <li><a href="/#contact" class="menu-cta">work with me <span class="chev">&gt;&gt;</span></a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="wrap">
+    <section class="page-hero" style="border-top: 0;">
+      <span class="kicker">writing &gt;&gt; second serve</span>
+      <h1>Building in public <span class="chev">&gt;&gt;</span> second time round.</h1>
+      <p class="lead">Second Serve is my newsletter on LinkedIn. What I'm learning, what I'm seeing, and what makes sense as we navigate this new relationship between AI and the humans using it.</p>
+      <p class="page-note">Each edition links through to the full piece on LinkedIn. You can <a href="https://www.linkedin.com/newsletters/second-serve-7397634606298193920/" target="_blank" rel="noopener">subscribe there</a> to get new editions as they land.</p>
+    </section>
+  </div>
+
+  <div class="wrap">
+    <section>
+      <h2 class="eyebrow">editions</h2>
+      <div class="editions">
+
+        <a href="https://www.linkedin.com/pulse/internet-ai-agents-wendy-harris-3tkse" target="_blank" rel="noopener" class="build-card edition-card">
+          <span class="edition-meta">15 June 2026</span>
+          <div class="build-card-head">
+            <h3 class="build-name">The Internet of AI Agents</h3>
+            <span class="ext-arrow">&gt;&gt;</span>
+          </div>
+          <p class="build-desc">Automated systems now drive more web traffic than humans do. What that means for how businesses organise work, manage the flood of AI output, and build the management layer above their agents.</p>
+          <span class="build-tag">read on LinkedIn</span>
+        </a>
+
+        <a href="https://www.linkedin.com/pulse/coffee-couple-hours-way-wendy-harris-wedef" target="_blank" rel="noopener" class="build-card edition-card">
+          <span class="edition-meta">6 May 2026</span>
+          <div class="build-card-head">
+            <h3 class="build-name">A coffee, a couple of hours, and a way in</h3>
+            <span class="ext-arrow">&gt;&gt;</span>
+          </div>
+          <p class="build-desc">Why a couple of hours of hands-on help moves a small business further than another piece of software. The gap between enterprise AI and everyone else, and a practical way in.</p>
+          <span class="build-tag">read on LinkedIn</span>
+        </a>
+
+        <a href="https://www.linkedin.com/pulse/great-visibility-reset-wendy-harris-qlgte" target="_blank" rel="noopener" class="build-card edition-card">
+          <span class="edition-meta">16 April 2026</span>
+          <div class="build-card-head">
+            <h3 class="build-name">The Great Visibility Reset</h3>
+            <span class="ext-arrow">&gt;&gt;</span>
+          </div>
+          <p class="build-desc">AI visibility is where SEO was in 2003. Independent visitor economy businesses have a brief window to make their websites legible to AI agents before the big platforms catch up.</p>
+          <span class="build-tag">read on LinkedIn</span>
+        </a>
+
+        <a href="https://www.linkedin.com/pulse/everything-im-learning-right-now-compounds-wendy-harris-uevne" target="_blank" rel="noopener" class="build-card edition-card">
+          <span class="edition-meta">16 March 2026</span>
+          <div class="build-card-head">
+            <h3 class="build-name">Everything I'm learning right now compounds</h3>
+            <span class="ext-arrow">&gt;&gt;</span>
+          </div>
+          <p class="build-desc">Pausing the agent-building to build foundations instead. Giving every AI tool the same memory and context, and why the specification, not the code, is the product.</p>
+          <span class="build-tag">read on LinkedIn</span>
+        </a>
+
+        <a href="https://www.linkedin.com/pulse/three-patterns-from-tech-south-west-change-everything-wendy-harris-lfg9e" target="_blank" rel="noopener" class="build-card edition-card">
+          <span class="edition-meta">20 February 2026</span>
+          <div class="build-card-head">
+            <h3 class="build-name">Three patterns from Tech South West that change everything for tourism</h3>
+            <span class="ext-arrow">&gt;&gt;</span>
+          </div>
+          <p class="build-desc">Three organisational adoption patterns from the Tech South West conference, and what the shift from human search to autonomous AI agents means for tourism businesses.</p>
+          <span class="build-tag">read on LinkedIn</span>
+        </a>
+
+      </div>
+      <div class="subscribe-row">
+        <a class="btn btn-primary" href="https://www.linkedin.com/newsletters/second-serve-7397634606298193920/" target="_blank" rel="noopener">subscribe to Second Serve <span class="chev">&gt;&gt;</span></a>
+      </div>
+    </section>
+  </div>
+
+  <div class="wrap">
+    <section>
+      <div class="foot" style="justify-content: flex-start; gap: 24px;">
+        <a href="/">&laquo; back to the studio</a>
+        <a href="/#contact">tell me about a project <span class="chev">&gt;&gt;</span></a>
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot">
+      <span>fourteen <span class="chev">&gt;&gt;</span> seed &nbsp;&middot;&nbsp; Cornwall <span class="chev">&gt;&gt;</span> internet</span>
+      <span class="foot-links">
+        <a href="/#studio">studio</a>
+        <a href="/#builds">builds</a>
+        <a href="/writing/">writing</a>
+        <a href="/room/">the AI room</a>
+        <a href="mailto:wendy@fourteenseed.com">contact</a>
+      </span>
+      <span>&copy; 2026 Fourteen Seed Ltd</span>
+    </div>
+    <div class="foot-legal">
+      Registered in England and Wales <span class="sep">&middot;</span> No. 16940050
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var btn = document.querySelector('.menu-btn');
+    var menu = document.getElementById('mobile-menu');
+    if (!btn || !menu) return;
+    function setOpen(open) {
+      menu.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+    btn.addEventListener('click', function () {
+      setOpen(!menu.classList.contains('open'));
+    });
+    menu.addEventListener('click', function (e) {
+      if (e.target.closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && menu.classList.contains('open')) {
+        setOpen(false);
+        btn.focus();
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

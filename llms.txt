@@ -7,13 +7,14 @@ Fourteen Seed is Wendy Harris's studio. She co-founded a SaaS company in 2011, e
 ## What Fourteen Seed has built
 
 - [glassmark.ai](https://glassmark.ai): AI readiness audit for visitor economy websites. Scans how legible a site is to AI agents and answer engines.
-- [planory.ai](https://planory.ai): AI travel planning platform for the UK. Connects travellers to local expert knowledge and helps destinations surface in AI planning conversations.
+- [Founder OS](https://founder-os.fourteenseed.com): a personal operating system for working across many AI tools. One calm command centre that gives every tool the same memory. A starter kit is available, and the linked page is the version built for the first Founder OS workshop at Tech South West.
 - [UK fuel tracker](https://ukfueltracker.fourteenseed.com): live fuel price tracker pulling real pump prices across the UK. Built in a weekend.
 - G4KAW silent key: a personal project cataloguing Wendy's late father's amateur radio archive. QSL cards, logbooks, the traces people leave across distance and static.
 
 ## Writing
 
-- [Second Serve](https://www.linkedin.com/newsletters/second-serve-7397634606298193920/): Wendy's LinkedIn newsletter. Building in public, second time round — what she's learning as we navigate this new relationship between AI and the humans using it.
+- [Second Serve](https://www.linkedin.com/newsletters/second-serve-7397634606298193920/): Wendy's LinkedIn newsletter. Building in public, second time round: what she's learning as we navigate this new relationship between AI and the humans using it.
+- [Writing index](https://fourteenseed.com/writing/): every edition of Second Serve, with summaries and links to the full pieces.
 
 ## Working with Fourteen Seed
 
