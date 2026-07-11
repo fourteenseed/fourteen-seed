@@ -208,8 +208,8 @@
   var KEY = 'ccaf_auth_v1';
   document.getElementById('gate-form').addEventListener('submit', function(e){
     e.preventDefault();
-    var val = document.getElementById('pwd').value;
-    if(val === PASSWORD){
+    var val = document.getElementById('pwd').value.trim().toLowerCase();
+    if(val === PASSWORD.toLowerCase()){
       localStorage.setItem(KEY, '1');
       window.location.replace('/room/hub.html');
     } else {
