@@ -273,5 +273,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   })();
 </script>
 
+<script>
+  // GA4: record contact clicks (mailto links) as a measurable event.
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="mailto:"]');
+    if (a && typeof gtag === 'function') {
+      gtag('event', 'contact_click', { link_url: a.getAttribute('href') });
+    }
+  });
+</script>
+
 </body>
 </html>
