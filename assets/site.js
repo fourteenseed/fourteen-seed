@@ -349,8 +349,15 @@
 
     function selectChapter(index, focusStory) {
       if (index < 0 || index >= chapters.length) return;
+      var shouldZoom = index !== 0;
+      if (index === currentChapter && zoomed === shouldZoom) {
+        if (focusStory) {
+          window.requestAnimationFrame(function () { story.focus({ preventScroll: true }); });
+        }
+        return;
+      }
       currentChapter = index;
-      zoomed = index !== 0;
+      zoomed = shouldZoom;
       updateJourney();
       if (focusStory) {
         window.requestAnimationFrame(function () { story.focus({ preventScroll: true }); });
