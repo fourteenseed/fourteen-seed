@@ -91,6 +91,7 @@
     transitionTimer = 0;
     rotatingWords.slice(1).forEach(function (word) { word.remove(); });
     rotatingWords = rotatingWord ? Array.prototype.slice.call(rotatingWord.children) : [];
+    if (rotatingWord) rotatingWord.style.width = '';
     if (rotatingWords[0]) {
       rotatingWords[0].classList.remove('is-entering', 'is-leaving');
       rotatingWords[0].classList.add('is-current');
@@ -98,11 +99,21 @@
     currentWord = 0;
   }
 
+  function fitRotatingWord(word) {
+    if (!rotatingWord || !word || reduceMotion.matches) return;
+    rotatingWord.style.width = word.getBoundingClientRect().width + 'px';
+  }
+
+  function refitRotatingWord() {
+    fitRotatingWord(rotatingWords[currentWord]);
+  }
+
   function rotateWord() {
     if (reduceMotion.matches || rotatingWords.length < 2) return;
     var outgoing = rotatingWords[currentWord];
     currentWord = (currentWord + 1) % rotatingWords.length;
     var incoming = rotatingWords[currentWord];
+    fitRotatingWord(incoming);
     outgoing.classList.remove('is-current');
     outgoing.classList.add('is-leaving');
     incoming.classList.add('is-entering');
@@ -111,7 +122,7 @@
       incoming.classList.remove('is-entering');
       incoming.classList.add('is-current');
       transitionTimer = 0;
-    }, 400);
+    }, 520);
   }
 
   function startRotation() {
@@ -128,6 +139,9 @@
   function initialiseHeroRotation() {
     if (!heroTitle || !rotatingWord || reduceMotion.matches) return;
     appendRotatingWords();
+    refitRotatingWord();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(refitRotatingWord);
+    window.addEventListener('resize', refitRotatingWord);
     startRotation();
   }
 
@@ -138,6 +152,7 @@
       resetRotatingWords();
       if (!reduceMotion.matches) {
         appendRotatingWords();
+        refitRotatingWord();
         startRotation();
       }
     });

@@ -3,13 +3,17 @@
 
 .rotating-word {
   display: inline-grid;
+  justify-items: start;
   vertical-align: baseline;
+  clip-path: inset(-1em 0 -1em 0);
+  transition: width 520ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .rotating-word > span {
   grid-area: 1 / 1;
+  white-space: nowrap;
   opacity: 0;
-  transform: translateY(0.35em);
+  transform: translateY(0.45em);
   pointer-events: none;
 }
 
@@ -19,20 +23,20 @@
 }
 
 .rotating-word > .is-leaving {
-  animation: rotating-word-out 400ms ease both;
+  animation: rotating-word-out 360ms cubic-bezier(0.4, 0, 1, 1) both;
 }
 
 .rotating-word > .is-entering {
-  animation: rotating-word-in 400ms ease both;
+  animation: rotating-word-in 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes rotating-word-out {
   from { opacity: 1; transform: translateY(0); }
-  to { opacity: 0; transform: translateY(-0.35em); }
+  to { opacity: 0; transform: translateY(-0.45em); }
 }
 
 @keyframes rotating-word-in {
-  from { opacity: 0; transform: translateY(0.35em); }
+  from { opacity: 0; transform: translateY(0.45em); }
   to { opacity: 1; transform: translateY(0); }
 }
 
