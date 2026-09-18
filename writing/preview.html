@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Private preview — Fourteen Seed</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/assets/site.css" />
+  <link rel="stylesheet" href="/assets/legacy.css" />
+  <style>
+    .studio-preview { max-width: 760px; margin: 0 auto; padding: 72px 0 96px; }
+    .studio-preview h1 { max-width: none; }
+    .studio-preview .studio-kicker { color: var(--dim); font: 11px var(--mono); letter-spacing: 2px; text-transform: uppercase; }
+    .studio-preview .studio-meta { color: var(--dim); font: 12px var(--mono); letter-spacing: 1px; text-transform: uppercase; }
+    .studio-preview .studio-excerpt { color: var(--lead); font-size: 19px; line-height: 1.65; }
+    .studio-cover { width: 100%; border-radius: 16px; margin: 30px 0 38px; }
+    .studio-body { font-size: 17px; line-height: 1.75; }
+    .studio-body h2 { margin: 42px 0 12px; font-size: 28px; }
+    .studio-body h3 { margin: 28px 0 8px; font-size: 22px; }
+    .studio-body p { margin: 0 0 20px; }
+    .studio-body ul { margin: 0 0 22px 24px; }
+    .studio-body a { color: var(--accent); }
+    .studio-panel { margin: 42px 0; padding: 24px; border: 1px solid var(--ring); border-radius: 14px; background: rgba(255,255,255,.03); }
+    .studio-panel h2 { margin-top: 0; }
+    .studio-panel pre { white-space: pre-wrap; font: 15px/1.65 var(--sans); }
+    .studio-panel ul { padding-left: 20px; }
+    .studio-nothing { padding: 120px 0; text-align: center; }
+  </style>
+</head>
+<body>
+<header class="site-header"><div class="wrap"><div class="nav"><a class="brand" href="/" aria-label="Fourteen Seed, back to the studio"><div class="mark">F<span class="chev">&gt;&gt;</span>S</div><div class="wordmark">fourteen<span class="chev">&gt;&gt;</span>seed</div></a><nav class="site-nav" aria-label="Main"><ul><li><a href="/writing/">writing</a></li><li><a href="/">studio</a></li><li><a href="mailto:wendy@fourteenseed.com">contact</a></li></ul></nav></div></div></header>
+<main class="wrap"><article id="app" class="studio-preview"><p>Loading preview...</p></article></main>
+<script>
+  (function () {
+    var SUPABASE_URL = 'https://mptdjjlzgmlvlbimwrtx.supabase.co';
+    var app = document.getElementById('app');
+    var token = new URLSearchParams(location.search).get('token');
+    function esc(value) { return String(value || '').replace(/[&<>"']/g, function (c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
+    function inline(value) { return value.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>').replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/\*([^*]+)\*/g, '<em>$1</em>'); }
+    function markdown(value) {
+      var lines = esc(value).split(/\r?\n/), out = [], para = [], list = false;
+      function flush() { if (para.length) { out.push('<p>' + inline(para.join(' ')) + '</p>'); para = []; } if (list) { out.push('</ul>'); list = false; } }
+      lines.forEach(function (line) { if (/^## /.test(line)) { flush(); out.push('<h2>' + inline(line.slice(3)) + '</h2>'); } else if (/^### /.test(line)) { flush(); out.push('<h3>' + inline(line.slice(4)) + '</h3>'); } else if (/^[-*] /.test(line)) { if (para.length) flush(); if (!list) { out.push('<ul>'); list = true; } out.push('<li>' + inline(line.slice(2)) + '</li>'); } else if (!line.trim()) flush(); else para.push(line.trim()); }); flush(); return out.join('');
+    }
+    function nothing() { app.className = 'studio-preview studio-nothing'; app.innerHTML = '<h1>Nothing here</h1><p>This private preview is not available.</p>'; }
+    function render(post) {
+      var refs = (post.source_refs || []).map(function (ref) { return '<li>' + esc(ref) + '</li>'; }).join('');
+      var linkedin = post.outlet === 'second-serve' ? '<section class="studio-panel"><h2>LinkedIn post</h2><pre>' + esc(post.linkedin_post || '') + '</pre></section>' : '';
+      app.innerHTML = '<p class="studio-kicker">Private draft preview · ' + esc(post.outlet === 'second-serve' ? 'Second Serve' : 'Fourteen Seed') + '</p><h1>' + esc(post.title) + '</h1><p class="studio-meta">' + esc(post.article_section || 'Writing') + (post.edition_number ? ' · edition ' + esc(post.edition_number) : '') + '</p><p class="studio-excerpt">' + esc(post.excerpt || '') + '</p>' + (post.cover_image_url ? '<img class="studio-cover" src="' + esc(post.cover_image_url) + '" alt="' + esc(post.hero_alt || post.title) + '" width="1600" height="900">' : '') + '<div class="studio-body">' + markdown(post.body || '') + '</div>' + linkedin + '<section class="studio-panel"><h2>Sources</h2><ul>' + (refs || '<li>No source references recorded.</li>') + '</ul></section>';
+    }
+    if (!token) { nothing(); return; }
+    fetch(SUPABASE_URL + '/functions/v1/post-preview?token=' + encodeURIComponent(token), { cache: 'no-store' }).then(function (response) { if (!response.ok) throw new Error('not found'); return response.json(); }).then(render).catch(nothing);
+  })();
+</script>
+</body>
+</html>
