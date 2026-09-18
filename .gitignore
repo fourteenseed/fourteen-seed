@@ -2,3 +2,7 @@
 .env*
 design/
 room/*.pdf
+writing/*.html
+!writing/index.html
+!writing/preview.html
+!writing/review.html
