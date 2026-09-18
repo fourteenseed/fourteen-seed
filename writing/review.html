@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Review — Fourteen Seed</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/assets/site.css" />
+  <link rel="stylesheet" href="/assets/legacy.css" />
+  <style>
+    .studio-review { max-width: 680px; margin: 0 auto; padding: 72px 0 96px; }
+    .studio-review h1 { max-width: none; }
+    .studio-review p { color: var(--lead); line-height: 1.65; }
+    .studio-actions { display: grid; gap: 12px; margin-top: 32px; }
+    .studio-actions button, .studio-actions a { display: block; width: 100%; box-sizing: border-box; padding: 14px 18px; border: 1px solid var(--ring); border-radius: 8px; background: transparent; color: var(--text); font: 600 15px var(--sans); text-align: center; cursor: pointer; text-decoration: none; }
+    .studio-actions button[data-verb="publish"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .studio-actions button[data-verb="drop"] { color: var(--dim); }
+    textarea { width: 100%; min-height: 150px; box-sizing: border-box; padding: 12px; border: 1px solid var(--ring); border-radius: 8px; background: rgba(255,255,255,.04); color: var(--text); font: 15px/1.5 var(--sans); }
+    .studio-review .error { padding: 24px; border: 1px solid var(--ring); border-radius: 12px; }
+  </style>
+</head>
+<body>
+<header class="site-header"><div class="wrap"><div class="nav"><a class="brand" href="/" aria-label="Fourteen Seed, back to the studio"><div class="mark">F<span class="chev">&gt;&gt;</span>S</div><div class="wordmark">fourteen<span class="chev">&gt;&gt;</span>seed</div></a><nav class="site-nav" aria-label="Main"><ul><li><a href="/writing/">writing</a></li><li><a href="/">studio</a></li></ul></nav></div></div></header>
+<main class="wrap"><section id="app" class="studio-review"><p>Loading review...</p></section></main>
+<script>
+  (function () {
+    var SUPABASE_URL = 'https://mptdjjlzgmlvlbimwrtx.supabase.co';
+    var app = document.getElementById('app');
+    var params = new URLSearchParams(location.search), token = params.get('token'), verb = params.get('verb');
+    function esc(value) { return String(value || '').replace(/[&<>"']/g, function (c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
+    function nothing(message) { app.innerHTML = '<div class="error"><h1>Nothing here</h1><p>' + esc(message || 'This review link is not available.') + '</p></div>'; }
+    function submit(action, note) {
+      app.innerHTML = '<p>Saving your decision...</p>';
+      fetch(SUPABASE_URL + '/functions/v1/post-action', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: token, verb: action, note: note || null }) }).then(function (response) { return response.text().then(function (body) { if (!response.ok) throw new Error(body || 'The action could not be saved.'); return body; }); }).then(function (html) { document.open(); document.write(html); document.close(); }).catch(function (error) { nothing(error.message); });
+    }
+    function render(post) {
+      if (!post || post.review_status === 'dropped') { nothing(); return; }
+      var action = verb === 'publish' ? '<button data-verb="publish">Publish this draft</button>' : verb === 'drop' ? '<button data-verb="drop">Drop this draft</button>' : '<label for="note">What should change?</label><textarea id="note" placeholder="Describe the change you want"></textarea><button data-verb="change">Request a change</button>';
+      app.innerHTML = '<p class="eyebrow">Private review</p><h1>' + esc(post.title) + '</h1><p>' + esc(post.excerpt || '') + '</p><div class="studio-actions">' + action + '<a href="/writing/preview?token=' + encodeURIComponent(token) + '">Read the full preview</a></div>';
+      app.querySelector('[data-verb]').addEventListener('click', function () { submit(this.getAttribute('data-verb'), app.querySelector('#note') ? app.querySelector('#note').value : null); });
+    }
+    if (!token || !['publish','change','drop'].includes(verb)) { nothing('This review link is not valid.'); return; }
+    fetch(SUPABASE_URL + '/functions/v1/post-preview?token=' + encodeURIComponent(token), { cache: 'no-store' }).then(function (response) { if (!response.ok) throw new Error('This review link is not available.'); return response.json(); }).then(render).catch(function (error) { nothing(error.message); });
+  })();
+</script>
+</body>
+</html>
