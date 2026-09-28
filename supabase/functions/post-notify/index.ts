@@ -6,12 +6,13 @@ const REVIEW_ADDRESS = "wendy@fourteenseed.com";
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return jsonResponse({ error: "Method not allowed" }, 405);
-  if (!isServiceRole(req)) return jsonResponse({ error: "Unauthorized" }, 401);
   try {
     const body = await req.json() as Record<string, unknown>;
     if (typeof body.post_id !== "string") return jsonResponse({ error: "post_id is required" }, 400);
     const sb = getServiceClient();
     const post = await getPostById(sb, body.post_id);
+    const tokenAuthorised = typeof body.trigger_token === "string" && body.trigger_token === post.preview_token;
+    if (!isServiceRole(req) && !tokenAuthorised) return jsonResponse({ error: "Unauthorized" }, 401);
     if (post.published || post.review_status === "dropped") return jsonResponse({ error: "Post is not reviewable" }, 409);
     const previewUrl = `https://fourteenseed.com/writing/preview?token=${encodeURIComponent(post.preview_token)}`;
     const publishUrl = actionUrl(post.preview_token, "publish");

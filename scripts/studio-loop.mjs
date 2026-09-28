@@ -162,8 +162,7 @@ async function finalize() {
   if (post.published || post.review_status === "dropped") throw new Error("Post is not eligible for illustration");
   const promptText = (await readFile(path.resolve(promptPath), "utf8")).trim();
   if (!promptText || promptText.includes("TODO:")) throw new Error("Approved illustration prompt is not configured");
-  const key = required("STUDIO_LOOP_SERVICE_ROLE_KEY", serviceKey());
-  const response = await fetch(`${supabaseUrl()}/functions/v1/post-illustrate`, { method: "POST", headers: { "Content-Type": "application/json", apikey: key, Authorization: `Bearer ${key}` }, body: JSON.stringify({ post_id: post.id, image_base64: image.toString("base64"), illustration_prompt: promptText }) });
+  const response = await fetch(`${supabaseUrl()}/functions/v1/post-illustrate`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ post_id: post.id, trigger_token: post.preview_token, image_base64: image.toString("base64"), illustration_prompt: promptText }) });
   const body = await response.text();
   if (!response.ok) throw new Error(`post-illustrate ${response.status}: ${body.slice(0, 600)}`);
   console.log(body || JSON.stringify({ ok: true, post_id: post.id }));
