@@ -28,34 +28,45 @@ function link(label: string, href: string): string {
 }
 
 export interface StudioAngle {
-  label: string;
   title: string;
-  outlet: string;
-  excerpt: string;
-  visual: string;
+  pitch: string;
+  why_now: string;
+  provenance: string[];
 }
 
+const ANGLE_COPY: Record<"second-serve" | "fourteenseed", { subject: string; intro: string }> = {
+  "second-serve": {
+    subject: "Second Serve: pick this week's moment",
+    intro: "These are for your LinkedIn readers, the personal side of building with AI and a business.",
+  },
+  fourteenseed: {
+    subject: "Fourteen Seed: pick this week's story",
+    intro: "These are for fourteenseed.com, one project or product and the real-world problem it solves.",
+  },
+};
+
 export async function sendStudioAngleEmail(opts: {
-  apiKey: string; title: string; angles: StudioAngle[];
+  apiKey: string; outlet: "second-serve" | "fourteenseed"; angles: StudioAngle[]; pickUrls: string[]; skipUrl: string;
 }): Promise<BrevoSendResult> {
-  const subject = `Choose this week's angle: ${opts.title}`;
+  const copy = ANGLE_COPY[opts.outlet];
   const textContent = [
-    "I have three possible angles for this week's piece.",
+    copy.intro,
     "",
-    ...opts.angles.flatMap((angle) => [
-      `${angle.label}. ${angle.title}`,
-      `Suggested outlet: ${angle.outlet}`,
-      `What I would cover: ${angle.excerpt}`,
-      `Visual treatment: ${angle.visual}`,
+    ...opts.angles.flatMap((angle, index) => [
+      `${index + 1}. ${angle.title}`,
+      angle.pitch,
+      `Why now: ${angle.why_now}`,
+      `Sources: ${angle.provenance.join(", ")}`,
+      `Write this one: ${opts.pickUrls[index]}`,
       "",
     ]),
-    "Reply with A, B, or C, plus any extra context you want me to bring in.",
+    `None of these this week: ${opts.skipUrl}`,
     "",
     "Fourteen Seed studio loop",
   ].join("\n");
-  const cards = opts.angles.map((angle) => `<section style="margin:0 0 28px;padding:0 0 20px;border-bottom:1px solid #d9e3dc"><h2 style="font:600 20px/1.3 Arial,sans-serif;color:#153b37;margin:0 0 10px">${escapeHtml(angle.label)}. ${escapeHtml(angle.title)}</h2><p><strong>Suggested outlet:</strong> ${escapeHtml(angle.outlet)}</p><p><strong>What I would cover:</strong><br>${escapeHtml(angle.excerpt)}</p><p><strong>Visual treatment:</strong><br>${escapeHtml(angle.visual)}</p></section>`).join("");
-  const htmlContent = `<div style="font:16px/1.6 Arial,sans-serif;color:#153b37;max-width:680px"><p>I have three possible angles for this week's piece.</p>${cards}<p><strong>Choose one:</strong> reply with A, B, or C, plus any extra context you want me to bring in.</p><p style="color:#687b73;font-size:13px">Fourteen Seed studio loop</p></div>`;
-  return sendBrevo({ apiKey: opts.apiKey, subject, htmlContent, textContent });
+  const cards = opts.angles.map((angle, index) => `<section style="margin:0 0 28px;padding:0 0 20px;border-bottom:1px solid #d9e3dc"><h2 style="font:600 20px/1.3 Arial,sans-serif;color:#153b37;margin:0 0 10px">${index + 1}. ${escapeHtml(angle.title)}</h2><p>${escapeHtml(angle.pitch)}</p><p><strong>Why now:</strong> ${escapeHtml(angle.why_now)}</p><p><strong>Sources:</strong></p><ul>${angle.provenance.map((ref) => `<li>${escapeHtml(ref)}</li>`).join("")}</ul><p><a href="${escapeHtml(opts.pickUrls[index])}" style="display:inline-block;padding:10px 18px;background:#153b37;color:#fffdf8;border-radius:8px;text-decoration:none;">Write this one</a></p></section>`).join("");
+  const htmlContent = `<div style="font:16px/1.6 Arial,sans-serif;color:#153b37;max-width:680px"><p>${escapeHtml(copy.intro)}</p>${cards}<p><a href="${escapeHtml(opts.skipUrl)}" style="color:#687b73;">None of these this week</a></p><p style="color:#687b73;font-size:13px">Fourteen Seed studio loop</p></div>`;
+  return sendBrevo({ apiKey: opts.apiKey, subject: copy.subject, htmlContent, textContent });
 }
 
 export async function sendStudioDraftEmail(opts: {

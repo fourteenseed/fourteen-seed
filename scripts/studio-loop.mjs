@@ -97,10 +97,84 @@ function splitLinkedIn(body) {
   return { article: lines.slice(0, marker).join("\n").trim(), linkedin: lines.slice(marker + 1).join("\n").trim() };
 }
 
+function isoWeekRange(date) {
+  const d = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  const daysSinceMonday = (d.getUTCDay() + 6) % 7;
+  const monday = new Date(d);
+  monday.setUTCDate(d.getUTCDate() - daysSinceMonday);
+  const nextMonday = new Date(monday);
+  nextMonday.setUTCDate(monday.getUTCDate() + 7);
+  return [monday.toISOString(), nextMonday.toISOString()];
+}
+
+function isoWeekLabel(date) {
+  const d = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  const dayNum = (d.getUTCDay() + 6) % 7;
+  d.setUTCDate(d.getUTCDate() - dayNum + 3);
+  const firstThursday = new Date(Date.UTC(d.getUTCFullYear(), 0, 4));
+  const firstDayNum = (firstThursday.getUTCDay() + 6) % 7;
+  firstThursday.setUTCDate(firstThursday.getUTCDate() - firstDayNum + 3);
+  const week = 1 + Math.round((d - firstThursday) / (7 * 24 * 3600 * 1000));
+  return `${d.getUTCFullYear()}-W${String(week).padStart(2, "0")}`;
+}
+
+function requireOutlet(outlet) {
+  if (!["second-serve", "fourteenseed"].includes(outlet)) throw new Error("--outlet must be second-serve or fourteenseed");
+  return outlet;
+}
+
+function requireAngle(angle, index) {
+  if (!angle || typeof angle !== "object") throw new Error(`angle ${index + 1} is not an object`);
+  for (const key of ["title", "pitch", "why_now"]) {
+    if (typeof angle[key] !== "string" || !angle[key].trim()) throw new Error(`angle ${index + 1} is missing ${key}`);
+  }
+  if (!Array.isArray(angle.provenance) || !angle.provenance.length || !angle.provenance.every((item) => typeof item === "string" && item.trim())) {
+    throw new Error(`angle ${index + 1} needs a non-empty provenance list`);
+  }
+  return { title: angle.title.trim(), pitch: angle.pitch.trim(), why_now: angle.why_now.trim(), provenance: angle.provenance.map((item) => item.trim()) };
+}
+
+async function proposeAngles() {
+  const outlet = requireOutlet(required("--outlet", arg("--outlet")));
+  const file = required("--file", arg("--file"));
+  const raw = JSON.parse(await readFile(path.resolve(file), "utf8"));
+  if (!Array.isArray(raw) || raw.length !== 3) throw new Error("angles file must contain exactly three angles");
+  const angles = raw.map(requireAngle);
+  const week = isoWeekLabel(new Date());
+  const label = outlet === "second-serve" ? "Second Serve" : "Fourteen Seed";
+  const fields = { outlet, slug: `${outlet}-angles-${week}`, title: `${label} angles — week of ${week}`, review_status: "angles_proposed", angles };
+  const inserted = await rest("/rest/v1/studio_posts", { method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify(fields) });
+  const post = Array.isArray(inserted) ? inserted[0] : inserted;
+  const response = await fetch(`${supabaseUrl()}/functions/v1/angle-notify`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ post_id: post.id, trigger_token: post.preview_token, angles }),
+  });
+  const responseBody = await response.text();
+  if (!response.ok) throw new Error(`angle-notify ${response.status}: ${responseBody.slice(0, 600)}`);
+  console.log(JSON.stringify({ post_id: post.id, status: post.review_status }));
+}
+
+async function due() {
+  const outlet = requireOutlet(required("--outlet", arg("--outlet")));
+  const [weekStart, weekEnd] = isoWeekRange(new Date());
+  const rows = await rest(`/rest/v1/studio_posts?select=id,review_status,angles,chosen_angle,body,created_at&outlet=eq.${encodeURIComponent(outlet)}&created_at=gte.${encodeURIComponent(weekStart)}&created_at=lt.${encodeURIComponent(weekEnd)}&order=created_at.desc&limit=1`);
+  const row = rows?.[0];
+  if (!row) { console.log(JSON.stringify({ step: "propose" })); return; }
+  if (row.review_status === "angles_proposed") { console.log(JSON.stringify({ step: "wait", post_id: row.id })); return; }
+  if (row.review_status === "angle_chosen" && !row.body) {
+    const angle = Array.isArray(row.angles) && row.chosen_angle ? row.angles[row.chosen_angle - 1] : null;
+    console.log(JSON.stringify({ step: "write", post_id: row.id, angle }));
+    return;
+  }
+  console.log(JSON.stringify({ step: "none", post_id: row.id }));
+}
+
 async function ingest(filePath) {
   const { frontmatter, body } = parseFrontmatter(await readFile(path.resolve(filePath), "utf8"));
   const split = splitLinkedIn(body);
-  const payload = { ...frontmatter, body: split.article, linkedin_post: split.linkedin };
+  const postId = arg("--post-id");
+  const payload = { ...frontmatter, body: split.article, linkedin_post: split.linkedin, ...(postId ? { revise_post_id: postId } : {}) };
   const result = await fetch(`${supabaseUrl()}/functions/v1/post-ingest`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-studio-ingest-secret": required("STUDIO_LOOP_INGEST_SECRET", ingestSecret()) },
@@ -192,8 +266,10 @@ await loadDotEnv(".env.local");
 const command = process.argv[2];
 if (command === "ingest") await ingest(required("--file", arg("--file")));
 else if (command === "pending-changes") await pendingChanges();
+else if (command === "propose-angles") await proposeAngles();
+else if (command === "due") await due();
 else if (command === "next") await nextDraft();
 else if (command === "prompt") await prompt();
 else if (command === "finalize") await finalize();
 else if (command === "archive") await archive();
-else throw new Error("Use ingest, pending-changes, next, prompt, finalize, or archive");
+else throw new Error("Use ingest, pending-changes, propose-angles, due, next, prompt, finalize, or archive");
