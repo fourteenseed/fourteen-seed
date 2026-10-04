@@ -157,7 +157,6 @@ async function proposeAngles() {
 
 async function due() {
   const outlet = requireOutlet(required("--outlet", arg("--outlet")));
-  const [weekStart] = isoWeekRange(new Date());
   // Latest row whatever week it was created in, so a pick made on a Sunday is still written on Monday.
   const rows = await rest(`/rest/v1/studio_posts?select=id,review_status,angles,chosen_angle,body,created_at&outlet=eq.${encodeURIComponent(outlet)}&order=created_at.desc&limit=1`);
   const row = rows?.[0];
@@ -171,7 +170,9 @@ async function due() {
     console.log(JSON.stringify({ step: "none", post_id: row.id, reason: "in_review" }));
     return;
   }
-  if (!row || new Date(row.created_at) < new Date(weekStart)) { console.log(JSON.stringify({ step: "propose" })); return; }
+  // Weekly rhythm on a rolling window: a new set of angles once the latest row is over six days old.
+  const sixDays = 6 * 24 * 60 * 60 * 1000;
+  if (!row || Date.now() - new Date(row.created_at).getTime() > sixDays) { console.log(JSON.stringify({ step: "propose" })); return; }
   if (row.review_status === "angles_proposed") { console.log(JSON.stringify({ step: "wait", post_id: row.id })); return; }
   console.log(JSON.stringify({ step: "none", post_id: row.id }));
 }
