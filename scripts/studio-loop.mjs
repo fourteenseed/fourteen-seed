@@ -157,16 +157,22 @@ async function proposeAngles() {
 
 async function due() {
   const outlet = requireOutlet(required("--outlet", arg("--outlet")));
-  const [weekStart, weekEnd] = isoWeekRange(new Date());
-  const rows = await rest(`/rest/v1/studio_posts?select=id,review_status,angles,chosen_angle,body,created_at&outlet=eq.${encodeURIComponent(outlet)}&created_at=gte.${encodeURIComponent(weekStart)}&created_at=lt.${encodeURIComponent(weekEnd)}&order=created_at.desc&limit=1`);
+  const [weekStart] = isoWeekRange(new Date());
+  // Latest row whatever week it was created in, so a pick made on a Sunday is still written on Monday.
+  const rows = await rest(`/rest/v1/studio_posts?select=id,review_status,angles,chosen_angle,body,created_at&outlet=eq.${encodeURIComponent(outlet)}&order=created_at.desc&limit=1`);
   const row = rows?.[0];
-  if (!row) { console.log(JSON.stringify({ step: "propose" })); return; }
-  if (row.review_status === "angles_proposed") { console.log(JSON.stringify({ step: "wait", post_id: row.id })); return; }
-  if (row.review_status === "angle_chosen" && !row.body) {
+  if (row?.review_status === "angle_chosen" && !row.body) {
     const angle = Array.isArray(row.angles) && row.chosen_angle ? row.angles[row.chosen_angle - 1] : null;
     console.log(JSON.stringify({ step: "write", post_id: row.id, angle }));
     return;
   }
+  // Never stack drafts on Wendy: a piece still in review holds the outlet until she decides.
+  if (row && ["draft", "illustrated", "awaiting_review", "change_requested"].includes(row.review_status)) {
+    console.log(JSON.stringify({ step: "none", post_id: row.id, reason: "in_review" }));
+    return;
+  }
+  if (!row || new Date(row.created_at) < new Date(weekStart)) { console.log(JSON.stringify({ step: "propose" })); return; }
+  if (row.review_status === "angles_proposed") { console.log(JSON.stringify({ step: "wait", post_id: row.id })); return; }
   console.log(JSON.stringify({ step: "none", post_id: row.id }));
 }
 
@@ -183,6 +189,14 @@ async function ingest(filePath) {
   const responseText = await result.text();
   if (!result.ok) throw new Error(`post-ingest ${result.status}: ${responseText.slice(0, 600)}`);
   console.log(responseText);
+  // Fourteen Seed posts stay plain (no cover), so the review email goes now rather than after Station 2.
+  const post = JSON.parse(responseText).post;
+  if (post?.outlet === "fourteenseed") {
+    const notified = await fetch(`${supabaseUrl()}/functions/v1/post-notify`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ post_id: post.id, trigger_token: post.preview_token }) });
+    const notifyText = await notified.text();
+    if (!notified.ok) throw new Error(`post-notify ${notified.status}: ${notifyText.slice(0, 600)}`);
+    console.log(notifyText);
+  }
 }
 
 async function pendingChanges() {
@@ -211,7 +225,7 @@ async function illustrationReady() {
 
 async function nextDraft() {
   await illustrationReady();
-  const rows = await rest(`/rest/v1/studio_posts?select=id,outlet,slug,title,excerpt,article_section,preview_token,review_status,updated_at&published=eq.false&review_status=eq.draft&cover_image_url=is.null&order=created_at.asc&limit=1`);
+  const rows = await rest(`/rest/v1/studio_posts?select=id,outlet,slug,title,excerpt,article_section,preview_token,review_status,updated_at&outlet=eq.second-serve&published=eq.false&review_status=eq.draft&cover_image_url=is.null&order=created_at.asc&limit=1`);
   console.log(JSON.stringify(rows?.[0] || null));
 }
 
