@@ -24,8 +24,18 @@ export interface StudioPostRow {
   review_status: string;
   review_note: string | null;
   preview_token: string;
+  angles: StudioAngleRow[] | null;
+  chosen_angle: number | null;
+  angle_chosen_at: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface StudioAngleRow {
+  title: string;
+  pitch: string;
+  why_now: string;
+  provenance: string[];
 }
 
 export const corsHeaders = {
@@ -89,8 +99,9 @@ export function escapeHtml(value: unknown): string {
   return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
 }
 
-export function actionUrl(token: string, verb: "publish" | "change" | "drop"): string {
-  return `https://fourteenseed.com/writing/review?token=${encodeURIComponent(token)}&verb=${verb}`;
+export function actionUrl(token: string, verb: "publish" | "change" | "drop" | "pick" | "skip", angle?: number): string {
+  const base = `https://fourteenseed.com/writing/review?token=${encodeURIComponent(token)}&verb=${verb}`;
+  return typeof angle === "number" ? `${base}&angle=${angle}` : base;
 }
 
 export function isServiceRole(req: Request): boolean {

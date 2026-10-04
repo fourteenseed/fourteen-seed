@@ -97,10 +97,91 @@ function splitLinkedIn(body) {
   return { article: lines.slice(0, marker).join("\n").trim(), linkedin: lines.slice(marker + 1).join("\n").trim() };
 }
 
+function isoWeekRange(date) {
+  const d = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  const daysSinceMonday = (d.getUTCDay() + 6) % 7;
+  const monday = new Date(d);
+  monday.setUTCDate(d.getUTCDate() - daysSinceMonday);
+  const nextMonday = new Date(monday);
+  nextMonday.setUTCDate(monday.getUTCDate() + 7);
+  return [monday.toISOString(), nextMonday.toISOString()];
+}
+
+function isoWeekLabel(date) {
+  const d = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  const dayNum = (d.getUTCDay() + 6) % 7;
+  d.setUTCDate(d.getUTCDate() - dayNum + 3);
+  const firstThursday = new Date(Date.UTC(d.getUTCFullYear(), 0, 4));
+  const firstDayNum = (firstThursday.getUTCDay() + 6) % 7;
+  firstThursday.setUTCDate(firstThursday.getUTCDate() - firstDayNum + 3);
+  const week = 1 + Math.round((d - firstThursday) / (7 * 24 * 3600 * 1000));
+  return `${d.getUTCFullYear()}-W${String(week).padStart(2, "0")}`;
+}
+
+function requireOutlet(outlet) {
+  if (!["second-serve", "fourteenseed"].includes(outlet)) throw new Error("--outlet must be second-serve or fourteenseed");
+  return outlet;
+}
+
+function requireAngle(angle, index) {
+  if (!angle || typeof angle !== "object") throw new Error(`angle ${index + 1} is not an object`);
+  for (const key of ["title", "pitch", "why_now"]) {
+    if (typeof angle[key] !== "string" || !angle[key].trim()) throw new Error(`angle ${index + 1} is missing ${key}`);
+  }
+  if (!Array.isArray(angle.provenance) || !angle.provenance.length || !angle.provenance.every((item) => typeof item === "string" && item.trim())) {
+    throw new Error(`angle ${index + 1} needs a non-empty provenance list`);
+  }
+  return { title: angle.title.trim(), pitch: angle.pitch.trim(), why_now: angle.why_now.trim(), provenance: angle.provenance.map((item) => item.trim()) };
+}
+
+async function proposeAngles() {
+  const outlet = requireOutlet(required("--outlet", arg("--outlet")));
+  const file = required("--file", arg("--file"));
+  const raw = JSON.parse(await readFile(path.resolve(file), "utf8"));
+  if (!Array.isArray(raw) || raw.length !== 3) throw new Error("angles file must contain exactly three angles");
+  const angles = raw.map(requireAngle);
+  const week = isoWeekLabel(new Date());
+  const label = outlet === "second-serve" ? "Second Serve" : "Fourteen Seed";
+  const fields = { outlet, slug: `${outlet}-angles-${week}`, title: `${label} angles — week of ${week}`, review_status: "angles_proposed", angles };
+  const inserted = await rest("/rest/v1/studio_posts", { method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify(fields) });
+  const post = Array.isArray(inserted) ? inserted[0] : inserted;
+  const response = await fetch(`${supabaseUrl()}/functions/v1/angle-notify`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ post_id: post.id, trigger_token: post.preview_token, angles }),
+  });
+  const responseBody = await response.text();
+  if (!response.ok) throw new Error(`angle-notify ${response.status}: ${responseBody.slice(0, 600)}`);
+  console.log(JSON.stringify({ post_id: post.id, status: post.review_status }));
+}
+
+async function due() {
+  const outlet = requireOutlet(required("--outlet", arg("--outlet")));
+  // Latest row whatever week it was created in, so a pick made on a Sunday is still written on Monday.
+  const rows = await rest(`/rest/v1/studio_posts?select=id,review_status,angles,chosen_angle,body,created_at&outlet=eq.${encodeURIComponent(outlet)}&order=created_at.desc&limit=1`);
+  const row = rows?.[0];
+  if (row?.review_status === "angle_chosen" && !row.body) {
+    const angle = Array.isArray(row.angles) && row.chosen_angle ? row.angles[row.chosen_angle - 1] : null;
+    console.log(JSON.stringify({ step: "write", post_id: row.id, angle }));
+    return;
+  }
+  // Never stack drafts on Wendy: a piece still in review holds the outlet until she decides.
+  if (row && ["draft", "illustrated", "awaiting_review", "change_requested"].includes(row.review_status)) {
+    console.log(JSON.stringify({ step: "none", post_id: row.id, reason: "in_review" }));
+    return;
+  }
+  // Weekly rhythm on a rolling window: a new set of angles once the latest row is over six days old.
+  const sixDays = 6 * 24 * 60 * 60 * 1000;
+  if (!row || Date.now() - new Date(row.created_at).getTime() > sixDays) { console.log(JSON.stringify({ step: "propose" })); return; }
+  if (row.review_status === "angles_proposed") { console.log(JSON.stringify({ step: "wait", post_id: row.id })); return; }
+  console.log(JSON.stringify({ step: "none", post_id: row.id }));
+}
+
 async function ingest(filePath) {
   const { frontmatter, body } = parseFrontmatter(await readFile(path.resolve(filePath), "utf8"));
   const split = splitLinkedIn(body);
-  const payload = { ...frontmatter, body: split.article, linkedin_post: split.linkedin };
+  const postId = arg("--post-id");
+  const payload = { ...frontmatter, body: split.article, linkedin_post: split.linkedin, ...(postId ? { revise_post_id: postId } : {}) };
   const result = await fetch(`${supabaseUrl()}/functions/v1/post-ingest`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-studio-ingest-secret": required("STUDIO_LOOP_INGEST_SECRET", ingestSecret()) },
@@ -109,6 +190,14 @@ async function ingest(filePath) {
   const responseText = await result.text();
   if (!result.ok) throw new Error(`post-ingest ${result.status}: ${responseText.slice(0, 600)}`);
   console.log(responseText);
+  // Fourteen Seed posts stay plain (no cover), so the review email goes now rather than after Station 2.
+  const post = JSON.parse(responseText).post;
+  if (post?.outlet === "fourteenseed") {
+    const notified = await fetch(`${supabaseUrl()}/functions/v1/post-notify`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ post_id: post.id, trigger_token: post.preview_token }) });
+    const notifyText = await notified.text();
+    if (!notified.ok) throw new Error(`post-notify ${notified.status}: ${notifyText.slice(0, 600)}`);
+    console.log(notifyText);
+  }
 }
 
 async function pendingChanges() {
@@ -137,7 +226,7 @@ async function illustrationReady() {
 
 async function nextDraft() {
   await illustrationReady();
-  const rows = await rest(`/rest/v1/studio_posts?select=id,outlet,slug,title,excerpt,article_section,preview_token,review_status,updated_at&published=eq.false&review_status=eq.draft&cover_image_url=is.null&order=created_at.asc&limit=1`);
+  const rows = await rest(`/rest/v1/studio_posts?select=id,outlet,slug,title,excerpt,article_section,preview_token,review_status,updated_at&outlet=eq.second-serve&published=eq.false&review_status=eq.draft&cover_image_url=is.null&order=created_at.asc&limit=1`);
   console.log(JSON.stringify(rows?.[0] || null));
 }
 
@@ -162,8 +251,7 @@ async function finalize() {
   if (post.published || post.review_status === "dropped") throw new Error("Post is not eligible for illustration");
   const promptText = (await readFile(path.resolve(promptPath), "utf8")).trim();
   if (!promptText || promptText.includes("TODO:")) throw new Error("Approved illustration prompt is not configured");
-  const key = required("STUDIO_LOOP_SERVICE_ROLE_KEY", serviceKey());
-  const response = await fetch(`${supabaseUrl()}/functions/v1/post-illustrate`, { method: "POST", headers: { "Content-Type": "application/json", apikey: key, Authorization: `Bearer ${key}` }, body: JSON.stringify({ post_id: post.id, image_base64: image.toString("base64"), illustration_prompt: promptText }) });
+  const response = await fetch(`${supabaseUrl()}/functions/v1/post-illustrate`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ post_id: post.id, trigger_token: post.preview_token, image_base64: image.toString("base64"), illustration_prompt: promptText }) });
   const body = await response.text();
   if (!response.ok) throw new Error(`post-illustrate ${response.status}: ${body.slice(0, 600)}`);
   console.log(body || JSON.stringify({ ok: true, post_id: post.id }));
@@ -193,8 +281,10 @@ await loadDotEnv(".env.local");
 const command = process.argv[2];
 if (command === "ingest") await ingest(required("--file", arg("--file")));
 else if (command === "pending-changes") await pendingChanges();
+else if (command === "propose-angles") await proposeAngles();
+else if (command === "due") await due();
 else if (command === "next") await nextDraft();
 else if (command === "prompt") await prompt();
 else if (command === "finalize") await finalize();
 else if (command === "archive") await archive();
-else throw new Error("Use ingest, pending-changes, next, prompt, finalize, or archive");
+else throw new Error("Use ingest, pending-changes, propose-angles, due, next, prompt, finalize, or archive");

@@ -16,6 +16,9 @@ verify_jwt = false
 [functions.post-notify]
 verify_jwt = false
 
+[functions.angle-notify]
+verify_jwt = false
+
 [functions.post-action]
 verify_jwt = false
 
