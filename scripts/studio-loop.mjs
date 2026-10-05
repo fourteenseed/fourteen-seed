@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_SUPABASE_URL = "https://mptdjjlzgmlvlbimwrtx.supabase.co";
 const MAX_IMAGE_BYTES = 12 * 1024 * 1024;
+const ARCHIVE_DIR = "/Users/wendyharris/fourteenseed/open-brain/fourteen-seed/studio/second-serve/editions";
 
 async function loadDotEnv(fileName) {
   try {
@@ -257,21 +258,59 @@ async function finalize() {
   console.log(body || JSON.stringify({ ok: true, post_id: post.id }));
 }
 
-function frontmatter(title, date, edition, slug) {
-  return `---\ntitle: ${JSON.stringify(title)}\ndate: ${date}\nstatus: approved\nlinkedin_url: pending\n---\n`;
+// LinkedIn share links carry tracking queries; the vault keeps the bare article URL.
+function normaliseLinkedInUrl(raw) {
+  if (raw.length > 2000) return null;
+  let url;
+  try { url = new URL(raw.trim()); } catch { return null; }
+  if (url.protocol !== "https:" || !(url.hostname === "linkedin.com" || url.hostname.endsWith(".linkedin.com"))) return null;
+  const pathname = url.pathname.replace(/\/+$/, "");
+  return pathname ? `https://${url.hostname}${pathname}` : null;
+}
+
+async function setLinkedInUrl() {
+  const postId = required("--post-id", arg("--post-id"));
+  const url = normaliseLinkedInUrl(required("--url", arg("--url")));
+  if (!url) throw new Error("--url must be a LinkedIn address starting https://www.linkedin.com/");
+  const post = await postById(postId);
+  if (post.outlet !== "second-serve" || post.review_status === "dropped") throw new Error("Only Second Serve editions that are not dropped take a LinkedIn link");
+  const updated = await rest(`/rest/v1/studio_posts?id=eq.${encodeURIComponent(post.id)}`, { method: "PATCH", headers: { Prefer: "return=representation" }, body: JSON.stringify({ linkedin_url: url }) });
+  const row = Array.isArray(updated) ? updated[0] : updated;
+  console.log(JSON.stringify({ post_id: row.id, linkedin_url: row.linkedin_url, published: row.published }));
+}
+
+function frontmatter(title, date, linkedinUrl) {
+  return `---\ntitle: ${JSON.stringify(title)}\ndate: ${date}\nstatus: approved\nlinkedin_url: ${linkedinUrl || "pending"}\n---\n`;
+}
+
+// Only the frontmatter is touched, so anything Wendy has edited in the body stays as she left it.
+function fillLinkedInUrl(markdown, linkedinUrl) {
+  const end = markdown.indexOf("\n---\n");
+  if (!markdown.startsWith("---\n") || end < 0) return markdown;
+  return markdown.slice(0, end).replace(/^linkedin_url: pending$/m, () => `linkedin_url: ${linkedinUrl}`) + markdown.slice(end);
 }
 
 async function archive() {
-  const rows = await rest(`/rest/v1/studio_posts?select=title,slug,body,linkedin_post,edition_number,published_at&outlet=eq.second-serve&published=eq.true&order=published_at.asc`);
-  const folder = "/Users/wendyharris/fourteenseed/open-brain/fourteen-seed/studio/second-serve/editions";
+  const rows = await rest(`/rest/v1/studio_posts?select=title,slug,body,linkedin_post,linkedin_url,edition_number,published_at&outlet=eq.second-serve&published=eq.true&order=published_at.asc`);
+  const folder = value("STUDIO_LOOP_ARCHIVE_DIR", ARCHIVE_DIR);
   for (const post of rows || []) {
     const edition = String(post.edition_number || "00").padStart(2, "0");
     const filename = `edition-${edition}_${post.slug}.md`;
     const destination = path.join(folder, filename);
-    try { await access(destination); continue; } catch { /* write the missing archive entry */ }
+    let existing = null;
+    try { existing = await readFile(destination, "utf8"); } catch { /* write the missing archive entry */ }
+    if (existing !== null) {
+      // Archived before its LinkedIn link was recorded: fill the link in, nothing else.
+      const filled = post.linkedin_url ? fillLinkedInUrl(existing, post.linkedin_url) : existing;
+      if (filled !== existing) {
+        await writeFile(destination, filled, "utf8");
+        console.log(JSON.stringify({ linked: destination }));
+      }
+      continue;
+    }
     await mkdir(folder, { recursive: true });
     const date = String(post.published_at || new Date().toISOString()).slice(0, 10);
-    await writeFile(destination, `${frontmatter(post.title, date, edition, post.slug)}\n${post.body.trim()}\n\n## LinkedIn post\n\n${(post.linkedin_post || "").trim()}\n`, "utf8");
+    await writeFile(destination, `${frontmatter(post.title, date, post.linkedin_url)}\n${post.body.trim()}\n\n## LinkedIn post\n\n${(post.linkedin_post || "").trim()}\n`, "utf8");
     console.log(JSON.stringify({ archived: destination }));
   }
 }
@@ -287,4 +326,5 @@ else if (command === "next") await nextDraft();
 else if (command === "prompt") await prompt();
 else if (command === "finalize") await finalize();
 else if (command === "archive") await archive();
-else throw new Error("Use ingest, pending-changes, propose-angles, due, next, prompt, finalize, or archive");
+else if (command === "set-linkedin-url") await setLinkedInUrl();
+else throw new Error("Use ingest, pending-changes, propose-angles, due, next, prompt, finalize, archive, or set-linkedin-url");

@@ -16,7 +16,9 @@
     .studio-actions button, .studio-actions a { display: block; width: 100%; box-sizing: border-box; padding: 14px 18px; border: 1px solid var(--ring); border-radius: 8px; background: transparent; color: var(--text); font: 600 15px var(--sans); text-align: center; cursor: pointer; text-decoration: none; }
     .studio-actions button[data-verb="publish"] { background: var(--accent); border-color: var(--accent); color: #fff; }
     .studio-actions button[data-verb="drop"] { color: var(--dim); }
-    textarea { width: 100%; min-height: 150px; box-sizing: border-box; padding: 12px; border: 1px solid var(--ring); border-radius: 8px; background: rgba(255,255,255,.04); color: var(--text); font: 15px/1.5 var(--sans); }
+    textarea, input[type="url"] { width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid var(--ring); border-radius: 8px; background: rgba(255,255,255,.04); color: var(--text); font: 15px/1.5 var(--sans); }
+    textarea { min-height: 150px; }
+    .studio-actions .hint { margin: -4px 0 4px; font-size: 14px; color: var(--dim); }
     .studio-review .error { padding: 24px; border: 1px solid var(--ring); border-radius: 12px; }
   </style>
 </head>
@@ -30,15 +32,18 @@
     var params = new URLSearchParams(location.search), token = params.get('token'), verb = params.get('verb');
     function esc(value) { return String(value || '').replace(/[&<>"']/g, function (c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
     function nothing(message) { app.innerHTML = '<div class="error"><h1>Nothing here</h1><p>' + esc(message || 'This review link is not available.') + '</p></div>'; }
-    function submit(action, note) {
+    function submit(action, note, linkedinUrl) {
       app.innerHTML = '<p>Saving your decision...</p>';
-      fetch(SUPABASE_URL + '/functions/v1/post-action', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: token, verb: action, note: note || null }) }).then(function (response) { return response.text().then(function (body) { if (!response.ok) throw new Error(body || 'The action could not be saved.'); return body; }); }).then(function (html) { document.open(); document.write(html); document.close(); }).catch(function (error) { nothing(error.message); });
+      fetch(SUPABASE_URL + '/functions/v1/post-action', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: token, verb: action, note: note || null, linkedin_url: linkedinUrl || null }) }).then(function (response) { return response.text().then(function (body) { if (!response.ok) throw new Error(body || 'The action could not be saved.'); return body; }); }).then(function (html) { document.open(); document.write(html); document.close(); }).catch(function (error) { nothing(error.message); });
     }
     function render(post) {
       if (!post || post.review_status === 'dropped') { nothing(); return; }
-      var action = verb === 'publish' ? '<button data-verb="publish">Publish this draft</button>' : verb === 'drop' ? '<button data-verb="drop">Drop this draft</button>' : '<label for="note">What should change?</label><textarea id="note" placeholder="Describe the change you want"></textarea><button data-verb="change">Request a change</button>';
+      // Second Serve is pasted into LinkedIn by hand, so Publish can also record where it went live, now or later.
+      var linkedin = verb === 'publish' && post.outlet === 'second-serve';
+      var linkedinField = '<label for="linkedin_url">LinkedIn article link' + (post.published ? '' : ' (optional)') + '</label><input id="linkedin_url" type="url" placeholder="https://www.linkedin.com/pulse/..." value="' + esc(post.linkedin_url) + '"><p class="hint">' + (post.published ? 'This edition is already marked as published.' : 'Paste it if the article is already live. You can add it later from this page.') + '</p>';
+      var action = linkedin && post.published ? linkedinField + '<button data-verb="publish">Save LinkedIn link</button>' : linkedin ? linkedinField + '<button data-verb="publish">Publish this draft</button>' : verb === 'publish' ? '<button data-verb="publish">Publish this draft</button>' : verb === 'drop' ? '<button data-verb="drop">Drop this draft</button>' : '<label for="note">What should change?</label><textarea id="note" placeholder="Describe the change you want"></textarea><button data-verb="change">Request a change</button>';
       app.innerHTML = '<p class="eyebrow">Private review</p><h1>' + esc(post.title) + '</h1><p>' + esc(post.excerpt || '') + '</p><div class="studio-actions">' + action + '<a href="/writing/preview?token=' + encodeURIComponent(token) + '">Read the full preview</a></div>';
-      app.querySelector('[data-verb]').addEventListener('click', function () { submit(this.getAttribute('data-verb'), app.querySelector('#note') ? app.querySelector('#note').value : null); });
+      app.querySelector('[data-verb]').addEventListener('click', function () { submit(this.getAttribute('data-verb'), app.querySelector('#note') ? app.querySelector('#note').value : null, app.querySelector('#linkedin_url') ? app.querySelector('#linkedin_url').value : null); });
     }
     if (!token || !['publish','change','drop'].includes(verb)) { nothing('This review link is not valid.'); return; }
     fetch(SUPABASE_URL + '/functions/v1/post-preview?token=' + encodeURIComponent(token), { cache: 'no-store' }).then(function (response) { if (!response.ok) throw new Error('This review link is not available.'); return response.json(); }).then(render).catch(function (error) { nothing(error.message); });
