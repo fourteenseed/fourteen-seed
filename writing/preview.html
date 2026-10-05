@@ -26,6 +26,8 @@
     .studio-panel pre { white-space: pre-wrap; font: 15px/1.65 var(--sans); }
     .studio-panel ul { padding-left: 20px; }
     .studio-nothing { padding: 120px 0; text-align: center; }
+    .studio-copy { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 0; }
+    .studio-copy button { padding: 10px 16px; border: 1px solid var(--ring); border-radius: 8px; background: transparent; color: var(--text); font: 600 14px var(--sans); cursor: pointer; }
   </style>
 </head>
 <body>
@@ -43,11 +45,25 @@
       function flush() { if (para.length) { out.push('<p>' + inline(para.join(' ')) + '</p>'); para = []; } if (list) { out.push('</ul>'); list = false; } }
       lines.forEach(function (line) { if (/^## /.test(line)) { flush(); out.push('<h2>' + inline(line.slice(3)) + '</h2>'); } else if (/^### /.test(line)) { flush(); out.push('<h3>' + inline(line.slice(4)) + '</h3>'); } else if (/^[-*] /.test(line)) { if (para.length) flush(); if (!list) { out.push('<ul>'); list = true; } out.push('<li>' + inline(line.slice(2)) + '</li>'); } else if (!line.trim()) flush(); else para.push(line.trim()); }); flush(); return out.join('');
     }
+    // The article goes in as rich text so LinkedIn keeps headings, bold and links; plain text is the fallback.
+    function copy(button, text, html) {
+      var label = button.textContent;
+      function done(message) { button.textContent = message; setTimeout(function () { button.textContent = label; }, 2500); }
+      if (!navigator.clipboard) { done('Copy not available here'); return; }
+      var write = html && window.ClipboardItem ? navigator.clipboard.write([new ClipboardItem({ 'text/html': new Blob([html], { type: 'text/html' }), 'text/plain': new Blob([text], { type: 'text/plain' }) })]) : navigator.clipboard.writeText(text);
+      write.then(function () { done('Copied'); }, function () { done('Copy failed, select the text instead'); });
+    }
     function nothing() { app.className = 'studio-preview studio-nothing'; app.innerHTML = '<h1>Nothing here</h1><p>This private preview is not available.</p>'; }
     function render(post) {
       var refs = (post.source_refs || []).map(function (ref) { return '<li>' + esc(ref) + '</li>'; }).join('');
-      var linkedin = post.outlet === 'second-serve' ? '<section class="studio-panel"><h2>LinkedIn post</h2><pre>' + esc(post.linkedin_post || '') + '</pre></section>' : '';
-      app.innerHTML = '<p class="studio-kicker">Private draft preview · ' + esc(post.outlet === 'second-serve' ? 'Second Serve' : 'Fourteen Seed') + '</p><h1>' + esc(post.title) + '</h1><p class="studio-meta">' + esc(post.article_section || 'Writing') + (post.edition_number ? ' · edition ' + esc(post.edition_number) : '') + '</p><p class="studio-excerpt">' + esc(post.excerpt || '') + '</p>' + (post.cover_image_url ? '<img class="studio-cover" src="' + esc(post.cover_image_url) + '" alt="' + esc(post.hero_alt || post.title) + '" width="1600" height="900">' : '') + '<div class="studio-body">' + markdown(post.body || '') + '</div>' + linkedin + '<section class="studio-panel"><h2>Sources</h2><ul>' + (refs || '<li>No source references recorded.</li>') + '</ul></section>';
+      var secondServe = post.outlet === 'second-serve';
+      var linkedin = secondServe ? '<section class="studio-panel"><h2>LinkedIn post</h2><pre>' + esc(post.linkedin_post || '') + '</pre></section>' : '';
+      var copyBar = secondServe ? '<div class="studio-copy"><button type="button" data-copy="article">Copy article for LinkedIn</button><button type="button" data-copy="post">Copy LinkedIn post</button></div>' : '';
+      app.innerHTML = '<p class="studio-kicker">Private draft preview · ' + esc(secondServe ? 'Second Serve' : 'Fourteen Seed') + '</p><h1>' + esc(post.title) + '</h1><p class="studio-meta">' + esc(post.article_section || 'Writing') + (post.edition_number ? ' · edition ' + esc(post.edition_number) : '') + '</p>' + copyBar + '<p class="studio-excerpt">' + esc(post.excerpt || '') + '</p>' + (post.cover_image_url ? '<img class="studio-cover" src="' + esc(post.cover_image_url) + '" alt="' + esc(post.hero_alt || post.title) + '" width="1600" height="900">' : '') + '<div class="studio-body">' + markdown(post.body || '') + '</div>' + linkedin + '<section class="studio-panel"><h2>Sources</h2><ul>' + (refs || '<li>No source references recorded.</li>') + '</ul></section>';
+      if (!secondServe) return;
+      var body = app.querySelector('.studio-body');
+      app.querySelector('[data-copy="article"]').addEventListener('click', function () { copy(this, body.innerText, body.innerHTML); });
+      app.querySelector('[data-copy="post"]').addEventListener('click', function () { copy(this, post.linkedin_post || ''); });
     }
     if (!token) { nothing(); return; }
     fetch(SUPABASE_URL + '/functions/v1/post-preview?token=' + encodeURIComponent(token), { cache: 'no-store' }).then(function (response) { if (!response.ok) throw new Error('not found'); return response.json(); }).then(render).catch(nothing);

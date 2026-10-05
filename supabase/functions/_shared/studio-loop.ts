@@ -8,6 +8,7 @@ export interface StudioPostRow {
   excerpt: string | null;
   body: string;
   linkedin_post: string | null;
+  linkedin_url: string | null;
   edition_number: number | null;
   keywords: string[] | null;
   meta_description: string | null;
@@ -102,6 +103,16 @@ export function escapeHtml(value: unknown): string {
 export function actionUrl(token: string, verb: "publish" | "change" | "drop" | "pick" | "skip", angle?: number): string {
   const base = `https://fourteenseed.com/writing/review?token=${encodeURIComponent(token)}&verb=${verb}`;
   return typeof angle === "number" ? `${base}&angle=${angle}` : base;
+}
+
+// LinkedIn share links carry tracking queries; the vault keeps the bare article URL.
+export function normaliseLinkedInUrl(raw: string): string | null {
+  if (raw.length > 2000) return null;
+  let url: URL;
+  try { url = new URL(raw.trim()); } catch { return null; }
+  if (url.protocol !== "https:" || !(url.hostname === "linkedin.com" || url.hostname.endsWith(".linkedin.com"))) return null;
+  const pathname = url.pathname.replace(/\/+$/, "");
+  return pathname ? `https://${url.hostname}${pathname}` : null;
 }
 
 export function isServiceRole(req: Request): boolean {
