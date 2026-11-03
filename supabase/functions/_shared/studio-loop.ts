@@ -26,6 +26,9 @@ export interface StudioPostRow {
   review_note: string | null;
   review_source: "button" | "email" | null;
   angle_note: string | null;
+  batch_id: string | null;
+  option_label: "A" | "B" | "C" | null;
+  story_card: string | null;
   exported_at: string | null;
   export_url: string | null;
   preview_token: string;

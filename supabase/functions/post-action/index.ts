@@ -1,4 +1,5 @@
 import { sendStudioApprovalEmail } from "../_shared/send-brevo-email.ts";
+import { siblingDropUpdate } from "../_shared/studio-batches.js";
 import { actionUrl, allowRate, corsHeaders, escapeHtml, getClientIp, getPostByToken, getServiceClient, htmlResponse, jsonResponse, normaliseLinkedInUrl, type StudioPostRow } from "../_shared/studio-loop.ts";
 
 type Verb = "publish" | "change" | "drop" | "pick" | "skip";
@@ -110,6 +111,10 @@ Deno.serve(async (req) => {
     if (verb === "publish") {
       const { error } = await sb.from("studio_posts").update({ published: true, published_at: post.published_at || new Date().toISOString(), review_status: "published", ...(linkedinUrl ? { linkedin_url: linkedinUrl } : {}) }).eq("id", post.id).eq("published", false);
       if (error) throw error;
+      if (post.batch_id && post.option_label) {
+        const { error: siblingError } = await sb.from("studio_posts").update(siblingDropUpdate(post.option_label)).eq("outlet", post.outlet).eq("batch_id", post.batch_id).neq("id", post.id).eq("published", false);
+        if (siblingError) throw siblingError;
+      }
       let emailSent = true;
       if (post.outlet === "second-serve") {
         const apiKey = Deno.env.get("BREVO_API_KEY");
