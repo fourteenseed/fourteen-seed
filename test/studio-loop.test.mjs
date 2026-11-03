@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { dueDecision, gobblrExportPlan } from "../scripts/studio-loop.mjs";
+import { renderRss } from "../scripts/build-writing.mjs";
 
 const now = Date.parse("2026-11-03T12:00:00.000Z");
 
@@ -46,4 +47,12 @@ test("gobblr export plan uses the published date and required front matter", () 
   assert.match(plan.frontmatter, /hero: \/blog\/feed-people-well-01\.jpg/);
   assert.match(plan.frontmatter, /heroAlt: "Hands setting plates along a feast table\."/);
   assert.match(plan.markdown, /## Start here/);
+});
+
+test("RSS includes only the supplied Fourteen Seed field notes with absolute URLs", () => {
+  const rss = renderRss([{ slug: "from-the-work", title: "From the work & the coast", excerpt: "A first-hand note.", published_at: "2026-11-03T10:00:00.000Z" }]);
+  assert.match(rss, /<rss version="2\.0">/);
+  assert.match(rss, /https:\/\/fourteenseed\.com\/writing\/from-the-work/);
+  assert.match(rss, /From the work &amp; the coast/);
+  assert.match(rss, /Tue, 03 Nov 2026 10:00:00 GMT/);
 });

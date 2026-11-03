@@ -148,7 +148,7 @@ async function proposeAngles() {
   const angles = raw.map(requireAngle);
   const week = isoWeekLabel(new Date());
   const label = { "second-serve": "Second Serve", fourteenseed: "Fourteen Seed", gobblr: "gobblr" }[outlet];
-  const fields = { outlet, slug: `${outlet}-angles-${week}`, title: `${label} angles — week of ${week}`, review_status: "angles_proposed", angles };
+  const fields = { outlet, slug: `${outlet}-angles-${week}`, title: `${label} angles: week of ${week}`, review_status: "angles_proposed", angles };
   const inserted = await rest("/rest/v1/studio_posts", { method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify(fields) });
   const post = Array.isArray(inserted) ? inserted[0] : inserted;
   const response = await fetch(`${supabaseUrl()}/functions/v1/angle-notify`, {

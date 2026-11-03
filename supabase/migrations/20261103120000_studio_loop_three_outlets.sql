@@ -41,3 +41,17 @@ alter table public.studio_posts add constraint studio_posts_gobblr_export_shape 
   (exported_at is null and export_url is null)
   or (outlet = 'gobblr' and published = true and exported_at is not null and export_url is not null)
 );
+
+-- The static writing build only needs three safe fields from Second Serve.
+-- Keep private preview tokens, draft bodies, and review notes out of the anon API.
+create or replace view public.studio_second_serve_links
+with (security_invoker = false)
+as
+select title, published_at, linkedin_url
+from public.studio_posts
+where outlet = 'second-serve'
+  and published = true
+  and linkedin_url is not null;
+
+revoke all on public.studio_second_serve_links from public;
+grant select on public.studio_second_serve_links to anon, authenticated;
