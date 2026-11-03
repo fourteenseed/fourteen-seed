@@ -8,9 +8,10 @@ function page(title: string, message: string, link?: { href: string; label: stri
   return htmlResponse(`<main style="max-width:680px;margin:10vh auto;padding:32px;font:16px/1.6 Arial,sans-serif;color:#153b37;background:#f6f8f3"><h1 style="font:600 32px/1.2 Georgia,serif">${escapeHtml(title)}</h1><p>${escapeHtml(message)}</p>${link ? `<p><a href="${escapeHtml(link.href)}" style="color:#c72e73">${escapeHtml(link.label)}</a></p>` : ""}</main>`);
 }
 
-// Only fourteenseed posts are built into /writing; a Second Serve edition lives on LinkedIn, if anywhere we know of.
-function liveLink(post: Pick<StudioPostRow, "outlet" | "slug" | "linkedin_url">, token: string) {
+// Fourteen Seed posts live on /writing, Second Serve lives on LinkedIn, and gobblr leaves through an export PR.
+function liveLink(post: Pick<StudioPostRow, "outlet" | "slug" | "linkedin_url" | "export_url">, token: string) {
   if (post.outlet === "fourteenseed") return { href: `${SITE}/writing/${encodeURIComponent(post.slug)}`, label: "Open the live post" };
+  if (post.outlet === "gobblr") return post.export_url ? { href: post.export_url, label: "Open the export PR" } : { href: `${SITE}/writing/`, label: "Back to writing" };
   return post.linkedin_url ? { href: post.linkedin_url, label: "Open it on LinkedIn" } : { href: actionUrl(token, "publish"), label: "Add the LinkedIn link" };
 }
 
@@ -102,7 +103,7 @@ Deno.serve(async (req) => {
     if (verb === "change") {
       if (!note) return page("A note is needed", "Add a short note describing the change you want.");
       if (note.length > 5000) return page("Note too long", "Keep the change request under 5,000 characters.");
-      const { error } = await sb.from("studio_posts").update({ review_note: note, review_status: "change_requested" }).eq("id", post.id).eq("published", false);
+      const { error } = await sb.from("studio_posts").update({ review_note: note, review_status: "change_requested", review_source: "button" }).eq("id", post.id).eq("published", false);
       if (error) throw error;
       return page("Change request saved", "The next writer run will read this note and revise the draft.", { href: `${SITE}/writing/preview?token=${encodeURIComponent(token)}`, label: "Return to the preview" });
     }
@@ -113,9 +114,10 @@ Deno.serve(async (req) => {
       if (post.outlet === "second-serve") {
         const apiKey = Deno.env.get("BREVO_API_KEY");
         if (!apiKey) emailSent = false;
-        else emailSent = (await sendStudioApprovalEmail({ apiKey, title: post.title, body: post.body, linkedinPost: post.linkedin_post, coverUrl: post.cover_image_url })).ok;
+        else emailSent = (await sendStudioApprovalEmail({ apiKey, title: post.title, body: post.body, linkedinPost: post.linkedin_post, coverUrl: post.cover_image_url, liftUrl: `${SITE}/writing/preview?token=${encodeURIComponent(token)}` })).ok;
       }
       if (post.outlet === "second-serve") return approvedPage({ ...post, linkedin_url: linkedinUrl ?? post.linkedin_url }, emailSent, token);
+      if (post.outlet === "gobblr") return page("Published", "The post will be exported to the gobblr repo as a PR within half a day. Wendy will review and merge it there.");
       return page("Published", "The post is now queued for the next website build.", liveLink(post, token));
     }
     if (verb === "drop") {

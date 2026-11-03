@@ -52,7 +52,8 @@ Deno.serve(async (req) => {
       const { error: uploadError } = await sb.storage.from("studio-covers").upload(objectPath, bytes, { contentType: "image/png", cacheControl: "31536000", upsert: true });
       if (uploadError) throw uploadError;
       const { data: publicUrl } = sb.storage.from("studio-covers").getPublicUrl(objectPath);
-      const { error: updateError } = await sb.from("studio_posts").update({ cover_image_url: publicUrl.publicUrl, cover_image_width: 1600, cover_image_height: 900, hero_alt: `An editorial illustration of Wendy considering ${post.title}.`, illustration_prompt: prompt, review_status: "illustrated" }).eq("id", post.id).eq("published", false);
+      const heroAlt = post.outlet === "second-serve" ? `An editorial illustration of Wendy considering ${post.title}.` : `An editorial illustration for ${post.title}.`;
+      const { error: updateError } = await sb.from("studio_posts").update({ cover_image_url: publicUrl.publicUrl, cover_image_width: 1600, cover_image_height: 900, hero_alt: heroAlt, illustration_prompt: prompt, review_status: "illustrated" }).eq("id", post.id).eq("published", false);
       if (updateError) throw updateError;
     } catch (error) {
       illustrationFailed = true;

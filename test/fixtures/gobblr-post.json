@@ -1,0 +1,13 @@
+{
+  "id": "00000000-0000-0000-0000-000000000588",
+  "outlet": "gobblr",
+  "slug": "feed-people-well",
+  "title": "Feed people well",
+  "excerpt": "A practical note from the pass.",
+  "body": "## Start here\n\nSet the table before service.",
+  "hero_alt": "Hands setting plates along a feast table.",
+  "cover_image_url": "https://example.com/cover.png",
+  "published": true,
+  "published_at": "2026-11-03T09:30:00.000Z",
+  "exported_at": null
+}

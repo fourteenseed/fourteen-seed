@@ -20,7 +20,7 @@ Deno.serve(async (req) => {
     const dropUrl = actionUrl(post.preview_token, "drop");
     const apiKey = Deno.env.get("BREVO_API_KEY");
     if (!apiKey) throw new Error("BREVO_API_KEY is not configured");
-    const result = await sendStudioDraftEmail({ apiKey, outlet: post.outlet, title: post.title, excerpt: post.excerpt, previewUrl, publishUrl, changeUrl, dropUrl, illustrationFailed: body.illustration_failed === true });
+    const result = await sendStudioDraftEmail({ apiKey, outlet: post.outlet, title: post.title, excerpt: post.excerpt, angleNote: post.angle_note, coverUrl: post.cover_image_url, previewUrl, publishUrl, changeUrl, dropUrl, illustrationFailed: body.illustration_failed === true });
     if (!result.ok) throw new Error(result.error || "Brevo rejected the email");
     const { error } = await sb.from("studio_posts").update({ review_status: "awaiting_review" }).eq("id", post.id).eq("published", false);
     if (error) throw error;
