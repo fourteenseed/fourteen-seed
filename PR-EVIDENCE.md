@@ -1,26 +1,24 @@
-# FOU-588 evidence
-
-PR: https://github.com/fourteenseed/fourteen-seed/pull/4
+# FOU-590 evidence
 
 Sensitivity: public-safe
 
 ## Claim
 
-The studio loop now carries Second Serve, Fourteen Seed field notes, and gobblr through one draft, cover, review, and publish-out workflow. gobblr publishes through a human-merge PR, Fourteen Seed field notes have cover-led pages and RSS, and Second Serve has a lift page.
+Fourteen Seed field notes now use the homepage light theme across the index, generated articles, and private preview. The studio loop accepts three Fourteen Seed options in one batch, waits for A, B, and C before sending one review email, and drops the two unchosen siblings when one is published. Second Serve and gobblr keep their existing single-draft behaviour.
 
 ## Evidence
 
-- Commits: `6a34a9f`, `7753d33`, and `96a6cea`.
-- `npm test`: 5 tests passed for cadence decisions, gobblr export front matter and paths, and Fourteen Seed RSS generation.
-- `deno check`: passed for `post-ingest`, `post-illustrate`, `post-notify`, `post-action`, and `angle-notify`.
-- No-key build: `node scripts/build-writing.mjs` left `writing/index.html` unchanged and preserved all five existing hand-written LinkedIn cards.
-- Live read-only cadence check: `due --outlet gobblr` returned `{"step":"write"}`.
-- Export proof: fixture-only `export --outlet gobblr --dry-run` printed the expected branch, JPEG path, Markdown path, date, author, summary, hero, and hero alt without changing git state.
-- XML and scripts: RSS and sitemap passed `xmllint`; both Node scripts passed syntax checks.
-- Prompt provenance: the committed Fourteen Seed and gobblr prompts match the approved source files byte for byte.
+- Commits: `6d9218a` (light writing surface) and `35f529d` (three-option engine).
+- `npm test`: 10 tests passed, covering batch due semantics, A/B/C readiness, sibling-drop logic, batch email order, gobblr export, RSS, and the generated article shell.
+- `deno check --no-lock`: passed for `post-ingest`, `post-notify`, `post-action`, `post-preview`, `_shared/studio-loop.ts`, and `_shared/send-brevo-email.ts`.
+- No-key build: `node scripts/build-writing.mjs` reported that it kept the hand-written page and generated blocks unchanged.
+- Fixture build: `node scripts/build-writing.mjs --fixture test/fixtures/writing-posts.json` wrote `writing/what-the-loop-taught-me.html` with `site.css`, `writing.css`, article metadata, and JSON-LD. The generated file was removed after the browser check because `writing/*.html` is a build output.
+- Browser verification used the page accessibility tree and responsive viewport overrides. `/writing` rendered at 1280px and 390px, the generated article rendered at 1280px, and the private preview rendered at 390px with Option A plus working B and C sibling links.
+- Screenshots: [writing at 1280px](evidence/writing-1280.jpg), [writing at 390px](evidence/writing-390.jpg), [generated article](evidence/article-1280.jpg), and [A/B/C preview](evidence/preview-390.jpg).
+- `git diff --check`: passed.
 
 ## Guardrails kept
 
-No migration was applied. No function was deployed. No Vercel command ran. No real gobblr export or email was sent. No credential value appears in the diff or this evidence.
+No migration was applied. No function was deployed. No Vercel command ran. No email was sent. No environment file was edited, and no credential value was printed or added to the diff.
 
 — Codex (builder) · 2026-11-03
