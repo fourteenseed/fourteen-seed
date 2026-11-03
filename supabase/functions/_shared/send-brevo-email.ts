@@ -8,12 +8,12 @@ function escapeHtml(value: unknown): string {
   return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
 }
 
-async function sendBrevo(opts: { apiKey: string; subject: string; htmlContent: string; textContent: string }): Promise<BrevoSendResult> {
+async function sendBrevo(opts: { apiKey: string; subject: string; htmlContent: string; textContent: string; cc?: string[] }): Promise<BrevoSendResult> {
   try {
     const response = await fetch(BREVO_API, {
       method: "POST",
       headers: { "api-key": opts.apiKey, "content-type": "application/json", accept: "application/json" },
-      body: JSON.stringify({ sender: { email: FROM_EMAIL, name: FROM_NAME }, to: [{ email: "wendy@fourteenseed.com" }], replyTo: { email: FROM_EMAIL, name: FROM_NAME }, subject: opts.subject, htmlContent: opts.htmlContent, textContent: opts.textContent }),
+      body: JSON.stringify({ sender: { email: FROM_EMAIL, name: FROM_NAME }, to: [{ email: "wendy@fourteenseed.com" }], ...(opts.cc?.length ? { cc: opts.cc.map((email) => ({ email })) } : {}), replyTo: { email: FROM_EMAIL, name: FROM_NAME }, subject: opts.subject, htmlContent: opts.htmlContent, textContent: opts.textContent }),
     });
     const data = await response.json().catch(() => ({}));
     if (!response.ok) return { ok: false, error: `${response.status}: ${JSON.stringify(data)}` };
@@ -34,7 +34,7 @@ export interface StudioAngle {
   provenance: string[];
 }
 
-const ANGLE_COPY: Record<"second-serve" | "fourteenseed", { subject: string; intro: string }> = {
+const ANGLE_COPY: Record<"second-serve" | "fourteenseed" | "gobblr", { subject: string; intro: string }> = {
   "second-serve": {
     subject: "Second Serve: pick this week's moment",
     intro: "These are for your LinkedIn readers, the personal side of building with AI and a business.",
@@ -43,10 +43,14 @@ const ANGLE_COPY: Record<"second-serve" | "fourteenseed", { subject: string; int
     subject: "Fourteen Seed: pick this week's story",
     intro: "These are for fourteenseed.com, one project or product and the real-world problem it solves.",
   },
+  gobblr: {
+    subject: "gobblr: pick this week's story",
+    intro: "These are for the gobblr diary, a first-hand note about the places that feed people.",
+  },
 };
 
 export async function sendStudioAngleEmail(opts: {
-  apiKey: string; outlet: "second-serve" | "fourteenseed"; angles: StudioAngle[]; pickUrls: string[]; skipUrl: string;
+  apiKey: string; outlet: "second-serve" | "fourteenseed" | "gobblr"; angles: StudioAngle[]; pickUrls: string[]; skipUrl: string;
 }): Promise<BrevoSendResult> {
   const copy = ANGLE_COPY[opts.outlet];
   const textContent = [
@@ -70,19 +74,24 @@ export async function sendStudioAngleEmail(opts: {
 }
 
 export async function sendStudioDraftEmail(opts: {
-  apiKey: string; outlet: "second-serve" | "fourteenseed"; title: string; excerpt: string | null; previewUrl: string; publishUrl: string; changeUrl: string; dropUrl: string; illustrationFailed: boolean;
+  apiKey: string; outlet: "second-serve" | "fourteenseed" | "gobblr"; title: string; excerpt: string | null; angleNote: string | null; coverUrl: string | null; previewUrl: string; publishUrl: string; changeUrl: string; dropUrl: string; illustrationFailed: boolean;
 }): Promise<BrevoSendResult> {
-  const label = opts.outlet === "second-serve" ? "Second Serve" : "Fourteen Seed";
+  const label = opts.outlet === "second-serve" ? "Second Serve" : opts.outlet === "gobblr" ? "gobblr" : "Fourteen Seed";
   const subject = `${label} draft ready: ${opts.title}`;
   const failure = opts.illustrationFailed ? "The cover illustration failed, so the draft is ready for review without one.\n\n" : "";
-  const textContent = `${failure}${opts.excerpt || ""}\n\nOpen the private preview: ${opts.previewUrl}\n\nFinal decision:\nPublish: ${opts.publishUrl}\nRequest a change: ${opts.changeUrl}\nDrop: ${opts.dropUrl}`;
-  const htmlContent = `<div style="font:16px/1.6 Arial,sans-serif;color:#153b37;max-width:680px"><p>${opts.illustrationFailed ? "The cover illustration failed, so this draft is ready for review without one." : "A new draft is ready for review."}</p><h1 style="font:26px/1.2 Georgia,serif;color:#153b37">${escapeHtml(opts.title)}</h1><div style="white-space:pre-wrap;margin:0 0 24px">${escapeHtml(opts.excerpt || "")}</div><p><strong>Open the private preview</strong></p>${link("Open the private preview", opts.previewUrl)}<p><strong>Final decision</strong></p>${link("Publish", opts.publishUrl)}${link("Request a change", opts.changeUrl)}${link("Drop", opts.dropUrl)}<p style="color:#687b73;font-size:13px">Fourteen Seed studio loop</p></div>`;
-  return sendBrevo({ apiKey: opts.apiKey, subject, htmlContent, textContent });
+  const why = opts.angleNote ? `Why this one\n${opts.angleNote}\n\n` : "";
+  const cover = opts.coverUrl ? `Cover: ${opts.coverUrl}\n\n` : "";
+  const replyLine = "Or just reply to this email with what you want changed; the writer reads replies twice a day.";
+  const textContent = `${failure}${opts.excerpt || ""}\n\n${why}${cover}Open the private preview: ${opts.previewUrl}\n\nFinal decision:\nPublish: ${opts.publishUrl}\nRequest a change: ${opts.changeUrl}\nDrop: ${opts.dropUrl}\n\n${replyLine}`;
+  const whyHtml = opts.angleNote ? `<h2 style="font:600 18px/1.3 Arial,sans-serif;color:#153b37">Why this one</h2><div style="white-space:pre-wrap;margin:0 0 24px">${escapeHtml(opts.angleNote)}</div>` : "";
+  const coverHtml = opts.coverUrl ? `<img src="${escapeHtml(opts.coverUrl)}" alt="" style="display:block;width:100%;height:auto;margin:0 0 24px;border-radius:12px">` : "";
+  const htmlContent = `<div style="font:16px/1.6 Arial,sans-serif;color:#153b37;max-width:680px"><p>${opts.illustrationFailed ? "The cover illustration failed, so this draft is ready for review without one." : "A new draft is ready for review."}</p><h1 style="font:26px/1.2 Georgia,serif;color:#153b37">${escapeHtml(opts.title)}</h1><div style="white-space:pre-wrap;margin:0 0 24px">${escapeHtml(opts.excerpt || "")}</div>${whyHtml}${coverHtml}<p><strong>Open the private preview</strong></p>${link("Open the private preview", opts.previewUrl)}<p><strong>Final decision</strong></p>${link("Publish", opts.publishUrl)}${link("Request a change", opts.changeUrl)}${link("Drop", opts.dropUrl)}<p>${escapeHtml(replyLine)}</p><p style="color:#687b73;font-size:13px">Fourteen Seed studio loop</p></div>`;
+  return sendBrevo({ apiKey: opts.apiKey, subject, htmlContent, textContent, cc: opts.outlet === "gobblr" ? ["james@fourteenseed.com"] : undefined });
 }
 
-export async function sendStudioApprovalEmail(opts: { apiKey: string; title: string; body: string; linkedinPost: string | null; coverUrl: string | null }): Promise<BrevoSendResult> {
+export async function sendStudioApprovalEmail(opts: { apiKey: string; title: string; body: string; linkedinPost: string | null; coverUrl: string | null; liftUrl: string }): Promise<BrevoSendResult> {
   const subject = `Second Serve approved: ${opts.title}`;
-  const textContent = `Approved and ready to paste.\n\n${opts.title}\n\n${opts.body}\n\nLinkedIn post:\n${opts.linkedinPost || ""}\n\nCover image: ${opts.coverUrl || "none"}`;
-  const htmlContent = `<div style="font:16px/1.6 Arial,sans-serif;color:#153b37;max-width:680px"><p>Approved and ready to paste into LinkedIn.</p><h1 style="font:26px/1.2 Georgia,serif">${escapeHtml(opts.title)}</h1><div style="white-space:pre-wrap">${escapeHtml(opts.body)}</div><hr><h2>LinkedIn post</h2><div style="white-space:pre-wrap">${escapeHtml(opts.linkedinPost || "")}</div>${opts.coverUrl ? link("Open the cover image", opts.coverUrl) : ""}</div>`;
+  const textContent = `Approved and ready to paste.\n\nOpen the lift page: ${opts.liftUrl}\n\n${opts.title}\n\n${opts.body}\n\nLinkedIn post:\n${opts.linkedinPost || ""}\n\nCover image: ${opts.coverUrl || "none"}`;
+  const htmlContent = `<div style="font:16px/1.6 Arial,sans-serif;color:#153b37;max-width:680px"><p>Approved and ready to paste into LinkedIn.</p>${link("Open the lift page", opts.liftUrl)}<h1 style="font:26px/1.2 Georgia,serif">${escapeHtml(opts.title)}</h1><div style="white-space:pre-wrap">${escapeHtml(opts.body)}</div><hr><h2>LinkedIn post</h2><div style="white-space:pre-wrap">${escapeHtml(opts.linkedinPost || "")}</div>${opts.coverUrl ? link("Open the cover image", opts.coverUrl) : ""}</div>`;
   return sendBrevo({ apiKey: opts.apiKey, subject, htmlContent, textContent });
 }

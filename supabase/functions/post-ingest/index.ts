@@ -10,6 +10,18 @@ function requiredString(value: unknown, name: string): string {
   return value.trim();
 }
 
+async function notifyRevision(postId: string): Promise<void> {
+  const url = Deno.env.get("SUPABASE_URL");
+  const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (!url || !key) throw new Error("Supabase service role configuration is missing");
+  const response = await fetch(`${url}/functions/v1/post-notify`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
+    body: JSON.stringify({ post_id: postId }),
+  });
+  if (!response.ok) throw new Error(`post-notify ${response.status}: ${(await response.text()).slice(0, 400)}`);
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return jsonResponse({ error: "Method not allowed" }, 405);
@@ -19,13 +31,13 @@ Deno.serve(async (req) => {
     const sb = getServiceClient();
     if (body.command === "pending-changes") {
       const outlet = requiredString(body.outlet, "outlet");
-      const { data, error } = await sb.from("studio_posts").select("id,outlet,slug,title,excerpt,body,linkedin_post,edition_number,source_refs,review_note,created_at,updated_at").eq("outlet", outlet).eq("review_status", "change_requested").eq("published", false).order("created_at", { ascending: true });
+      const { data, error } = await sb.from("studio_posts").select("id,outlet,slug,title,excerpt,body,linkedin_post,edition_number,source_refs,angle_note,review_note,review_source,created_at,updated_at").eq("outlet", outlet).eq("review_status", "change_requested").eq("published", false).order("created_at", { ascending: true });
       if (error) throw error;
       return jsonResponse(data || []);
     }
 
-    const outlet = requiredString(body.outlet, "outlet") as "second-serve" | "fourteenseed";
-    if (!["second-serve", "fourteenseed"].includes(outlet)) throw new Error("outlet must be second-serve or fourteenseed");
+    const outlet = requiredString(body.outlet, "outlet") as "second-serve" | "fourteenseed" | "gobblr";
+    if (!["second-serve", "fourteenseed", "gobblr"].includes(outlet)) throw new Error("outlet must be second-serve, fourteenseed, or gobblr");
     const title = requiredString(body.title, "title");
     const slug = requiredString(body.slug, "slug");
     const articleBody = requiredString(body.body, "body");
@@ -41,6 +53,7 @@ Deno.serve(async (req) => {
       article_section: typeof body.article_section === "string" ? body.article_section.trim() : null,
       read_minutes: typeof body.read_minutes === "number" ? body.read_minutes : null,
       source_refs: sourceRefs,
+      angle_note: typeof body.angle_note === "string" ? body.angle_note.trim() || null : null,
       review_status: "draft", published: false,
     };
     const reviseId = typeof body.revise_post_id === "string" ? body.revise_post_id.trim() : null;
@@ -51,9 +64,13 @@ Deno.serve(async (req) => {
       if (existing.published) throw new Error("Cannot revise a published post");
       if (existing.outlet !== outlet) throw new Error("Revision outlet does not match target");
       const titleChanged = existing.title !== title;
-      const update = { ...fields, review_note: null, ...(titleChanged ? { cover_image_url: null, hero_alt: null, illustration_prompt: null, cover_image_width: null, cover_image_height: null } : {}) };
+      const update = { ...fields, review_note: null, review_source: null, ...(titleChanged ? { cover_image_url: null, hero_alt: null, illustration_prompt: null, cover_image_width: null, cover_image_height: null } : {}) };
       const { data, error } = await sb.from("studio_posts").update(update).eq("id", reviseId).eq("published", false).select("*").single();
       if (error) throw error;
+      if (!titleChanged) {
+        await notifyRevision(data.id);
+        data.review_status = "awaiting_review";
+      }
       return jsonResponse({ ok: true, revised: true, post: data });
     }
     const { data, error } = await sb.from("studio_posts").insert(fields).select("*").single();

@@ -2,7 +2,7 @@ import { createClient, type SupabaseClient } from "https://esm.sh/@supabase/supa
 
 export interface StudioPostRow {
   id: string;
-  outlet: "second-serve" | "fourteenseed";
+  outlet: "second-serve" | "fourteenseed" | "gobblr";
   slug: string;
   title: string;
   excerpt: string | null;
@@ -24,6 +24,10 @@ export interface StudioPostRow {
   published_at: string | null;
   review_status: string;
   review_note: string | null;
+  review_source: "button" | "email" | null;
+  angle_note: string | null;
+  exported_at: string | null;
+  export_url: string | null;
   preview_token: string;
   angles: StudioAngleRow[] | null;
   chosen_angle: number | null;
@@ -121,5 +125,6 @@ export function isServiceRole(req: Request): boolean {
 }
 
 export function outletLabel(outlet: StudioPostRow["outlet"]): string {
-  return outlet === "second-serve" ? "Second Serve" : "Fourteen Seed";
+  if (outlet === "second-serve") return "Second Serve";
+  return outlet === "gobblr" ? "gobblr" : "Fourteen Seed";
 }
