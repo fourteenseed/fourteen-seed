@@ -1,0 +1,18 @@
+{
+  "fieldNotes": [
+    {
+      "slug": "what-the-loop-taught-me",
+      "title": "What the loop taught me",
+      "excerpt": "A five-minute field note about making the work visible.",
+      "body": "## Start with the work\n\nThe useful signal came from the run, not the plan.\n\n## Keep the receipt\n\nA small proof made the next decision easier.",
+      "article_section": "AI in practice",
+      "read_minutes": 5,
+      "published_at": "2026-11-03T10:00:00.000Z",
+      "updated_at": "2026-11-03T10:00:00.000Z",
+      "cover_image_url": "/images/porthleven.jpg",
+      "hero_alt": "A notebook beside a looping line on a pale green desk.",
+      "keywords": ["AI in practice", "field notes"]
+    }
+  ],
+  "secondServe": []
+}

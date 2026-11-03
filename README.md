@@ -4,13 +4,13 @@ The public Fourteen Seed site is static HTML. Vercel runs `node scripts/build-wr
 
 ## Studio loop
 
-One engine carries Second Serve, Fourteen Seed field notes, and gobblr posts through the same sequence:
+One engine carries Second Serve, Fourteen Seed field notes, and gobblr posts through the same sequence. Fourteen Seed creates three five-minute options, A, B, and C, in one weekly batch. Second Serve and gobblr continue to create one draft at a time.
 
 1. **Revise:** each writer checks change requests twice a day and re-ingests the same row. A same-title revision keeps its cover and `post-ingest` calls `post-notify` immediately.
-2. **Write:** `due` checks the outlet's cadence. The writer picks an angle, records the choice and runners-up in `angle_note`, and ingests the draft.
+2. **Write:** `due` checks the outlet's cadence. For Fourteen Seed, any in-review row in the latest batch blocks another batch. The writer creates three options with the same `batch_id`, labels them A, B, and C, and records the short pitch in `story_card`. Other outlets ingest one draft as before.
 3. **Illustrate:** Station 2 takes the oldest draft without a cover, builds the outlet prompt, creates one 1600x900 PNG, and uploads it with `finalize`.
-4. **Email:** `post-notify` sends the private preview, cover, angle note, and Publish, Request a change, and Drop links.
-5. **Decide:** Wendy publishes, requests a change, replies with a change, or drops the draft.
+4. **Email:** `post-notify` waits until all three Fourteen Seed siblings are ready, then sends one email with A, B, and C in order. Each option has its preview, cover, angle note, and Publish, Request a change, and Drop links. Other outlets keep the single-draft email.
+5. **Decide:** Wendy reads all three Fourteen Seed options, then publishes one, requests a change, replies with a change, or drops an individual option. Publishing one automatically drops its two unpublished siblings. A revised option gets its own single-draft email with the option letter in the subject.
 6. **Publish out:** Fourteen Seed rebuilds `/writing`; Second Serve opens the lift page; gobblr opens a branch and PR for a human to merge.
 7. **Receipt:** the row records review and publication state. A gobblr export also records `exported_at` and the PR URL.
 
@@ -19,8 +19,8 @@ One engine carries Second Serve, Fourteen Seed field notes, and gobblr posts thr
 Run commands as `node scripts/studio-loop.mjs <command>`.
 
 - `propose-angles --outlet X --file angles.json`: retain the old three-angle flow for manual use.
-- `due --outlet X [--cadence-days N]`: report `write`, `wait`, or `none` when a draft is in review.
-- `ingest --file post.md [--post-id UUID]`: create a draft or revise the named row from Markdown front matter.
+- `due --outlet X [--cadence-days N]`: report `write`, `wait`, or `none`. The latest Fourteen Seed batch returns `none` while any sibling is in review.
+- `ingest --file post.md [--post-id UUID]`: create a draft or revise the named row from Markdown front matter. Fourteen Seed batch drafts carry `batch_id`, `option_label`, and `story_card`.
 - `pending-changes --outlet X`: list unpublished change requests for a writer.
 - `request-change --post-id UUID --note-file note.txt [--source email|button]`: save a reply or button note against an unpublished row.
 - `next`: print the oldest draft from any outlet that still needs a cover.
@@ -44,11 +44,15 @@ Do not commit environment files or print their values.
 
 ### Migration and functions
 
+`studio_posts.batch_id` groups the three Fourteen Seed options. `option_label` is constrained to A, B, or C, and `story_card` holds the one-line reason to read that option. The `(outlet, batch_id)` index supports batch readiness, preview sibling, and publish cleanup queries.
+
 The Open Brain project's remote migration history includes files that are not in this repository. Do not use `supabase db push`. After review, apply this migration directly, then repair the migration history:
 
 ```sh
 supabase db query --linked -f supabase/migrations/20261103120000_studio_loop_three_outlets.sql
 supabase migration repair --linked --status applied 20261103120000
+supabase db query --linked -f supabase/migrations/20261103150000_studio_loop_batches.sql
+supabase migration repair --linked --status applied 20261103150000
 ```
 
 Deploy only the function that changed:

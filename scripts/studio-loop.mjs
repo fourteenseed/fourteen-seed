@@ -161,9 +161,13 @@ async function proposeAngles() {
   console.log(JSON.stringify({ post_id: post.id, status: post.review_status }));
 }
 
-export function dueDecision(row, now = Date.now(), cadenceDays = 6) {
-  if (row && ["draft", "illustrated", "awaiting_review", "change_requested"].includes(row.review_status)) {
-    return { step: "none", post_id: row.id, reason: "in_review" };
+export function dueDecision(input, now = Date.now(), cadenceDays = 6) {
+  const rows = Array.isArray(input) ? input : input ? [input] : [];
+  const row = rows[0] || null;
+  const latestBatchRows = row?.batch_id ? rows.filter((candidate) => candidate.batch_id === row.batch_id) : row ? [row] : [];
+  const inReview = latestBatchRows.find((candidate) => ["draft", "illustrated", "awaiting_review", "change_requested"].includes(candidate.review_status));
+  if (inReview) {
+    return { step: "none", post_id: inReview.id, reason: "in_review" };
   }
   const createdAt = row ? new Date(row.created_at).getTime() : NaN;
   const cadenceMs = cadenceDays * 24 * 60 * 60 * 1000;
@@ -175,8 +179,8 @@ async function due() {
   const outlet = requireOutlet(required("--outlet", arg("--outlet")));
   const cadenceDays = Number(arg("--cadence-days") || 6);
   if (!Number.isFinite(cadenceDays) || cadenceDays <= 0) throw new Error("--cadence-days must be a positive number");
-  const rows = await rest(`/rest/v1/studio_posts?select=id,review_status,created_at&outlet=eq.${encodeURIComponent(outlet)}&order=created_at.desc&limit=1`);
-  console.log(JSON.stringify(dueDecision(rows?.[0], Date.now(), cadenceDays)));
+  const rows = await rest(`/rest/v1/studio_posts?select=id,review_status,created_at,batch_id&outlet=eq.${encodeURIComponent(outlet)}&order=created_at.desc`);
+  console.log(JSON.stringify(dueDecision(rows || [], Date.now(), cadenceDays)));
 }
 
 async function ingest(filePath) {

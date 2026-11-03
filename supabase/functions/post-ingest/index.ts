@@ -17,7 +17,7 @@ async function notifyRevision(postId: string): Promise<void> {
   const response = await fetch(`${url}/functions/v1/post-notify`, {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-    body: JSON.stringify({ post_id: postId }),
+    body: JSON.stringify({ post_id: postId, revision: true }),
   });
   if (!response.ok) throw new Error(`post-notify ${response.status}: ${(await response.text()).slice(0, 400)}`);
 }
@@ -31,7 +31,7 @@ Deno.serve(async (req) => {
     const sb = getServiceClient();
     if (body.command === "pending-changes") {
       const outlet = requiredString(body.outlet, "outlet");
-      const { data, error } = await sb.from("studio_posts").select("id,outlet,slug,title,excerpt,body,linkedin_post,edition_number,source_refs,angle_note,review_note,review_source,created_at,updated_at").eq("outlet", outlet).eq("review_status", "change_requested").eq("published", false).order("created_at", { ascending: true });
+      const { data, error } = await sb.from("studio_posts").select("id,outlet,slug,title,excerpt,body,linkedin_post,edition_number,source_refs,angle_note,batch_id,option_label,story_card,review_note,review_source,created_at,updated_at").eq("outlet", outlet).eq("review_status", "change_requested").eq("published", false).order("created_at", { ascending: true });
       if (error) throw error;
       return jsonResponse(data || []);
     }
@@ -45,6 +45,13 @@ Deno.serve(async (req) => {
     const linkedinPost = typeof body.linkedin_post === "string" ? body.linkedin_post.trim() : null;
     if (outlet === "second-serve" && !linkedinPost) throw new Error("linkedin_post is required for second-serve");
     const sourceRefs = Array.isArray(body.source_refs) ? body.source_refs.filter((item): item is string => typeof item === "string") : [];
+    const batchId = typeof body.batch_id === "string" ? body.batch_id.trim() || null : null;
+    const optionLabel = typeof body.option_label === "string" ? body.option_label.trim().toUpperCase() : null;
+    const storyCard = typeof body.story_card === "string" ? body.story_card.trim() || null : null;
+    const hasBatchField = Boolean(batchId || optionLabel || storyCard);
+    if (hasBatchField && outlet !== "fourteenseed") throw new Error("batch fields are only available for fourteenseed");
+    if (hasBatchField && (!batchId || !optionLabel || !storyCard)) throw new Error("batch_id, option_label, and story_card are required together");
+    if (optionLabel && !["A", "B", "C"].includes(optionLabel)) throw new Error("option_label must be A, B, or C");
     const fields = {
       outlet, slug, title, excerpt, body: articleBody, linkedin_post: outlet === "second-serve" ? linkedinPost : null,
       edition_number: typeof body.edition_number === "number" ? body.edition_number : null,
@@ -54,6 +61,7 @@ Deno.serve(async (req) => {
       read_minutes: typeof body.read_minutes === "number" ? body.read_minutes : null,
       source_refs: sourceRefs,
       angle_note: typeof body.angle_note === "string" ? body.angle_note.trim() || null : null,
+      ...(hasBatchField ? { batch_id: batchId, option_label: optionLabel, story_card: storyCard } : {}),
       review_status: "draft", published: false,
     };
     const reviseId = typeof body.revise_post_id === "string" ? body.revise_post_id.trim() : null;
@@ -64,7 +72,15 @@ Deno.serve(async (req) => {
       if (existing.published) throw new Error("Cannot revise a published post");
       if (existing.outlet !== outlet) throw new Error("Revision outlet does not match target");
       const titleChanged = existing.title !== title;
-      const update = { ...fields, review_note: null, review_source: null, ...(titleChanged ? { cover_image_url: null, hero_alt: null, illustration_prompt: null, cover_image_width: null, cover_image_height: null } : {}) };
+      const update = {
+        ...fields,
+        batch_id: hasBatchField ? batchId : existing.batch_id,
+        option_label: hasBatchField ? optionLabel : existing.option_label,
+        story_card: hasBatchField ? storyCard : existing.story_card,
+        review_note: null,
+        review_source: null,
+        ...(titleChanged ? { cover_image_url: null, hero_alt: null, illustration_prompt: null, cover_image_width: null, cover_image_height: null } : {}),
+      };
       const { data, error } = await sb.from("studio_posts").update(update).eq("id", reviseId).eq("published", false).select("*").single();
       if (error) throw error;
       if (!titleChanged) {

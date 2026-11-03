@@ -1,0 +1,22 @@
+{
+  "id": "option-a",
+  "outlet": "fourteenseed",
+  "slug": "the-loop-left-a-receipt",
+  "title": "The loop left a receipt",
+  "excerpt": "A five-minute read about the proof that small systems leave behind.",
+  "body": "## The run changed the plan\n\nThe first useful thing was not the answer. It was the receipt.\n\n## What you could try\n\nKeep one small proof from every automated run.",
+  "article_section": "Harness",
+  "angle_note": "This one turns an internal operating habit into something another founder can use.",
+  "story_card": "The quiet value of keeping proof from every agent run.",
+  "cover_image_url": "/images/porthleven.jpg",
+  "hero_alt": "A fine coastal line drawing of three paths meeting a notebook.",
+  "source_refs": ["A studio run card from 3 November 2026"],
+  "batch_id": "fourteenseed-2026-W45",
+  "option_label": "A",
+  "preview_token": "token-a",
+  "siblings": [
+    { "title": "The loop left a receipt", "option_label": "A", "preview_token": "token-a" },
+    { "title": "The useful pause", "option_label": "B", "preview_token": "token-b" },
+    { "title": "Three ways through", "option_label": "C", "preview_token": "token-c" }
+  ]
+}
